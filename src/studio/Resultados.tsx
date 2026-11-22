@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import type { Avaliacao, Correcao, Resposta } from '../core/types';
+import type { AjusteGabarito, Avaliacao, Correcao, PoliticaAnulacao, Resposta } from '../core/types';
+import { ordenarAlunos } from '../core/alunos';
 import { db, chaveDoEstudio, mesclarCorrecoes } from '../data/db';
 import { Modal, Vazio, aviso, escolherArquivo } from '../ui/base';
 import { FolhaRespostas } from '../ui/FolhaRespostas';
@@ -32,7 +33,7 @@ function Painel({ av, correcoes }: { av: Avaliacao; correcoes: Correcao[] }) {
   const lista = soPendentes ? avaliadas.filter(a => a.r.discPendentes > 0) : avaliadas;
 
   async function importarPacote() {
-    const f = await escolherArquivo('.json,application/json');
+    const f = await escolherArquivo('.json,.txt,application/json,text/plain');
     if (!f) return;
     try {
       const k = await chaveDoEstudio();
@@ -93,6 +94,8 @@ function Painel({ av, correcoes }: { av: Avaliacao; correcoes: Correcao[] }) {
             <div className={pendentes ? 'alerta' : ''}><b>{pendentes}</b><span>com discursiva pendente</span></div>
           </div>
           <Distribuicao valores={avaliadas.map(a => a.r.percentual)} />
+          <AjustesResumo av={av} />
+          <Faltam av={av} correcoes={correcoes} />
 
           <div className="segmentos abas">
             <button className={aba === 'alunos' ? 'ativo' : ''} onClick={() => setAba('alunos')}>Alunos</button>
@@ -123,7 +126,7 @@ function Painel({ av, correcoes }: { av: Avaliacao; correcoes: Correcao[] }) {
                 </table>
               </div>
             </div>
-          ) : <AnaliseQuestoes av={av} avaliadas={avaliadas} />}
+          ) : <AnaliseQuestoes av={av} correcoes={correcoes} />}
         </>
       )}
       {editando && <EditarCorrecao av={av} inicial={editando} aoFechar={() => setEditando(null)} />}
@@ -150,24 +153,85 @@ function Distribuicao({ valores }: { valores: number[] }) {
   );
 }
 
-function AnaliseQuestoes({ av, avaliadas }: { av: Avaliacao; avaliadas: ReturnType<typeof avaliarTodas> }) {
-  const itens = analiseItens(av, avaliadas);
+async function ajustar(av: Avaliacao, idx: number, acao: AjusteGabarito['acao'], para?: string | null) {
+  const anuladas = new Set(av.anuladas ?? []);
+  const alterado = { ...(av.gabaritoAlterado ?? {}) };
+  const original = av.snapshot![idx].correta;
+  const de = alterado[idx] ?? original;
+  if (acao === 'anular') anuladas.add(idx);
+  if (acao === 'reativar') anuladas.delete(idx);
+  if (acao === 'alterar') { if (para === original) delete alterado[idx]; else if (para) alterado[idx] = para; }
+  const historico = [...(av.historicoGabarito ?? []), { em: Date.now(), idx, acao, de, para: para ?? null }];
+  await db.avaliacoes.update(av.id, { anuladas: [...anuladas].sort((a, b) => a - b), gabaritoAlterado: alterado, historicoGabarito: historico, atualizadaEm: Date.now() });
+}
+
+function rotuloOpcao(av: Avaliacao, idx: number, id: string | null | undefined): string {
+  const q = av.snapshot![idx];
+  if (!id) return '—';
+  if (q.tipo === 'vf') return id === 'V' ? 'Verdadeira' : 'Falsa';
+  const i = q.alternativas.findIndex(a => a.id === id);
+  return i >= 0 ? `${LETRAS[i]}) ${q.alternativas[i].texto.slice(0, 40)}` : '—';
+}
+
+function AjustesResumo({ av }: { av: Avaliacao }) {
+  const nAnul = av.anuladas?.length ?? 0;
+  const nAlt = Object.keys(av.gabaritoAlterado ?? {}).length;
+  if (!nAnul && !nAlt) return null;
+  return (
+    <div className="ajustes-resumo">
+      ⚖️ Notas recalculadas com {nAnul ? `${nAnul} questão(ões) anulada(s) — ${(av.politicaAnulacao ?? 'todos') === 'todos' ? 'ponto para todos' : 'retiradas da nota'}` : ''}{nAnul && nAlt ? ' e ' : ''}{nAlt ? `${nAlt} com gabarito alterado` : ''}. Detalhes em <b>Análise das questões</b>.
+    </div>
+  );
+}
+
+function Faltam({ av, correcoes }: { av: Avaliacao; correcoes: Correcao[] }) {
+  const turma = ordenarAlunos(av.alunos ?? []);
+  if (!turma.length) return null;
+  const feito = (a: { nome: string; matricula: string }) => correcoes.some(c => a.matricula && c.matricula ? c.matricula === a.matricula : c.aluno.trim().toLowerCase() === a.nome.trim().toLowerCase());
+  const faltam = turma.filter(a => !feito(a));
+  return (
+    <details className="painel faltam">
+      <summary>{faltam.length ? <>Faltam corrigir <b>{faltam.length}</b> de {turma.length} alunos da lista</> : <>✅ Todos os {turma.length} alunos da lista foram corrigidos</>}</summary>
+      {faltam.length > 0 && <p>{faltam.map(a => a.nome).join(' · ')}</p>}
+    </details>
+  );
+}
+
+function AnaliseQuestoes({ av, correcoes }: { av: Avaliacao; correcoes: Correcao[] }) {
+  // a análise mede as questões como foram respondidas: ignora anulações, mas usa o gabarito vigente
+  const itens = analiseItens(av, avaliarTodas(av, correcoes, { semAnulacao: true }));
+  const anuladas = new Set(av.anuladas ?? []);
+  const politica: PoliticaAnulacao = av.politicaAnulacao ?? 'todos';
+  const [trocando, setTrocando] = useState<number | null>(null);
+
   return (
     <div className="painel">
       <p className="dica">Cada linha é uma questão da prova, reunindo todas as versões (a posição muda entre versões; aqui segue a ordem da versão A). <b>Facilidade</b> = proporção de acerto. <b>Discriminação</b> = quanto a questão separa quem foi bem de quem foi mal na prova (abaixo de 0,2 merece revisão; negativa costuma indicar gabarito ou enunciado com problema).</p>
+      <div className="politica">
+        <span>Questão anulada:</span>
+        <div className="segmentos pequeno">
+          <button className={politica === 'todos' ? 'ativo' : ''} onClick={() => db.avaliacoes.update(av.id, { politicaAnulacao: 'todos' })}>vale ponto para todos</button>
+          <button className={politica === 'excluir' ? 'ativo' : ''} onClick={() => db.avaliacoes.update(av.id, { politicaAnulacao: 'excluir' })}>sai da nota</button>
+        </div>
+        <span className="dica">As notas de todos os alunos são recalculadas na hora.</span>
+      </div>
       <div className="tabela-rolavel">
         <table className="tabela">
-          <thead><tr><th>Q</th><th>Questão</th><th className="n">Facilidade</th><th className="n">Discriminação</th><th>Respostas marcadas</th></tr></thead>
+          <thead><tr><th>Q</th><th>Questão</th><th className="n">Facilidade</th><th className="n">Discriminação</th><th>Respostas marcadas</th><th>Ajustes</th></tr></thead>
           <tbody>
             {itens.map(it => {
               const q = it.questao;
+              const anulada = anuladas.has(it.idx);
+              const alterada = av.gabaritoAlterado?.[it.idx] !== undefined;
               const opcoes = q.tipo === 'me' ? q.alternativas.map((a, i) => ({ id: a.id, rot: LETRAS[i], certa: a.id === q.correta }))
                 : q.tipo === 'vf' ? [{ id: 'V', rot: 'V', certa: q.correta === 'V' }, { id: 'F', rot: 'F', certa: q.correta === 'F' }] : [];
               const total = opcoes.reduce((a, o) => a + (it.escolhas[o.id] ?? 0), 0) + it.brancos;
               return (
-                <tr key={it.idx}>
+                <tr key={it.idx} className={anulada ? 'linha-anulada' : ''}>
                   <td>{it.idx + 1}</td>
-                  <td className="col-enunciado"><span className={`tag tag-${q.tipo}`}>{ROTULO_TIPO[q.tipo]}</span> {q.enunciado.slice(0, 110)}{q.enunciado.length > 110 ? '…' : ''}</td>
+                  <td className="col-enunciado">
+                    <span className={`tag tag-${q.tipo}`}>{ROTULO_TIPO[q.tipo]}</span>{anulada && <span className="tag tag-anulada">ANULADA</span>}{alterada && <span className="tag tag-alterada">GABARITO ALTERADO</span>} {q.enunciado.slice(0, 110)}{q.enunciado.length > 110 ? '…' : ''}
+                  </td>
                   <td className="n">{it.n ? `${fmtNum(it.facilidade * 100, 0)}%` : '—'}<br /><small>{it.n ? rotuloFacilidade(it.facilidade) : ''}</small></td>
                   <td className="n">{it.discriminacao === null ? '—' : fmtNum(it.discriminacao, 2)}<br /><small className={it.discriminacao !== null && it.discriminacao < 0.2 ? 'ruim' : ''}>{rotuloDiscriminacao(it.discriminacao)}</small></td>
                   <td>
@@ -181,13 +245,38 @@ function AnaliseQuestoes({ av, avaliadas }: { av: Avaliacao; avaliadas: ReturnTy
                       </div>
                     )}
                   </td>
+                  <td className="col-ajustes">
+                    {anulada
+                      ? <button className="btn btn-sm" onClick={() => ajustar(av, it.idx, 'reativar')}>Desfazer anulação</button>
+                      : <button className="btn btn-sm btn-perigo" onClick={() => { if (confirm(`Anular a questão ${it.idx + 1}? As notas de todos serão recalculadas (${politica === 'todos' ? 'ponto para todos' : 'a questão sai da nota'}).`)) ajustar(av, it.idx, 'anular'); }}>Anular</button>}
+                    {q.tipo !== 'disc' && !anulada && (trocando === it.idx ? (
+                      <select className="campo campo-sm" autoFocus defaultValue={q.correta ?? ''} aria-label="Nova resposta correta"
+                        onBlur={() => setTrocando(null)}
+                        onChange={async e => {
+                          const para = e.target.value;
+                          if (para && para !== q.correta && confirm(`Trocar o gabarito da questão ${it.idx + 1} de "${rotuloOpcao(av, it.idx, q.correta)}" para "${rotuloOpcao(av, it.idx, para)}"? Vale para todas as versões e recalcula as notas.`)) await ajustar(av, it.idx, 'alterar', para);
+                          setTrocando(null);
+                        }}>
+                        {opcoes.map(o => <option key={o.id} value={o.id}>{o.rot}{o.certa ? ' (atual)' : ''}</option>)}
+                      </select>
+                    ) : <button className="btn btn-sm" onClick={() => setTrocando(it.idx)}>Trocar gabarito</button>)}
+                    {alterada && !anulada && <button className="link" onClick={() => ajustar(av, it.idx, 'alterar', av.snapshot![it.idx].correta)}>voltar ao original</button>}
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
-      <p className="dica">Na coluna de respostas, letras referem-se à ordem original da questão (versão A); a correta aparece destacada.</p>
+      <p className="dica">Na coluna de respostas, letras referem-se à ordem original da questão (versão A); a correta vigente aparece destacada. A facilidade e a discriminação são calculadas como se não houvesse anulação, para você avaliar a questão em si.</p>
+      {(av.historicoGabarito?.length ?? 0) > 0 && (
+        <details className="historico">
+          <summary>Histórico de ajustes ({av.historicoGabarito!.length})</summary>
+          <ul>{[...av.historicoGabarito!].reverse().map((h, i) => (
+            <li key={i}>{fmtData(h.em)} — Questão {h.idx + 1}: {h.acao === 'anular' ? 'anulada' : h.acao === 'reativar' ? 'anulação desfeita' : `gabarito de "${rotuloOpcao(av, h.idx, h.de)}" para "${rotuloOpcao(av, h.idx, h.para)}"`}</li>
+          ))}</ul>
+        </details>
+      )}
     </div>
   );
 }

@@ -59,10 +59,30 @@ export function obterVersao(av: Avaliacao, nome: string): Versao | undefined {
   return av.versoes?.find(v => v.nome === nome);
 }
 
-/** Itens de gabarito, por posição, de uma versão publicada. */
-export function itensDaVersao(av: Avaliacao, nomeVersao: string): ItemGabarito[] {
+/** Questão do snapshot com eventual troca de gabarito aplicada. */
+export function questaoVigente(av: Avaliacao, idx: number): Questao {
+  const q = av.snapshot![idx];
+  const nova = av.gabaritoAlterado?.[idx];
+  return nova ? { ...q, correta: nova } : q;
+}
+
+/**
+ * Itens de gabarito, por posição, de uma versão publicada — já com trocas de gabarito e anulações.
+ * `semAnulacao`: ignora as anulações (usado na análise das questões).
+ */
+export function itensDaVersao(av: Avaliacao, nomeVersao: string, opcoes: { semAnulacao?: boolean } = {}): ItemGabarito[] {
   const v = obterVersao(av, nomeVersao);
   if (!v || !av.snapshot || !av.pesos) throw new Error(`Versão ${nomeVersao} não encontrada ou avaliação não publicada.`);
+  const anuladas = new Set(opcoes.semAnulacao ? [] : av.anuladas ?? []);
+  return v.ordem.map(idx => {
+    const it = itemGabarito(questaoVigente(av, idx), av.pesos![idx], v);
+    return anuladas.has(idx) ? { ...it, anulada: av.politicaAnulacao ?? 'todos' } : it;
+  });
+}
+
+/** Gabarito como foi impresso (sem trocas nem anulações): usado no QR das folhas. */
+export function itensOriginais(av: Avaliacao, nomeVersao: string): ItemGabarito[] {
+  const v = obterVersao(av, nomeVersao)!;
   return v.ordem.map(idx => itemGabarito(av.snapshot![idx], av.pesos![idx], v));
 }
 

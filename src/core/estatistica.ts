@@ -42,9 +42,9 @@ function pearson(x: number[], y: number[]): number | null {
 
 export interface CorrecaoAvaliada { c: Correcao; r: Resultado }
 
-export function avaliarTodas(av: Avaliacao, correcoes: Correcao[]): CorrecaoAvaliada[] {
+export function avaliarTodas(av: Avaliacao, correcoes: Correcao[], opcoes: { semAnulacao?: boolean } = {}): CorrecaoAvaliada[] {
   return correcoes.flatMap(c => {
-    try { return [{ c, r: corrigir(itensDaVersao(av, c.versao), c.respostas, c.notasDisc) }]; }
+    try { return [{ c, r: corrigir(itensDaVersao(av, c.versao, opcoes), c.respostas, c.notasDisc) }]; }
     catch { return []; }
   });
 }
@@ -84,7 +84,7 @@ export function analiseItens(av: Avaliacao, avaliadas: CorrecaoAvaliada[]): Anal
     const n = notaItem.length;
     const p = pearson(notaItem, resto);
     return {
-      idx, questao: q, n,
+      idx, questao: av.gabaritoAlterado?.[idx] ? { ...q, correta: av.gabaritoAlterado[idx] } : q, n,
       facilidade: n ? arred(notaItem.reduce((a, b) => a + b, 0) / n, 3) : 0,
       discriminacao: p === null ? null : arred(p, 2),
       escolhas, brancos,

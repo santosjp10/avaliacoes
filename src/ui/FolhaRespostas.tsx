@@ -42,8 +42,8 @@ export function FolhaRespostas({ itens, respostas, notasDisc, aoMarcar, aoNotaDi
           );
         }
         const marcada = respostas[pos] ?? null;
-        const ok = conferir && marcada !== null && marcada === it.correta;
-        const erro = conferir && !ok;
+        const ok = conferir && !it.anulada && marcada !== null && marcada === it.correta;
+        const erro = conferir && !ok && !it.anulada;
         return (
           <div key={pos} className={`linha-resp ${ok ? 'certa' : ''} ${erro ? 'errada' : ''} ${destacar?.[pos] ? 'duvida' : ''}`}>
             <span className="num">{pos + 1}</span>
@@ -61,6 +61,7 @@ export function FolhaRespostas({ itens, respostas, notasDisc, aoMarcar, aoNotaDi
               })}
             </div>
             {marcada === '*' && <span className="selo-dupla">dupla marcação</span>}
+            {it.anulada && <span className="selo-dupla anulada">anulada</span>}
           </div>
         );
       })}

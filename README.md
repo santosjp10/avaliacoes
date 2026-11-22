@@ -18,15 +18,28 @@ O HTTPS do GitHub Pages é necessário para o celular liberar a câmera.
 
 1. **Questões.** Cadastre questões em *Banco de questões* ou importe o `banco_questoes.json` do ProvaSystem antigo. São três tipos: múltipla escolha (2 a 5 alternativas), verdadeiro/falso e discursiva (com linhas e critério de correção).
 2. **Avaliação.** Em *Avaliações → Nova avaliação*, preencha os dados, adicione as questões, ajuste o valor de cada uma e clique em **Publicar e gerar versões**. A avaliação publicada fica congelada; para mudar algo, use *Duplicar como rascunho*.
-3. **Impressão.** *Prova + folha para N alunos* gera um único documento com as versões alternadas (A, B, C, A…). Também é possível imprimir o gabarito do professor.
+3. **Impressão.** Há duas opções:
+   - **Folhas personalizadas:** em *Folhas personalizadas por aluno*, cole a lista da turma (nome e matrícula, copiados da planilha). Cada aluno recebe prova e folha com o nome impresso, e o QR identifica o aluno na correção.
+   - **Folhas sem nome:** *Prova + folha para N alunos* gera um único documento com as versões alternadas (A, B, C, A…).
+
+   Também é possível imprimir o gabarito do professor.
 4. **Pareamento (uma vez).** No PC, abra *Ajustes → Mostrar QR de pareamento*. No celular, abra o app e toque em *Parear com o Estúdio*.
 5. **Correção.** No celular, toque em *Escanear folha* e enquadre a **folha inteira**, de cima, com os 4 quadrados pretos dos cantos visíveis. O app lê o QR e as bolhas sozinho e mostra as respostas pré-marcadas.
    - Marcações duvidosas aparecem destacadas em amarelo: dupla marcação, rasura, um "X" em vez de pintar ou marca fraca.
    - Confira, digite o nome do aluno e toque em *Corrigir e salvar*.
    - *Ver foto com a leitura* mostra o que foi reconhecido.
    - Se a câmera não achar os cantos, use *Usar foto* (foto tirada pela câmera do celular, em resolução máxima) ou *Marcar respostas manualmente*.
-6. **Resultados.** No celular, toque em *Enviar resultados ao PC* e mande o arquivo para o computador como preferir. No PC, use *Resultados → Importar do celular*. Importar duas vezes não duplica as notas.
-7. **Backup.** Os dados ficam só no navegador. Em *Ajustes*, baixe o backup com frequência, de preferência protegido por senha.
+   - **Modo rápido** (opção na tela inicial do Corretor): em folhas personalizadas sem nenhuma dúvida na leitura, a correção é salva direto, e é só passar para a próxima folha. Ler de novo um aluno já corrigido abre a conferência, com a opção de substituir a correção anterior.
+   - *Enviar resultado ao aluno* manda nota e questões a revisar por WhatsApp (ou outro app).
+6. **Resultados.**
+   - **No celular:** em *Enviar resultados*, toque em *Enviar ao PC*. Isso gera um arquivo cifrado, que você manda por WhatsApp ou e-mail para você mesmo.
+   - **No PC:** use *Resultados → Importar do celular*. Importar duas vezes não duplica as notas.
+   - **Lista de notas:** também pode ser enviada direto do celular, por WhatsApp, e-mail ou como planilha.
+7. **Anulação e troca de gabarito.** Em *Resultados → Análise das questões*, use *Anular* ou *Trocar gabarito* em cada questão.
+   - As notas de todos os alunos são recalculadas na hora.
+   - A questão anulada pode valer ponto para todos (padrão) ou sair da nota.
+   - Tudo fica registrado no histórico e aparece no gabarito do professor.
+8. **Backup.** Os dados ficam só no navegador. Em *Ajustes*, baixe o backup com frequência, de preferência protegido por senha.
 
 ## Segurança e privacidade
 
@@ -69,6 +82,5 @@ Decisões importantes:
 
 ## Próximas etapas
 
-- Folhas personalizadas por aluno, com nome e matrícula no QR.
-- Rubricas para discursivas e anulação de questão com recálculo das notas.
+- Rubricas para discursivas.
 - Sincronização opcional em nuvem.

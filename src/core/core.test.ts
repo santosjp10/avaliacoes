@@ -166,3 +166,66 @@ describe('importação do sistema antigo', () => {
 it('CSV com ; aspas e BOM', () => {
   expect(paraCSV([['Nome', 'Nota'], ['Silva, "Zé"', 7.5]])).toBe('﻿"Nome";"Nota"\r\n"Silva, ""Zé""";"7,5"');
 });
+
+describe('anulação e troca de gabarito', () => {
+  const marcarTudoCerto = (av: Avaliacao, v: string) => itensDaVersao(av, v).map(i => i.correta);
+
+  it('anulada vale ponto para todos (padrão)', () => {
+    const av = { ...avaliacao(), anuladas: [0] }; // q1 (me)
+    const v = av.versoes![1];
+    const pos = v.ordem.indexOf(0);
+    const resp = itensDaVersao(avaliacao(), v.nome).map(() => null); // tudo em branco
+    const r = corrigir(itensDaVersao(av, v.nome), resp, []);
+    expect(r.itens[pos].anulada).toBe('todos');
+    expect(r.objetiva).toBe(2);
+    expect(r.max).toBe(8);
+  });
+
+  it('anulada pode sair da nota (máximo diminui)', () => {
+    const av = { ...avaliacao(), anuladas: [0], politicaAnulacao: 'excluir' as const };
+    const r = corrigir(itensDaVersao(av, 'A'), marcarTudoCerto(avaliacao(), 'A'), [null, null, 2, null]);
+    expect(r.max).toBe(6);
+    expect(r.total).toBe(6);
+    expect(r.percentual).toBe(100);
+    expect(r.nObjetivas).toBe(2);
+  });
+
+  it('troca de gabarito vale para todas as versões', () => {
+    const base = avaliacao(3);
+    const novaCorreta = snapshot[3].alternativas[3].id; // q4 passa a ter a 4ª alternativa como certa
+    const av = { ...base, gabaritoAlterado: { 3: novaCorreta } };
+    for (const v of av.versoes!) {
+      const pos = v.ordem.indexOf(3);
+      const letra = itensDaVersao(av, v.nome)[pos].correta!;
+      expect(alternativasNaVersao(snapshot[3], v)['ABCDE'.indexOf(letra)].id).toBe(novaCorreta);
+    }
+  });
+
+  it('análise das questões ignora a anulação', () => {
+    const av = { ...avaliacao(2), anuladas: [0] };
+    const c = av.versoes!.map(v => ({ id: v.nome, avaliacaoId: av.id, codigo: av.codigo, versao: v.nome, aluno: '', matricula: '', respostas: v.ordem.map(() => null), notasDisc: [], origem: 'estudio' as const, criadaEm: 0, atualizadaEm: 0 }));
+    expect(analiseItens(av, avaliarTodas(av, c, { semAnulacao: true }))[0].facilidade).toBe(0);
+  });
+});
+
+describe('folha personalizada', () => {
+  it('QR leva o aluno cifrado e continua compacto', async () => {
+    const chave = gerarChave(); const id = await idDaChave(chave);
+    const itens = Array.from({ length: 40 }, () => ({ tipo: 'me' as const, nAlt: 5, correta: 'C', peso: 0.25 }));
+    const aluno = { nome: 'Maria Aparecida de Souza Albuquerque', matricula: '2026010203' };
+    const qr = await qrFolha(chave, id, { avaliacaoId: 'x', titulo: 't', codigo: 'SR-2026-01', versao: 'B', itens, aluno });
+    expect(qr).not.toContain('Maria');
+    expect(qr.length).toBeLessThan(260);
+    const r = await lerQrFolha(qr, chave, id);
+    expect(r.ok && r.dados.aluno).toEqual(aluno);
+  });
+
+  it('lê lista colada da planilha', async () => {
+    const { lerListaAlunos } = await import('./alunos');
+    const l = lerListaAlunos('Nome\tMatrícula\nAna Souza\t2026001\n2026002;Bruno Lima\nCarla Dias, 2026003\nDaniel Rocha\n\nAna Souza\t2026001\n2026005 Eva Martins');
+    expect(l).toEqual([
+      { nome: 'Ana Souza', matricula: '2026001' }, { nome: 'Bruno Lima', matricula: '2026002' },
+      { nome: 'Carla Dias', matricula: '2026003' }, { nome: 'Daniel Rocha', matricula: '' }, { nome: 'Eva Martins', matricula: '2026005' },
+    ]);
+  });
+});

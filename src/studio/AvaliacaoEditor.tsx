@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import type { Avaliacao, Questao } from '../core/types';
+import type { Aluno, Avaliacao, Questao } from '../core/types';
+import { lerListaAlunos, ordenarAlunos } from '../core/alunos';
 import { db } from '../data/db';
-import { aviso, ir, Vazio } from '../ui/base';
+import { Modal, aviso, ir, Vazio } from '../ui/base';
 import { gerarVersoes, itensDaVersao, validarParaPublicar, valorTotal } from '../core/gabarito';
 import { fmtNum, NOMES_VERSAO } from '../core/util';
 import { CartaoQuestao, Filtros, filtrarQuestoes, ROTULO_TIPO } from './Banco';
@@ -167,9 +168,11 @@ function Publicada({ av }: { av: Avaliacao }) {
         </div>
       </section>
 
+      <Turma av={av} abrir={abrir} />
+
       <section className="painel">
-        <h2 className="titulo-painel">Imprimir para a turma</h2>
-        <p className="dica">Gera, em um só documento, a prova e a folha de respostas de cada aluno, alternando as versões (A, B, C, A, B…) para entregar na ordem da fila.</p>
+        <h2 className="titulo-painel">Imprimir folhas sem nome</h2>
+        <p className="dica">Folhas em branco para o aluno preencher nome e matrícula. Gera, num só documento, a prova e a folha de cada aluno, alternando as versões (A, B, C, A, B…) para entregar na ordem da fila.</p>
         <div className="linha-imprimir">
           <label className="rotulo">Alunos<input className="campo campo-sm" type="number" min={1} max={200} value={copias} onChange={e => setCopias(Math.max(1, Number(e.target.value)))} /></label>
           <button className="btn btn-primario" onClick={() => abrir(`tipo=lote&copias=${copias}`)}>🖨 Prova + folha para {copias} alunos</button>
@@ -196,5 +199,55 @@ function Publicada({ av }: { av: Avaliacao }) {
         })}
       </section>
     </div>
+  );
+}
+
+function Turma({ av, abrir }: { av: Avaliacao; abrir: (q: string) => void }) {
+  const [colando, setColando] = useState(false);
+  const outras = useLiveQuery(() => db.avaliacoes.filter(a => a.id !== av.id && (a.alunos?.length ?? 0) > 0).toArray(), [av.id]) ?? [];
+  const alunos = ordenarAlunos(av.alunos ?? []);
+
+  async function salvar(lista: Aluno[]) {
+    await db.avaliacoes.update(av.id, { alunos: lista, atualizadaEm: Date.now() });
+    aviso(`Lista com ${lista.length} aluno(s) salva.`);
+  }
+
+  return (
+    <section className="painel">
+      <h2 className="titulo-painel">Folhas personalizadas por aluno <span className="contador">{alunos.length ? `${alunos.length} aluno(s) na lista` : ''}</span></h2>
+      <p className="dica">Cada aluno recebe prova e folha com <b>nome e matrícula já impressos</b> (as versões se alternam em ordem alfabética). Na correção, o celular identifica o aluno pelo QR — não é preciso digitar nada.</p>
+      {alunos.length > 0 && (
+        <div className="lista-turma">
+          {alunos.slice(0, 60).map((a, i) => <span key={i} className="tag-aluno"><b>{a.nome}</b>{a.matricula && <small>{a.matricula}</small>}<i>{av.versoes![i % av.versoes!.length].nome}</i></span>)}
+          {alunos.length > 60 && <span className="tag-aluno">+ {alunos.length - 60}</span>}
+        </div>
+      )}
+      <div className="linha-imprimir">
+        {alunos.length > 0 && <button className="btn btn-primario" onClick={() => abrir('tipo=lote&personalizado=1')}>🖨 Prova + folha personalizadas ({alunos.length})</button>}
+        <button className="btn" onClick={() => setColando(true)}>{alunos.length ? 'Editar lista' : '📋 Colar lista da turma'}</button>
+        {outras.length > 0 && (
+          <select className="campo campo-sm" value="" aria-label="Copiar lista de outra avaliação" onChange={e => { const o = outras.find(x => x.id === e.target.value); if (o) salvar(o.alunos!); }}>
+            <option value="">Copiar lista de outra avaliação…</option>
+            {outras.map(o => <option key={o.id} value={o.id}>{o.titulo || o.codigo} ({o.alunos!.length})</option>)}
+          </select>
+        )}
+      </div>
+      {colando && <ColarLista inicial={alunos} aoFechar={() => setColando(false)} aoSalvar={l => { salvar(l); setColando(false); }} />}
+    </section>
+  );
+}
+
+function ColarLista({ inicial, aoFechar, aoSalvar }: { inicial: Aluno[]; aoFechar: () => void; aoSalvar: (l: Aluno[]) => void }) {
+  const [txt, setTxt] = useState(inicial.map(a => [a.nome, a.matricula].filter(Boolean).join('\t')).join('\n'));
+  const lista = lerListaAlunos(txt);
+  return (
+    <Modal titulo="Lista da turma" aoFechar={aoFechar} largo
+      rodape={<><span className="total-modal">{lista.length} aluno(s) reconhecido(s)</span><button className="btn" onClick={aoFechar}>Cancelar</button><button className="btn btn-primario" onClick={() => aoSalvar(lista)}>Salvar lista</button></>}>
+      <p className="dica">Cole aqui as colunas <b>Nome</b> e <b>Matrícula</b> copiadas da planilha ou do sistema acadêmico — uma pessoa por linha. Também funciona com “Nome; Matrícula” ou só o nome.</p>
+      <div className="grade-2">
+        <textarea className="campo" rows={14} value={txt} onChange={e => setTxt(e.target.value)} placeholder={'Ana Souza\t2026001\nBruno Lima\t2026002'} autoFocus />
+        <ol className="previa-turma">{lista.map((a, i) => <li key={i}>{a.nome} {a.matricula && <small>· {a.matricula}</small>}</li>)}</ol>
+      </div>
+    </Modal>
   );
 }

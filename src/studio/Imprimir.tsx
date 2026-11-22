@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
-import type { Avaliacao, Questao, Versao } from '../core/types';
+import type { Aluno, Avaliacao, Questao, Versao } from '../core/types';
 import { db, chaveDoEstudio } from '../data/db';
 import { alternativasNaVersao, itensDaVersao, valorTotal } from '../core/gabarito';
+import { ordenarAlunos } from '../core/alunos';
 import { qrFolha } from '../core/payload';
 import { CENTROS_MARCADORES, GRADE, MARCADOR, layoutFolha } from '../core/folha';
 import { LETRAS, fmtNum } from '../core/util';
@@ -15,6 +16,7 @@ export function Imprimir({ id }: { id: string }) {
   const tipo = (params.get('tipo') ?? 'completo') as Tipo;
   const versaoParam = params.get('versao');
   const copias = Math.min(200, Math.max(1, Number(params.get('copias') ?? 1)));
+  const personalizado = params.get('personalizado') === '1';
   const [colunas, setColunas] = useState<1 | 2>(1);
   const [av, setAv] = useState<Avaliacao | null | undefined>();
   const [qrs, setQrs] = useState<Record<string, string>>({});
@@ -25,11 +27,17 @@ export function Imprimir({ id }: { id: string }) {
       if (!a || a.status !== 'publicada') { setAv(null); return; }
       const k = await chaveDoEstudio();
       const out: Record<string, string> = {};
-      for (const v of a.versoes!) {
-        const txt = await qrFolha(k.chave, k.idChave, { avaliacaoId: a.id, titulo: a.titulo, codigo: a.codigo, versao: v.nome, itens: itensDaVersao(a, v.nome) });
+      const gerar = async (v: Versao, aluno?: Aluno) => {
+        // o QR leva o gabarito vigente (com trocas de gabarito); anulações são tratadas no Estúdio
+        const txt = await qrFolha(k.chave, k.idChave, { avaliacaoId: a.id, titulo: a.titulo, codigo: a.codigo, versao: v.nome, itens: itensDaVersao(a, v.nome, { semAnulacao: true }), aluno });
         // SVG = vetorial: o QR sai nítido em qualquer impressora e é lido de mais longe pela câmera
         const svg = await QRCode.toString(txt, { type: 'svg', errorCorrectionLevel: 'L', margin: 0 });
-        out[v.nome] = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+      };
+      for (const v of a.versoes!) out[v.nome] = await gerar(v);
+      if (personalizado) {
+        const lista = ordenarAlunos(a.alunos ?? []);
+        for (let i = 0; i < lista.length; i++) out[`aluno${i}`] = await gerar(a.versoes![i % a.versoes!.length], lista[i]);
       }
       setQrs(out); setAv(a);
       document.title = `${a.codigo} — ${a.titulo}`;
@@ -43,8 +51,15 @@ export function Imprimir({ id }: { id: string }) {
   const paginas: React.ReactNode[] = [];
   const umaVersao = versoes.find(v => v.nome === versaoParam) ?? versoes[0];
 
+  const turma = ordenarAlunos(av.alunos ?? []);
   if (tipo === 'gabarito') paginas.push(<GabaritoProfessor key="g" av={av} />);
-  else if (tipo === 'lote') {
+  else if (tipo === 'lote' && personalizado) {
+    turma.forEach((aluno, i) => {
+      const v = versoes[i % versoes.length];
+      paginas.push(<Prova key={`p${i}`} av={av} v={v} qr={qrs[`aluno${i}`]} colunas={colunas} aluno={aluno} />);
+      paginas.push(<Folha key={`f${i}`} av={av} v={v} qr={qrs[`aluno${i}`]} aluno={aluno} />);
+    });
+  } else if (tipo === 'lote') {
     for (let i = 0; i < copias; i++) {
       const v = versoes[i % versoes.length];
       paginas.push(<Prova key={`p${i}`} av={av} v={v} qr={qrs[v.nome]} colunas={colunas} />);
@@ -55,7 +70,8 @@ export function Imprimir({ id }: { id: string }) {
     if (tipo === 'folha' || tipo === 'completo') paginas.push(<Folha key="f" av={av} v={umaVersao} qr={qrs[umaVersao.nome]} />);
   }
 
-  const descricao = tipo === 'lote' ? `Prova + folha para ${copias} aluno(s), versões alternadas` : tipo === 'gabarito' ? 'Gabarito do professor — não distribuir' : `Versão ${umaVersao.nome}`;
+  const descricao = tipo === 'lote' && personalizado ? `Prova + folha personalizadas para ${turma.length} aluno(s), em ordem alfabética`
+    : tipo === 'lote' ? `Prova + folha para ${copias} aluno(s), versões alternadas` : tipo === 'gabarito' ? 'Gabarito do professor — não distribuir' : `Versão ${umaVersao.nome}`;
   return (
     <div className="impressao">
       <div className="barra-impressao nao-imprimir">
@@ -76,18 +92,18 @@ export function Imprimir({ id }: { id: string }) {
   );
 }
 
-function Campos({ comTurma = true }: { comTurma?: boolean }) {
+function Campos({ aluno, turma }: { aluno?: Aluno; turma?: string }) {
   return (
     <div className="campos-aluno">
-      <div className="campo-linha grande"><span>Nome</span></div>
-      <div className="campo-linha"><span>Matrícula</span></div>
-      {comTurma && <div className="campo-linha"><span>Turma</span></div>}
+      <div className="campo-linha grande"><span>Nome</span>{aluno && <b>{aluno.nome}</b>}</div>
+      <div className="campo-linha"><span>Matrícula</span>{aluno && <b>{aluno.matricula}</b>}</div>
+      <div className="campo-linha"><span>Turma</span>{aluno && turma && <b>{turma}</b>}</div>
       <div className="campo-linha"><span>Data</span></div>
     </div>
   );
 }
 
-function Cabecalho({ av, v, qr, subtitulo }: { av: Avaliacao; v: Versao; qr?: string; subtitulo: string }) {
+function Cabecalho({ av, v, qr, subtitulo, aluno }: { av: Avaliacao; v: Versao; qr?: string; subtitulo: string; aluno?: Aluno }) {
   return (
     <header className="cab-impressao">
       {qr && <img className="qr" src={qr} alt="" />}
@@ -97,7 +113,7 @@ function Cabecalho({ av, v, qr, subtitulo }: { av: Avaliacao; v: Versao; qr?: st
           <span className="versao-grande">{v.nome}</span>
         </div>
         <p className="cab-meta">{av.codigo} · {subtitulo}{av.disciplina ? ` · ${av.disciplina}` : ''}</p>
-        <Campos />
+        <Campos aluno={aluno} turma={av.turma} />
       </div>
     </header>
   );
@@ -108,12 +124,12 @@ function ImagensQuestao({ q, pos }: { q: Questao; pos: 'acima' | 'abaixo' }) {
   return <>{imgs.map((i, k) => <img key={k} className="img-questao" src={i.src} alt="" />)}</>;
 }
 
-function Prova({ av, v, qr, colunas }: { av: Avaliacao; v: Versao; qr?: string; colunas: 1 | 2 }) {
+function Prova({ av, v, qr, colunas, aluno }: { av: Avaliacao; v: Versao; qr?: string; colunas: 1 | 2; aluno?: Aluno }) {
   const pesos = av.pesos!;
   const uniforme = pesos.every(p => p === pesos[0]);
   return (
     <section className="pagina prova">
-      <Cabecalho av={av} v={v} qr={qr} subtitulo={`${v.ordem.length} questões · Valor: ${fmtNum(valorTotal(av), 2)} pontos${uniforme ? ` (${fmtNum(pesos[0], 2)} cada)` : ''}`} />
+      <Cabecalho av={av} v={v} qr={qr} aluno={aluno} subtitulo={`${v.ordem.length} questões · Valor: ${fmtNum(valorTotal(av), 2)} pontos${uniforme ? ` (${fmtNum(pesos[0], 2)} cada)` : ''}`} />
       {av.instrucoes && <p className="instrucoes">{av.instrucoes}</p>}
       <p className="instrucoes">Marque suas respostas na <b>folha de respostas</b>. Questões discursivas devem ser respondidas no espaço indicado.</p>
       <div className={`questoes cols-${colunas}`}>
@@ -143,8 +159,8 @@ function Prova({ av, v, qr, colunas }: { av: Avaliacao; v: Versao; qr?: string; 
   );
 }
 
-function Folha({ av, v, qr }: { av: Avaliacao; v: Versao; qr?: string }) {
-  const itens = itensDaVersao(av, v.nome);
+function Folha({ av, v, qr, aluno }: { av: Avaliacao; v: Versao; qr?: string; aluno?: Aluno }) {
+  const itens = itensDaVersao(av, v.nome, { semAnulacao: true });
   const linhas = layoutFolha(itens);
   const mm = (n: number) => `${n}mm`;
   return (
@@ -155,7 +171,7 @@ function Folha({ av, v, qr }: { av: Avaliacao; v: Versao; qr?: string }) {
           <rect width="10" height="10" fill="#000" />
         </svg>
       ))}
-      <Cabecalho av={av} v={v} qr={qr} subtitulo="FOLHA DE RESPOSTAS" />
+      <Cabecalho av={av} v={v} qr={qr} subtitulo={aluno ? 'FOLHA DE RESPOSTAS · personalizada — use somente a sua' : 'FOLHA DE RESPOSTAS'} aluno={aluno} />
       <p className="instrucoes">Preencha <b>completamente</b> uma bolha por questão, com caneta azul ou preta. Não rasure, não dobre e não escreva perto dos quadrados pretos dos cantos.
         <span className="exemplo">Correto: <svg className="b-ex-svg" viewBox="0 0 10 10" aria-hidden><circle cx="5" cy="5" r="4.6" fill="#000" /></svg> Errado: <i className="b-ex">✓</i> <i className="b-ex">✗</i></span></p>
       {linhas.map(l => (
@@ -193,12 +209,15 @@ function GabaritoProfessor({ av }: { av: Avaliacao }) {
             <h2>Versão {v.nome}</h2>
             <div className="gab-grade">
               {itens.map((it, i) => (
-                <div key={i}><small>{i + 1}</small><b>{it.tipo === 'disc' ? '✎' : it.correta}</b></div>
+                <div key={i} className={it.anulada ? 'anulada' : ''}><small>{i + 1}</small><b>{it.anulada ? 'ANUL.' : it.tipo === 'disc' ? '✎' : it.correta}</b></div>
               ))}
             </div>
           </div>
         );
       })}
+      {((av.anuladas?.length ?? 0) > 0 || Object.keys(av.gabaritoAlterado ?? {}).length > 0) && (
+        <p className="pos-versoes">Gabarito com ajustes após a aplicação: {av.anuladas?.length ?? 0} questão(ões) anulada(s){av.anuladas?.length ? ` (${(av.politicaAnulacao ?? 'todos') === 'todos' ? 'ponto para todos' : 'retiradas da nota'})` : ''} e {Object.keys(av.gabaritoAlterado ?? {}).length} com gabarito alterado.</p>
+      )}
       {discs.length > 0 && (
         <div className="gab-disc">
           <h2>Critérios das discursivas</h2>

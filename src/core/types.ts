@@ -48,6 +48,20 @@ export interface Versao {
   alternativas: Record<string, string[]>;
 }
 
+export interface Aluno { nome: string; matricula: string }
+
+export type PoliticaAnulacao = 'todos' | 'excluir';
+
+export interface AjusteGabarito {
+  em: number;
+  /** Índice da questão em snapshot. */
+  idx: number;
+  acao: 'anular' | 'reativar' | 'alterar';
+  /** Para 'alterar': id da alternativa (me) ou 'V'/'F'. */
+  de?: string | null;
+  para?: string | null;
+}
+
 export interface Avaliacao {
   id: string;
   titulo: string;
@@ -67,6 +81,15 @@ export interface Avaliacao {
   pesos?: number[];
   versoes?: Versao[];
   publicadaEm?: number;
+  /** Lista da turma, para folhas personalizadas (pode ser editada depois de publicar). */
+  alunos?: Aluno[];
+  /** Questões anuladas depois da aplicação (índices em snapshot). */
+  anuladas?: number[];
+  /** 'todos': a questão anulada vale ponto para todos · 'excluir': sai da nota. */
+  politicaAnulacao?: PoliticaAnulacao;
+  /** Gabarito alterado depois da aplicação: índice em snapshot → id da alternativa (me) ou 'V'/'F'. */
+  gabaritoAlterado?: Record<number, string>;
+  historicoGabarito?: AjusteGabarito[];
   criadaEm: number;
   atualizadaEm: number;
 }
@@ -101,4 +124,6 @@ export interface ItemGabarito {
   /** Letra correta na versão ('A'..'E'), 'V'/'F', ou null (discursiva). */
   correta: string | null;
   peso: number;
+  /** Questão anulada depois da aplicação. */
+  anulada?: PoliticaAnulacao;
 }

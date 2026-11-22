@@ -30,6 +30,8 @@ export interface DadosFolha {
   codigo: string;
   versao: string;
   itens: ItemGabarito[];
+  /** Folha personalizada: aluno impresso na folha. */
+  aluno?: { nome: string; matricula: string };
 }
 
 // Gabarito compacto, 1 caractere por questão (mantém o QR pequeno e fácil de ler pela câmera):
@@ -61,7 +63,9 @@ export const prefixoCodigo = (codigo: string) => `cod:${codigo}`;
 export async function qrFolha(chave: string, idChave: string, d: DadosFolha): Promise<string> {
   const pesos = d.itens.map(i => i.peso);
   const uniforme = pesos.every(p => p === pesos[0]);
-  const corpo = JSON.stringify({ g: d.itens.map(compactar).join(''), p: uniforme ? pesos[0] : pesos });
+  const dados: Record<string, unknown> = { g: d.itens.map(compactar).join(''), p: uniforme ? pesos[0] : pesos };
+  if (d.aluno) dados.a = [d.aluno.nome.slice(0, 48), d.aluno.matricula.slice(0, 20)];
+  const corpo = JSON.stringify(dados);
   return ['AV2', idChave, d.codigo.replace(/\|/g, '-'), d.versao, await cifrar(chave, corpo)].join('|');
 }
 
@@ -86,7 +90,8 @@ export async function lerQrFolha(txt: string, chave: string, idChave: string): P
       return { ok: true, dados: { avaliacaoId: c.i, titulo: c.t, codigo: p[2], versao: p[3], itens } };
     }
     const itens = [...String(c.g)].map((ch, i) => expandir(ch, peso(i)));
-    return { ok: true, dados: { avaliacaoId: prefixoCodigo(p[2]), titulo: p[2], codigo: p[2], versao: p[3], itens } };
+    const aluno = Array.isArray(c.a) ? { nome: String(c.a[0] ?? ''), matricula: String(c.a[1] ?? '') } : undefined;
+    return { ok: true, dados: { avaliacaoId: prefixoCodigo(p[2]), titulo: p[2], codigo: p[2], versao: p[3], itens, aluno } };
   } catch {
     return { ok: false, motivo: 'corrompido' };
   }

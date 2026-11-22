@@ -11,6 +11,7 @@ export interface ResultadoItem {
   /** null = discursiva ainda não avaliada. */
   pontos: number | null;
   max: number;
+  anulada?: ItemGabarito['anulada'];
 }
 
 export interface Resultado {
@@ -33,6 +34,11 @@ export interface Resultado {
  */
 export function corrigir(itens: ItemGabarito[], respostas: Resposta[], notasDisc: (number | null)[] = []): Resultado {
   const r: ResultadoItem[] = itens.map((it, pos) => {
+    if (it.anulada) {
+      // anulada: ponto para todos, ou sai da nota (valor máximo diminui)
+      const vale = it.anulada === 'todos';
+      return { pos, tipo: it.tipo, correta: it.correta, marcada: respostas[pos] ?? null, acertou: vale ? true : null, pontos: vale ? it.peso : 0, max: vale ? it.peso : 0, anulada: it.anulada };
+    }
     if (it.tipo === 'disc') {
       const n = notasDisc[pos];
       const pontos = n == null || Number.isNaN(n) ? null : Math.min(it.peso, Math.max(0, n));
@@ -42,8 +48,8 @@ export function corrigir(itens: ItemGabarito[], respostas: Resposta[], notasDisc
     const acertou = marcada !== null && it.correta !== null && marcada === it.correta;
     return { pos, tipo: it.tipo, correta: it.correta, marcada, acertou, pontos: acertou ? it.peso : 0, max: it.peso };
   });
-  const obj = r.filter(i => i.tipo !== 'disc');
-  const disc = r.filter(i => i.tipo === 'disc');
+  const obj = r.filter(i => i.tipo !== 'disc' && i.anulada !== 'excluir');
+  const disc = r.filter(i => i.tipo === 'disc' && i.anulada !== 'excluir');
   const objetiva = arred(obj.reduce((a, i) => a + (i.pontos ?? 0), 0));
   const maxObjetiva = arred(obj.reduce((a, i) => a + i.max, 0));
   const discursiva = arred(disc.reduce((a, i) => a + (i.pontos ?? 0), 0));
@@ -55,7 +61,7 @@ export function corrigir(itens: ItemGabarito[], respostas: Resposta[], notasDisc
     acertos: obj.filter(i => i.acertou).length,
     nObjetivas: obj.length,
     objetiva, maxObjetiva, discursiva, maxDiscursiva,
-    discPendentes: disc.filter(i => i.pontos === null).length,
+    discPendentes: disc.filter(i => i.pontos === null && !i.anulada).length,
     total, max,
     percentual: max > 0 ? arred((total / max) * 100, 1) : 0,
   };
