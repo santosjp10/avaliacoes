@@ -4,6 +4,7 @@ import type { Aluno, Avaliacao, Questao, Versao } from '../core/types';
 import { db, chaveDoEstudio } from '../data/db';
 import { alternativasNaVersao, itensDaVersao, valorTotal } from '../core/gabarito';
 import { ordenarAlunos } from '../core/alunos';
+import { atribuicao } from '../core/compartilhado';
 import { qrFolha } from '../core/payload';
 import { CENTROS_MARCADORES, GRADE, MARCADOR, layoutFolha } from '../core/folha';
 import { LETRAS, fmtNum } from '../core/util';
@@ -154,6 +155,7 @@ function Prova({ av, v, qr, colunas, aluno }: { av: Avaliacao; v: Versao; qr?: s
           );
         })}
       </div>
+      {atribuicao(av.snapshot!) && <p className="atribuicao">{atribuicao(av.snapshot!)}</p>}
       <footer className="rodape-imp">{av.codigo} · Versão {v.nome}</footer>
     </section>
   );

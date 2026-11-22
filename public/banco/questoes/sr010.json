@@ -1,0 +1,41 @@
+{
+  "id": "sr010",
+  "tipo": "me",
+  "enunciado": "Satélites de recursos terrestres como Landsat, Sentinel-2 e CBERS operam em órbita:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Plataformas e órbitas",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "A órbita heliossíncrona mantém condições de iluminação semelhantes entre passagens, o que favorece comparações multitemporais. Órbita geoestacionária é típica de satélites meteorológicos como o GOES.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG31 (Processamento de Imagens de Satélites), questão 5; tema repetido em adaptada de FGV – INPE, prova objetiva TG28 (Monitoramento de Queimadas), questão 29",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "geoestacionária, a cerca de 36.000 km de altitude, sobre o equador."
+    },
+    {
+      "id": "b",
+      "texto": "média, semelhante à dos satélites de navegação GPS."
+    },
+    {
+      "id": "c",
+      "texto": "quase polar e heliossíncrona, passando sobre cada local sempre no mesmo horário solar."
+    },
+    {
+      "id": "d",
+      "texto": "equatorial baixa, observando apenas a faixa tropical."
+    },
+    {
+      "id": "e",
+      "texto": "altamente elíptica do tipo Molniya."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

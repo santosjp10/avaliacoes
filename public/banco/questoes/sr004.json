@@ -1,0 +1,20 @@
+{
+  "id": "sr004",
+  "tipo": "vf",
+  "enunciado": "A frequência de uma onda eletromagnética é diretamente proporcional ao seu comprimento de onda: quanto maior a frequência, maior o comprimento de onda.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Princípios físicos",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Errado. c = λ·f: frequência e comprimento de onda são inversamente proporcionais.",
+  "fonte": "adaptada de Cebraspe – CAGEPA (edital 2024), questão 35",
+  "alternativas": [],
+  "correta": "F",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

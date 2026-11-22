@@ -1,0 +1,20 @@
+{
+  "id": "sr020",
+  "tipo": "vf",
+  "enunciado": "Por terem altíssima resolução espacial, sensores multiespectrais embarcados em VANTs dispensam a calibração com dados de campo para estimar biomassa e estresse hídrico das culturas.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Agricultura e VANTs",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Errado. Estimativas quantitativas exigem calibração radiométrica (painéis de referência) e modelos ajustados a medidas de campo.",
+  "fonte": "adaptada de Cebraspe (2025), item de Geografia/Sensoriamento Remoto sobre VANTs",
+  "alternativas": [],
+  "correta": "F",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

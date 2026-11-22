@@ -1,0 +1,41 @@
+{
+  "id": "sr025",
+  "tipo": "me",
+  "enunciado": "Na matriz de confusão, o erro de omissão de uma classe é o complemento (1 − valor) da:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Classificação e validação",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Omissão = pixels da classe na referência que ficaram de fora do mapa (1 − exatidão do produtor). Comissão = 1 − exatidão do usuário.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG29 (Mudanças da Cobertura e Uso da Terra), questões 31 e 43",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "exatidão global."
+    },
+    {
+      "id": "b",
+      "texto": "exatidão do usuário."
+    },
+    {
+      "id": "c",
+      "texto": "precisão (precision)."
+    },
+    {
+      "id": "d",
+      "texto": "estatística kappa."
+    },
+    {
+      "id": "e",
+      "texto": "exatidão do produtor."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

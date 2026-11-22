@@ -1,0 +1,41 @@
+{
+  "id": "sr008",
+  "tipo": "me",
+  "enunciado": "A resolução espectral de um sensor refere-se:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Sensores e resoluções",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "As demais opções descrevem, respectivamente, as resoluções espacial, temporal e radiométrica, e a largura da faixa (swath).",
+  "fonte": "adaptada de Cebraspe – CAGEPA (edital 2024), questão 36",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "ao tamanho da menor área do terreno representada por um pixel."
+    },
+    {
+      "id": "b",
+      "texto": "ao intervalo de tempo entre duas aquisições da mesma área."
+    },
+    {
+      "id": "c",
+      "texto": "ao número de níveis de cinza utilizados para registrar a radiância."
+    },
+    {
+      "id": "d",
+      "texto": "ao número de bandas, à largura dessas bandas e à sua posição no espectro eletromagnético."
+    },
+    {
+      "id": "e",
+      "texto": "à largura da faixa imageada no terreno."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "sr029",
+  "tipo": "disc",
+  "enunciado": "Você foi encarregado de mapear o uso e a cobertura da terra de um município agrícola com imagens orbitais. Descreva as etapas do projeto: escolha das imagens (sensor, época), pré-processamento, método de classificação e avaliação da exatidão do mapa final.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Classificação e validação",
+  "nivel": "Difícil",
+  "linhas": 15,
+  "criterio": "Espera-se: escolha de imagens com resolução adequada à escala e de épocas que separem as classes pela fenologia, com baixa cobertura de nuvens; pré-processamento (correção atmosférica/reflectância de superfície, registro geométrico, recorte, máscara de nuvens); coleta de amostras de treinamento e classificação supervisionada (ex.: Random Forest, máxima verossimilhança) ou abordagem por objetos/segmentação; validação com amostras independentes, matriz de confusão, exatidão global, do produtor e do usuário e índice kappa.",
+  "fonte": "elaborada a partir de FGV – INPE, prova discursiva TG29, questão 1, e prova objetiva TG29",
+  "alternativas": [],
+  "correta": null,
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

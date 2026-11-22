@@ -1,0 +1,41 @@
+{
+  "id": "sr009",
+  "tipo": "me",
+  "enunciado": "Um sensor com resolução radiométrica de 11 bits é capaz de registrar quantos níveis de cinza distintos?",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Sensores e resoluções",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "2¹¹ = 2.048 níveis (0 a 2.047). 8 bits = 256; 12 bits = 4.096.",
+  "fonte": "adaptada de Cebraspe – CAGEPA (edital 2024), questão 36 (tema)",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "256"
+    },
+    {
+      "id": "b",
+      "texto": "1.024"
+    },
+    {
+      "id": "c",
+      "texto": "2.048"
+    },
+    {
+      "id": "d",
+      "texto": "4.096"
+    },
+    {
+      "id": "e",
+      "texto": "11"
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

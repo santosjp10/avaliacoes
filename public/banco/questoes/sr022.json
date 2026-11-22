@@ -1,0 +1,41 @@
+{
+  "id": "sr022",
+  "tipo": "me",
+  "enunciado": "Em uma imagem de 8 bits, deseja-se aplicar um realce linear de contraste g' = a·g + b que leve os níveis de cinza do intervalo 60–145 para 0–255. Os valores de a e b são, respectivamente:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Processamento digital de imagens",
+  "nivel": "Difícil",
+  "linhas": 0,
+  "criterio": "a = 255/(145 − 60) = 3; b = −60·3 = −180. Conferência: 60 → 0 e 145 → 255.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG31 (Processamento de Imagens de Satélites), questão 8; tema repetido em adaptada de FGV – INPE, prova objetiva TG28 (Monitoramento de Queimadas), questão 32",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "3 e 180."
+    },
+    {
+      "id": "b",
+      "texto": "1,5 e −90."
+    },
+    {
+      "id": "c",
+      "texto": "3 e −180."
+    },
+    {
+      "id": "d",
+      "texto": "2,55 e −60."
+    },
+    {
+      "id": "e",
+      "texto": "85 e −60."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

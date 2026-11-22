@@ -3,6 +3,7 @@
 Aplicativo para **elaborar** avaliações no computador e **corrigi-las** pelo celular. Funciona no navegador, pode ser instalado como app (PWA), roda sem internet e não envia dados a nenhum servidor.
 
 - **Estúdio (PC):** banco de questões, montagem de provas com várias versões embaralhadas, impressão da prova e da folha de respostas, resultados e análise das questões.
+- **Banco Aberto de Questões:** questões revisadas e compartilhadas entre professores (licença CC BY 4.0), que podem ser importadas com um clique. Para contribuir, veja o [guia de contribuição](CONTRIBUTING.md).
 - **Corretor (celular):** lê o QR da folha, mostra as bolhas para marcar as respostas do aluno, calcula a nota na hora e envia os resultados ao PC.
 
 ## Como publicar (uma vez)
@@ -16,7 +17,7 @@ O HTTPS do GitHub Pages é necessário para o celular liberar a câmera.
 
 ## Como usar
 
-1. **Questões.** Cadastre questões em *Banco de questões* ou importe o `banco_questoes.json` do ProvaSystem antigo. São três tipos: múltipla escolha (2 a 5 alternativas), verdadeiro/falso e discursiva (com linhas e critério de correção).
+1. **Questões.** Cadastre questões em *Banco de questões*, copie questões prontas do *Banco compartilhado* ou importe o `banco_questoes.json` do ProvaSystem antigo. O botão *🌐 Contribuir* envia uma questão sua para o banco aberto. São três tipos: múltipla escolha (2 a 5 alternativas), verdadeiro/falso e discursiva (com linhas e critério de correção).
 2. **Avaliação.** Em *Avaliações → Nova avaliação*, preencha os dados, adicione as questões, ajuste o valor de cada uma e clique em **Publicar e gerar versões**. A avaliação publicada fica congelada; para mudar algo, use *Duplicar como rascunho*.
 3. **Impressão.** Há duas opções:
    - **Folhas personalizadas:** em *Folhas personalizadas por aluno*, cole a lista da turma (nome e matrícula, copiados da planilha). Cada aluno recebe prova e folha com o nome impresso, e o QR identifica o aluno na correção.
@@ -65,6 +66,8 @@ src/data/      banco local (IndexedDB via Dexie) e backup
 src/studio/    interface do PC
 src/corretor/  interface do celular
 src/ui/        componentes compartilhados (grade de bolhas, modal, avisos)
+public/banco/  Banco Aberto: uma questão por arquivo em questoes/, índice gerado (indice.json), imagens em img/
+scripts/       geração do índice e publicação automática de contribuições aprovadas
 ```
 
 Decisões importantes:

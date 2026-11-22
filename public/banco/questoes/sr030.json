@@ -1,0 +1,20 @@
+{
+  "id": "sr030",
+  "tipo": "disc",
+  "enunciado": "Dados de radar são usados para estimar a estrutura e a biomassa de florestas. Explique por que o comprimento de onda e a polarização influenciam essa estimativa e discuta o problema da saturação do sinal em florestas tropicais.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Difícil",
+  "linhas": 12,
+  "criterio": "Espera-se: comprimentos de onda maiores (L, P) penetram o dossel e interagem com galhos e troncos, enquanto X e C interagem com folhas e o topo do dossel; polarização cruzada (HV/VH) é mais sensível ao espalhamento volumétrico da vegetação; o retroespalhamento cresce com a biomassa até um limite e depois satura — aproximadamente em biomassas menores para a banda C, intermediárias para a L e mais altas para a P —, o que limita a estimativa em florestas tropicais densas. Pode mencionar interferometria/LiDAR como complementos.",
+  "fonte": "elaborada a partir de FGV – INPE, prova discursiva PQ012 (Sensoriamento Remoto), questão 1",
+  "alternativas": [],
+  "correta": null,
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

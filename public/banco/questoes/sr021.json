@@ -1,0 +1,41 @@
+{
+  "id": "sr021",
+  "tipo": "me",
+  "enunciado": "Considerando apenas imagens ópticas orbitais, sem dados auxiliares, a classe ou feição que NÃO pode ser mapeada diretamente é:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Aplicações",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Suscetibilidade sísmica não tem expressão espectral direta: exige dados geológicos e geofísicos. As demais são classes de cobertura identificáveis espectralmente.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG29 (Mudanças da Cobertura e Uso da Terra), questão 20",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "solo exposto."
+    },
+    {
+      "id": "b",
+      "texto": "corpos d'água."
+    },
+    {
+      "id": "c",
+      "texto": "áreas suscetíveis a terremotos."
+    },
+    {
+      "id": "d",
+      "texto": "áreas agrícolas."
+    },
+    {
+      "id": "e",
+      "texto": "formações florestais."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

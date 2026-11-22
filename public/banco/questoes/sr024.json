@@ -1,0 +1,41 @@
+{
+  "id": "sr024",
+  "tipo": "me",
+  "enunciado": "Na avaliação de uma classificação, verificou-se que, dos 80 pixels de referência da classe floresta, 64 foram corretamente classificados como floresta. A sensibilidade (recall, ou exatidão do produtor) dessa classe é:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Classificação e validação",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Sensibilidade = verdadeiros positivos / total de referência da classe = 64/80 = 0,80. O erro de omissão é 0,20.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG29 (Mudanças da Cobertura e Uso da Terra), questões 24 e 32",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "0,65"
+    },
+    {
+      "id": "b",
+      "texto": "0,70"
+    },
+    {
+      "id": "c",
+      "texto": "0,75"
+    },
+    {
+      "id": "d",
+      "texto": "0,80"
+    },
+    {
+      "id": "e",
+      "texto": "0,85"
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

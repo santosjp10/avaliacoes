@@ -1,0 +1,20 @@
+{
+  "id": "sr011",
+  "tipo": "vf",
+  "enunciado": "Os focos de calor do satélite de referência utilizado pelo INPE no monitoramento de queimadas provêm do NOAA-21, que, por ser um satélite geoestacionário, observa o Brasil continuamente ao longo do dia.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Plataformas e órbitas",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Errado. O NOAA-21 (série JPSS) está em órbita polar heliossíncrona. A observação contínua é característica de satélites geoestacionários, como o GOES.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG28 (Monitoramento de Queimadas), questão 6",
+  "alternativas": [],
+  "correta": "F",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

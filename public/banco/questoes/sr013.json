@@ -1,0 +1,41 @@
+{
+  "id": "sr013",
+  "tipo": "me",
+  "enunciado": "Para estimar a biomassa de uma floresta tropical densa com menor saturação do sinal retroespalhado, a banda de radar mais indicada é a banda:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Difícil",
+  "linhas": 0,
+  "criterio": "Comprimentos de onda maiores penetram mais no dossel e interagem com troncos e galhos grossos. A banda P (~70 cm) satura em biomassas mais altas do que as bandas L, C e X.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG29 (Mudanças da Cobertura e Uso da Terra), questões 2 e 38 (tema); ver também FGV – INPE, prova discursiva PQ012",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Ka."
+    },
+    {
+      "id": "b",
+      "texto": "X."
+    },
+    {
+      "id": "c",
+      "texto": "C."
+    },
+    {
+      "id": "d",
+      "texto": "L."
+    },
+    {
+      "id": "e",
+      "texto": "P."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

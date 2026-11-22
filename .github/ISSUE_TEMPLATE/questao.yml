@@ -1,0 +1,46 @@
+name: Contribuir com questão
+description: Envie uma questão para o Banco Aberto de Questões (licença CC BY 4.0). O jeito mais fácil é usar o botão "Contribuir" do app.
+title: "[Questão] "
+labels: ["questão"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por contribuir! Este formulário normalmente chega **já preenchido** pelo botão *Contribuir* do app (Banco de questões).
+        Revise, marque a declaração no final e clique em **Submit new issue**. A curadoria revisa a questão e, se aprovada, ela é publicada automaticamente no banco.
+  - type: input
+    id: autor
+    attributes:
+      label: Autor(a) da questão
+      description: Nome que aparecerá como autoria (crédito exigido pela licença).
+    validations:
+      required: true
+  - type: input
+    id: instituicao
+    attributes:
+      label: Instituição
+      description: "Opcional. Exemplo: Universidade X — Curso de Agronomia."
+  - type: textarea
+    id: leitura
+    attributes:
+      label: Questão (para leitura)
+      description: Versão legível, para a revisão. Correções devem ser feitas no app antes de enviar.
+  - type: textarea
+    id: dados
+    attributes:
+      label: Dados da questão (não edite)
+      description: Preenchido pelo app. É o que será publicado.
+    validations:
+      required: true
+  - type: textarea
+    id: imagens
+    attributes:
+      label: Imagens (opcional)
+      description: Se a questão tem figura, arraste aqui o arquivo da imagem (até 2 MB, no máximo 4).
+  - type: checkboxes
+    id: licenca
+    attributes:
+      label: Licença e autoria
+      options:
+        - label: Declaro que sou autor(a) ou que a questão foi adaptada com a fonte citada, e concordo em publicá-la sob a licença CC BY 4.0.
+          required: true

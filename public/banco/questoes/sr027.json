@@ -1,0 +1,41 @@
+{
+  "id": "sr027",
+  "tipo": "me",
+  "enunciado": "Sobre a classificação de imagens, assinale a opção correta.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Classificação e validação",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Máxima verossimilhança é paramétrica (supõe distribuição normal). Não supervisionada agrupa sem amostras (ex.: K-médias). A validação independente é sempre necessária.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG31 (Processamento de Imagens de Satélites), questão 9; tema repetido em adaptada de FGV – INPE, prova objetiva TG29 (Mudanças da Cobertura e Uso da Terra), questões 9 e 42",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "A classificação não supervisionada exige amostras de treinamento representativas de cada classe."
+    },
+    {
+      "id": "b",
+      "texto": "O classificador de máxima verossimilhança é não paramétrico."
+    },
+    {
+      "id": "c",
+      "texto": "Algoritmos de aprendizado profundo são, por definição, não supervisionados."
+    },
+    {
+      "id": "d",
+      "texto": "Random Forest é um classificador baseado em um conjunto de árvores de decisão."
+    },
+    {
+      "id": "e",
+      "texto": "A divisão em dados de treino e de teste é dispensável quando se usa aprendizado de máquina."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

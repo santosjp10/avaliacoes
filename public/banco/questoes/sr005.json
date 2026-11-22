@@ -1,0 +1,41 @@
+{
+  "id": "sr005",
+  "tipo": "me",
+  "enunciado": "No método de correção atmosférica por subtração do objeto escuro (Dark Object Subtraction – DOS), parte-se do pressuposto de que:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Interação com a atmosfera",
+  "nivel": "Difícil",
+  "linhas": 0,
+  "criterio": "O DOS é um método baseado na própria imagem. O espalhamento é maior nos comprimentos de onda curtos (azul), por isso o efeito costuma ser maior no visível.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG28 (Monitoramento de Queimadas), questão 35",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "a radiância de todos os pixels da cena é igualmente afetada pela absorção do vapor d'água."
+    },
+    {
+      "id": "b",
+      "texto": "a correção exige medidas simultâneas de radiossondagem no momento da passagem do satélite."
+    },
+    {
+      "id": "c",
+      "texto": "o efeito atmosférico é maior nas bandas do infravermelho de ondas curtas do que no azul."
+    },
+    {
+      "id": "d",
+      "texto": "alvos muito escuros (como água limpa e profunda ou sombras) deveriam ter reflectância próxima de zero, e o valor registrado neles é atribuído ao espalhamento atmosférico, sendo subtraído de toda a banda."
+    },
+    {
+      "id": "e",
+      "texto": "o pixel mais brilhante da cena representa a irradiância solar no topo da atmosfera."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

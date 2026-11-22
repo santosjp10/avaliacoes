@@ -1,0 +1,41 @@
+{
+  "id": "sr006",
+  "tipo": "me",
+  "enunciado": "Em comparação com os sensores de varredura mecânica (whisk broom), os sensores com arranjos lineares de detectores (push broom) apresentam como principal vantagem:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Sensores e resoluções",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "No push broom cada detector observa sua célula durante todo o tempo de deslocamento da linha (dwell time). Em contrapartida, milhares de detectores precisam ser calibrados entre si, o que pode gerar listras.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG31 (Processamento de Imagens de Satélites), questão 3; tema repetido em adaptada de FGV – INPE, prova objetiva TG28 (Monitoramento de Queimadas), questão 27",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "ausência total de efeitos de listras (striping) nas imagens."
+    },
+    {
+      "id": "b",
+      "texto": "calibração mais simples, por utilizarem um único detector por banda."
+    },
+    {
+      "id": "c",
+      "texto": "registro de um pixel de cada vez por meio de um espelho oscilante."
+    },
+    {
+      "id": "d",
+      "texto": "dispensar o movimento da plataforma ao longo da órbita para formar a imagem."
+    },
+    {
+      "id": "e",
+      "texto": "maior tempo de integração do sinal em cada detector, o que permite detectores menores e melhor resolução espacial ou radiométrica."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

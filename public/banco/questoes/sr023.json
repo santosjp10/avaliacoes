@@ -1,0 +1,41 @@
+{
+  "id": "sr023",
+  "tipo": "me",
+  "enunciado": "Entre os filtros espaciais a seguir, aquele utilizado para realçar bordas e detalhes finos de uma imagem é o filtro:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Processamento digital de imagens",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O laplaciano é um filtro passa-alta (derivada de 2ª ordem). Média, gaussiano e passa-baixa suavizam; a mediana remove ruído impulsivo.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG29 (Mudanças da Cobertura e Uso da Terra), questão 15",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "da média."
+    },
+    {
+      "id": "b",
+      "texto": "gaussiano."
+    },
+    {
+      "id": "c",
+      "texto": "da mediana."
+    },
+    {
+      "id": "d",
+      "texto": "laplaciano."
+    },
+    {
+      "id": "e",
+      "texto": "passa-baixa."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

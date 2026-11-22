@@ -1,0 +1,41 @@
+{
+  "id": "sr003",
+  "tipo": "me",
+  "enunciado": "O tipo de espalhamento atmosférico que ocorre quando o diâmetro das partículas (como fumaça, poeira e aerossóis) é da mesma ordem de grandeza do comprimento de onda da radiação é o espalhamento:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Interação com a atmosfera",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Rayleigh: partículas muito menores que λ (gases; céu azul). Mie: tamanho comparável a λ. Não seletivo: partículas muito maiores (gotas de nuvem; nuvens brancas).",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG31 (Processamento de Imagens de Satélites), questão 1; tema repetido em adaptada de FGV – INPE, prova objetiva TG28 (Monitoramento de Queimadas), questão 25",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Rayleigh."
+    },
+    {
+      "id": "b",
+      "texto": "não seletivo."
+    },
+    {
+      "id": "c",
+      "texto": "Mie."
+    },
+    {
+      "id": "d",
+      "texto": "por absorção."
+    },
+    {
+      "id": "e",
+      "texto": "especular."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

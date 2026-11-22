@@ -4,6 +4,7 @@ import type { Questao } from '../core/types';
 import { db } from '../data/db';
 import { Vazio, aviso, escolherArquivo } from '../ui/base';
 import { QuestaoEditor, questaoNova } from './QuestaoEditor';
+import { Contribuir } from './Contribuir';
 import { importarLegado } from '../core/legado';
 import { LETRAS, novoId } from '../core/util';
 
@@ -37,6 +38,7 @@ export function Banco() {
   const questoes = useLiveQuery(() => db.questoes.orderBy('atualizadaEm').reverse().toArray(), []);
   const [f, setF] = useState({ busca: '', disciplina: '', tipo: '', nivel: '' });
   const [editando, setEditando] = useState<Questao | null>(null);
+  const [contribuindo, setContribuindo] = useState<Questao | null>(null);
   const disciplinas = useMemo(() => [...new Set((questoes ?? []).map(q => q.disciplina))].sort(), [questoes]);
   const lista = useMemo(() => filtrarQuestoes(questoes ?? [], f), [questoes, f]);
 
@@ -70,6 +72,7 @@ export function Banco() {
       <div className="barra-acoes">
         <button className="btn btn-primario" onClick={() => setEditando(questaoNova(f.disciplina))}>+ Nova questão</button>
         <button className="btn" onClick={importar} title="Arquivo banco_questoes.json exportado pelo ProvaSystem">Importar do ProvaSystem</button>
+        <a className="btn" href="#/compartilhado">🌐 Banco compartilhado</a>
         <span className="contador">{lista.length} de {questoes.length} questões</span>
       </div>
       <Filtros f={f} setF={setF} disciplinas={disciplinas} />
@@ -82,10 +85,12 @@ export function Banco() {
           {lista.map(q => <CartaoQuestao key={q.id} q={q} acoes={<>
             <button className="btn btn-sm" onClick={() => setEditando(q)}>Editar</button>
             <button className="btn btn-sm" onClick={() => duplicar(q)}>Duplicar</button>
+            {!q.origem && <button className="btn btn-sm" onClick={() => setContribuindo(q)} title="Enviar ao Banco Aberto de Questões">🌐 Contribuir</button>}
             <button className="btn btn-sm btn-perigo" onClick={() => excluir(q)}>Excluir</button>
           </>} />)}
         </div>
       )}
+      {contribuindo && <Contribuir q={contribuindo} aoFechar={() => setContribuindo(null)} />}
       {editando && <QuestaoEditor inicial={editando} disciplinas={disciplinas} aoFechar={() => setEditando(null)} />}
     </>
   );
@@ -100,6 +105,7 @@ export function CartaoQuestao({ q, acoes, compacto }: { q: Questao; acoes?: Reac
         <span className="tag">{q.disciplina}</span>
         {q.assunto && <span className="tag-texto">{q.assunto}</span>}
         {q.imagens.length > 0 && <span className="tag-texto">🖼 {q.imagens.length}</span>}
+        {q.origem && <span className="tag tag-aberto" title={`Banco Aberto · ${q.origem.licenca}`}>🌐 {q.origem.autor}</span>}
       </div>
       <p className="enunciado">{compacto && q.enunciado.length > 160 ? q.enunciado.slice(0, 160) + '…' : q.enunciado}</p>
       {!compacto && q.tipo === 'me' && (

@@ -1,0 +1,41 @@
+{
+  "id": "sr002",
+  "tipo": "me",
+  "enunciado": "A lei que relaciona a temperatura de um corpo negro com o comprimento de onda no qual sua emissão é máxima — explicando por que o Sol tem pico no visível e a superfície terrestre no infravermelho termal — é a lei de:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Princípios físicos",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Wien: λmáx = b/T; quanto maior a temperatura, menor o comprimento de onda do pico. Stefan-Boltzmann trata da energia total emitida (∝ T⁴).",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG28 (Monitoramento de Queimadas), questão 9",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Beer-Lambert."
+    },
+    {
+      "id": "b",
+      "texto": "deslocamento de Wien."
+    },
+    {
+      "id": "c",
+      "texto": "Snell."
+    },
+    {
+      "id": "d",
+      "texto": "Stefan-Boltzmann."
+    },
+    {
+      "id": "e",
+      "texto": "Kirchhoff."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

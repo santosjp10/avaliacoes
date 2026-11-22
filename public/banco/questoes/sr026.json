@@ -1,0 +1,41 @@
+{
+  "id": "sr026",
+  "tipo": "me",
+  "enunciado": "O coeficiente kappa, usado na avaliação da exatidão de classificações, distingue-se da exatidão global por:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Classificação e validação",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "κ = (po − pe)/(1 − pe), em que pe é a concordância esperada ao acaso. Pode inclusive assumir valores negativos.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG29 (Mudanças da Cobertura e Uso da Terra), questão 33",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "considerar apenas os elementos fora da diagonal da matriz de confusão."
+    },
+    {
+      "id": "b",
+      "texto": "variar sempre entre 0 e 100."
+    },
+    {
+      "id": "c",
+      "texto": "ser insensível ao número de classes."
+    },
+    {
+      "id": "d",
+      "texto": "ser calculado sem a necessidade de dados de referência."
+    },
+    {
+      "id": "e",
+      "texto": "descontar a concordância que seria esperada por acaso."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

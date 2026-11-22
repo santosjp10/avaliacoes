@@ -1,0 +1,41 @@
+{
+  "id": "sr014",
+  "tipo": "me",
+  "enunciado": "Em imagens SAR, áreas urbanas costumam aparecer muito claras (alto retroespalhamento) principalmente devido:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Paredes e solo formam refletores de canto que devolvem a energia diretamente à antena. Sombras aparecem escuras.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG29 (Mudanças da Cobertura e Uso da Terra), questão 40",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "à reflexão de canto (double bounce) entre paredes das edificações e o solo."
+    },
+    {
+      "id": "b",
+      "texto": "à emissão térmica das superfícies impermeabilizadas."
+    },
+    {
+      "id": "c",
+      "texto": "ao espalhamento Rayleigh nas partículas de poluição."
+    },
+    {
+      "id": "d",
+      "texto": "ao ruído speckle, que só ocorre em alvos urbanos."
+    },
+    {
+      "id": "e",
+      "texto": "ao sombreamento causado pelas edificações."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

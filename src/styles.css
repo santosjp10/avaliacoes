@@ -161,6 +161,17 @@ textarea.campo { resize: vertical; line-height: 1.5; }
 .acoes { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .cartao-q .acoes { margin-top: 6px; }
 
+.tag-aberto { background: #e6f4ea; color: #1a6b3c; }
+.cartao-q.compartilhada.selecionada { border-color: var(--tinta); box-shadow: 0 0 0 2px var(--amarelo); }
+.cartao-q.compartilhada input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--tinta); }
+.id-q { margin-left: auto; font-size: .7rem; }
+.credito { font-size: .8rem; color: var(--tinta2); margin: 4px 0 6px; }
+.ja-importada { background: var(--verde-claro); color: var(--verde); }
+.img-compartilhada { max-width: 100%; max-height: 220px; border-radius: 6px; display: block; margin: 6px 0; }
+.previa-contrib { margin: 8px 0 12px; font-size: .85rem; }
+.previa-contrib summary { cursor: pointer; font-weight: 600; }
+.previa-contrib pre { white-space: pre-wrap; background: var(--papel); padding: 10px; border-radius: 8px; font-family: var(--fonte); }
+.atribuicao { font-family: var(--fonte); font-size: 7pt; color: #555; border-top: 0.5px solid #ccc; padding-top: 2mm; margin-top: 4mm; }
 .imagens-editor { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; margin-bottom: 14px; }
 .img-item { margin: 0; border: 1.5px solid var(--borda); border-radius: 10px; padding: 6px; background: var(--branco); width: 200px; }
 .img-item img { width: 100%; max-height: 130px; object-fit: contain; display: block; border-radius: 6px; background: #fff; }

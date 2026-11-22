@@ -1,0 +1,20 @@
+{
+  "id": "sr019",
+  "tipo": "vf",
+  "enunciado": "Aeronaves remotamente pilotadas (ARPs/drones) equipadas com câmeras multiespectrais e térmicas permitem monitorar o vigor das culturas, o estresse hídrico e a ocorrência de pragas na agricultura de precisão.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Agricultura e VANTs",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Certo. A alta resolução espacial e a flexibilidade de voo são vantagens dos VANTs na escala da lavoura.",
+  "fonte": "adaptada de Cebraspe – Embrapa, Pesquisador (edital 2024), item 97",
+  "alternativas": [],
+  "correta": "V",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

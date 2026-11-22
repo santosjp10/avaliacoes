@@ -1,0 +1,41 @@
+{
+  "id": "sr001",
+  "tipo": "me",
+  "enunciado": "Um corpo negro ideal é definido como aquele que:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Princípios físicos",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O corpo negro é absorvedor e emissor perfeito (emissividade = 1). Emissividade constante entre 0 e 1 descreve um corpo cinza.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG28 (Monitoramento de Queimadas), questão 7",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "absorve toda a radiação incidente, em todos os comprimentos de onda, e emite o máximo possível para sua temperatura."
+    },
+    {
+      "id": "b",
+      "texto": "reflete a radiação incidente de acordo com sua composição química."
+    },
+    {
+      "id": "c",
+      "texto": "possui emissividade igual a zero em todos os comprimentos de onda."
+    },
+    {
+      "id": "d",
+      "texto": "absorve apenas a radiação do visível e do infravermelho próximo."
+    },
+    {
+      "id": "e",
+      "texto": "apresenta emissividade constante entre 0 e 1, independentemente do comprimento de onda."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

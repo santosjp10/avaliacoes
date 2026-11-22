@@ -1,0 +1,20 @@
+{
+  "id": "sr028",
+  "tipo": "disc",
+  "enunciado": "Explique as quatro resoluções de um sistema sensor (espacial, espectral, radiométrica e temporal). Para cada uma, dê um exemplo numérico de um satélite em operação (por exemplo, Sentinel-2 ou CBERS-4A) e uma situação de uso agrícola em que ela seja determinante.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Sensores e resoluções",
+  "nivel": "Médio",
+  "linhas": 12,
+  "criterio": "Espera-se: espacial (tamanho do pixel; ex.: Sentinel-2 com 10/20/60 m; CBERS-4A WPM com 2 m pan e 8 m multiespectral); espectral (número, largura e posição das bandas; Sentinel-2 com 13 bandas, incluindo red-edge); radiométrica (níveis de quantização; Sentinel-2 com 12 bits); temporal (revisita; Sentinel-2 com 5 dias usando dois satélites). Exemplos agrícolas coerentes: talhões pequenos (espacial), estresse/red-edge (espectral), detecção de diferenças sutis de vigor (radiométrica), acompanhamento do ciclo da cultura (temporal).",
+  "fonte": "elaborada a partir dos temas de FGV – INPE, prova discursiva TG26, questão 1, e Cebraspe – CAGEPA (2024), questões 33 e 36",
+  "alternativas": [],
+  "correta": null,
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

@@ -1,0 +1,41 @@
+{
+  "id": "sr012",
+  "tipo": "me",
+  "enunciado": "A principal vantagem das imagens de radar de abertura sintética (SAR) para o monitoramento da Amazônia é:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Na Amazônia, a cobertura de nuvens limita muito os sensores ópticos. O SAR, porém, tem speckle e distorções geométricas que exigem processamento específico.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG29 (Mudanças da Cobertura e Uso da Terra), questão 38",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "a maior resolução espectral em relação aos sensores ópticos."
+    },
+    {
+      "id": "b",
+      "texto": "a possibilidade de aquisição independente da cobertura de nuvens e da iluminação solar."
+    },
+    {
+      "id": "c",
+      "texto": "a ausência de ruído speckle nas imagens."
+    },
+    {
+      "id": "d",
+      "texto": "a facilidade de interpretação visual, idêntica à de uma fotografia colorida."
+    },
+    {
+      "id": "e",
+      "texto": "a medição direta da temperatura do dossel."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

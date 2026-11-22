@@ -33,7 +33,11 @@ export interface Questao {
   criterio: string;
   criadaEm: number;
   atualizadaEm: number;
+  /** Questão importada do Banco Aberto: autoria e licença (exigidas pela CC BY). */
+  origem?: OrigemCompartilhada;
 }
+
+export interface OrigemCompartilhada { id: string; autor: string; instituicao: string; licenca: string; fonte: string; issue: string }
 
 export interface ItemAvaliacao {
   questaoId: string;

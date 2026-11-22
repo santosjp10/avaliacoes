@@ -1,0 +1,41 @@
+{
+  "id": "sr018",
+  "tipo": "me",
+  "enunciado": "O índice de queimada por razão normalizada (NBR), usado para mapear áreas queimadas e a severidade do fogo, é calculado a partir das bandas:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Índices de vegetação",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "NBR = (NIR − SWIR)/(NIR + SWIR). Após o fogo, a reflectância no NIR cai e no SWIR sobe. Vermelho e NIR compõem o NDVI.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG28 (Monitoramento de Queimadas), questão 13",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "azul e ultravioleta."
+    },
+    {
+      "id": "b",
+      "texto": "infravermelho próximo e infravermelho de ondas curtas."
+    },
+    {
+      "id": "c",
+      "texto": "verde e vermelho."
+    },
+    {
+      "id": "d",
+      "texto": "infravermelho próximo e infravermelho termal."
+    },
+    {
+      "id": "e",
+      "texto": "vermelho e infravermelho próximo."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

@@ -1,0 +1,41 @@
+{
+  "id": "sr015",
+  "tipo": "me",
+  "enunciado": "A curva de reflectância de uma vegetação verde e sadia caracteriza-se por:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Comportamento espectral",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Esse contraste vermelho × infravermelho próximo é a base dos índices de vegetação. A água nas folhas absorve no SWIR, reduzindo a reflectância nessa faixa.",
+  "fonte": "tema cobrado em FGV – INPE, prova TG28, questão 8, e em itens Cebraspe sobre comportamento espectral",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "baixa reflectância no vermelho, devido à absorção pela clorofila, e alta reflectância no infravermelho próximo, devido à estrutura interna das folhas."
+    },
+    {
+      "id": "b",
+      "texto": "alta reflectância no vermelho e baixa no infravermelho próximo."
+    },
+    {
+      "id": "c",
+      "texto": "reflectância constante em todo o espectro óptico."
+    },
+    {
+      "id": "d",
+      "texto": "máxima reflectância no infravermelho de ondas curtas, devido à alta umidade das folhas."
+    },
+    {
+      "id": "e",
+      "texto": "baixa reflectância no verde e alta no azul."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

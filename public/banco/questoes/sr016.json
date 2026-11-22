@@ -1,0 +1,41 @@
+{
+  "id": "sr016",
+  "tipo": "me",
+  "enunciado": "O Índice de Vegetação por Diferença Normalizada (NDVI) pode assumir valores no intervalo:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Índices de vegetação",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "NDVI = (NIR − Red)/(NIR + Red). Água tende a valores negativos e vegetação densa se aproxima de 1.",
+  "fonte": "adaptada de FGV – INPE, prova objetiva TG28 (Monitoramento de Queimadas), questão 14",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "de 0 a 1."
+    },
+    {
+      "id": "b",
+      "texto": "de −1 a 1."
+    },
+    {
+      "id": "c",
+      "texto": "de 0 a 255."
+    },
+    {
+      "id": "d",
+      "texto": "de −100 a 100."
+    },
+    {
+      "id": "e",
+      "texto": "sem limites definidos."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}

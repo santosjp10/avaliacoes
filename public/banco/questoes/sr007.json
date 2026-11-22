@@ -1,0 +1,41 @@
+{
+  "id": "sr007",
+  "tipo": "me",
+  "enunciado": "Acerca da resolução de imagens de sensoriamento remoto, assinale a opção correta.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Sensores e resoluções",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "O IFOV, projetado no terreno a partir da altitude, define a menor área resolvida. Há sensores com 12 bits ou mais (ex.: Sentinel-2, Landsat 9 com 14 bits).",
+  "fonte": "adaptada de Cebraspe – CAGEPA (edital 2024), questão 33; tema repetido em adaptada de FGV – INPE, prova objetiva TG31 (Processamento de Imagens de Satélites), questão 4",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "A resolução radiométrica dos sensores orbitais é limitada a 11 bits."
+    },
+    {
+      "id": "b",
+      "texto": "A resolução espacial é uma medida puramente geométrica e deve ser tratada como sinônimo de pixel."
+    },
+    {
+      "id": "c",
+      "texto": "As imagens dependem unicamente da intensidade da fonte de radiação eletromagnética."
+    },
+    {
+      "id": "d",
+      "texto": "A resolução espacial de um sensor independe da altitude da plataforma."
+    },
+    {
+      "id": "e",
+      "texto": "Quanto menor o campo de visada instantâneo (IFOV) do detector, menores os elementos da cena que podem ser distinguidos."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-22"
+}
