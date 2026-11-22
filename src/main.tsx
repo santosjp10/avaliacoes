@@ -2,6 +2,9 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import './styles.css';
+import { iniciarAtualizacoes } from './ui/Atualizacao';
+
+iniciarAtualizacoes();
 
 // No celular, abre direto no Corretor na primeira visita sem rota.
 if (!location.hash || location.hash === '#' || location.hash === '#/') {

@@ -8,6 +8,7 @@ import { fmtData, fmtNum, novoId } from '../core/util';
 import { aviso } from '../ui/base';
 import { FolhaRespostas } from '../ui/FolhaRespostas';
 import { LeitorQr, type Quadro } from './LeitorQr';
+import { VERSAO } from '../ui/Atualizacao';
 import { lerFolhaOMR } from '../core/omr';
 import { desenharLeitura } from './previa';
 import { baixar } from '../data/backup';
@@ -61,7 +62,11 @@ export function Corretor() {
     if (!r.ok) {
       const msg = r.motivo === 'chave'
         ? `Esta folha foi gerada com outra chave de professor (${idChaveDaFolha(txt)}). Pareie este celular com o Estúdio que imprimiu a prova.`
-        : r.motivo === 'formato' ? 'QR não reconhecido. Aponte para o QR no canto da folha de respostas.' : 'Não foi possível ler o gabarito desta folha.';
+        : r.motivo === 'formato'
+          ? (/^AV\d+\|/.test(txt)
+            ? 'Esta folha foi gerada por uma versão mais nova do app. Atualize o Corretor: feche esta aba e abra o app de novo.'
+            : 'QR não reconhecido. Aponte para o QR no canto da folha de respostas.')
+          : 'Não foi possível ler o gabarito desta folha.';
       aviso(msg, 'erro');
       return false;
     }
@@ -100,6 +105,7 @@ export function Corretor() {
       </header>
       <main className="corretor-corpo">
         {tela.t === 'inicio' && <Inicio pareado={!!k} local={!!k?.local} ir={t => t.t === 'ler' ? lerFolha() : setTela(t)} />}
+        {tela.t === 'inicio' && <small className="versao-app escura">versão {VERSAO}</small>}
         {tela.t === 'parear' && <LeitorQr aoLer={aoLerPareamento} dica="No computador, abra o Estúdio → Ajustes → Mostrar QR de pareamento, e aponte a câmera para ele." />}
         {tela.t === 'ler' && <LeitorQr aoLer={aoLerFolha}
           dica="Enquadre a folha de respostas inteira, de cima, com os 4 quadrados pretos dos cantos visíveis. A leitura é automática."

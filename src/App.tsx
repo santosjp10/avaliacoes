@@ -9,13 +9,14 @@ import { Resultados } from './studio/Resultados';
 import { Imprimir } from './studio/Imprimir';
 import { Ajustes } from './studio/Ajustes';
 import { Corretor } from './corretor/Corretor';
+import { AvisoAtualizacao, VERSAO } from './ui/Atualizacao';
 
 export function App() {
   const { partes } = useRota();
   const [p0, p1, p2] = partes;
 
   if (p0 === 'imprimir' && p1) return <><Imprimir id={p1} /><Avisos /></>;
-  if (p0 === 'corretor') return <><Corretor /><Avisos /></>;
+  if (p0 === 'corretor') return <><AvisoAtualizacao /><Corretor /><Avisos /></>;
 
   let pagina: ReactNode;
   let titulo = 'Avaliações';
@@ -41,8 +42,10 @@ export function App() {
           <a href="#/corretor"><span aria-hidden>📷</span> Abrir Corretor</a>
         </nav>
         <LembreteBackup />
+        <small className="versao-app">versão {VERSAO}</small>
       </aside>
       <main className="principal">
+        <AvisoAtualizacao />
         <header className="topo"><h1>{titulo}</h1></header>
         <div className="conteudo">{pagina}</div>
       </main>

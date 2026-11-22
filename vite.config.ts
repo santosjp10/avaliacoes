@@ -4,12 +4,20 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 // base relativa: o app funciona em qualquer subpasta (ex.: GitHub Pages /avaliacoes/)
+// identificação da versão exibida no app (data da compilação + commit, quando disponível)
+const agora = new Date();
+const VERSAO = agora.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(/-/g, '.') + '-' +
+  agora.toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' }).replace(':', 'h') +
+  (process.env.GITHUB_SHA ? '·' + process.env.GITHUB_SHA.slice(0, 7) : '');
+
 export default defineConfig({
   base: './',
+  define: { __VERSAO__: JSON.stringify(VERSAO) },
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
+      injectRegister: false,
       includeAssets: ['icon.svg'],
       manifest: {
         name: 'Avaliações — Estúdio e Corretor',
