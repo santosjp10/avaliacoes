@@ -150,11 +150,14 @@ function Folha({ av, v, qr }: { av: Avaliacao; v: Versao; qr?: string }) {
   return (
     <section className="pagina folha">
       {CENTROS_MARCADORES.map(([x, y], i) => (
-        <span key={i} className="marcador" style={{ left: mm(x - MARCADOR.lado / 2), top: mm(y - MARCADOR.lado / 2), width: mm(MARCADOR.lado), height: mm(MARCADOR.lado) }} />
+        // desenhado em SVG (e não como cor de fundo): sai impresso mesmo com "Gráficos de fundo" desligado
+        <svg key={i} className="marcador" viewBox="0 0 10 10" aria-hidden style={{ left: mm(x - MARCADOR.lado / 2), top: mm(y - MARCADOR.lado / 2), width: mm(MARCADOR.lado), height: mm(MARCADOR.lado) }}>
+          <rect width="10" height="10" fill="#000" />
+        </svg>
       ))}
       <Cabecalho av={av} v={v} qr={qr} subtitulo="FOLHA DE RESPOSTAS" />
       <p className="instrucoes">Preencha <b>completamente</b> uma bolha por questão, com caneta azul ou preta. Não rasure, não dobre e não escreva perto dos quadrados pretos dos cantos.
-        <span className="exemplo">Correto: <i className="b-ex cheia" /> Errado: <i className="b-ex">✓</i> <i className="b-ex">✗</i></span></p>
+        <span className="exemplo">Correto: <svg className="b-ex-svg" viewBox="0 0 10 10" aria-hidden><circle cx="5" cy="5" r="4.6" fill="#000" /></svg> Errado: <i className="b-ex">✓</i> <i className="b-ex">✗</i></span></p>
       {linhas.map(l => (
         <div key={l.pos} className={`lin-abs ${(l.pos + 1) % 5 === 0 ? 'sep' : ''}`} style={{ left: mm(l.x), top: mm(l.y), width: mm(l.largura - 2), height: mm(GRADE.linha) }}>
           <span className="n" style={{ width: mm(GRADE.numero - 1.5) }}>{l.pos + 1}</span>
