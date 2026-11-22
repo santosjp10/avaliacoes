@@ -92,9 +92,11 @@ describe('criptografia e QR', () => {
     const av = avaliacao();
     const itens = itensDaVersao(av, 'B');
     const qr = await qrFolha(chave, id, { avaliacaoId: av.id, titulo: av.titulo, codigo: av.codigo, versao: 'B', itens });
-    expect(qr).not.toContain('"g"'); // gabarito não aparece em claro
+    expect(qr.startsWith('AV2|')).toBe(true); // gabarito vai cifrado
     const lido = await lerQrFolha(qr, chave, id);
     expect(lido.ok && lido.dados.itens).toEqual(itens);
+    expect(lido.ok && lido.dados.avaliacaoId).toBe('cod:AGR-01');
+    console.log('tamanho do QR (4 questões):', qr.length);
     const outra = gerarChave();
     expect((await lerQrFolha(qr, outra, await idDaChave(outra))).ok).toBe(false);
   });
@@ -103,7 +105,7 @@ describe('criptografia e QR', () => {
     const chave = gerarChave();
     const itens = Array.from({ length: 60 }, (_, i) => ({ tipo: 'me' as const, nAlt: 5, correta: 'ABCDE'[i % 5], peso: 0.5 }));
     const qr = await qrFolha(chave, await idDaChave(chave), { avaliacaoId: crypto.randomUUID(), titulo: 'x'.repeat(80), codigo: 'COD-2026-01', versao: 'A', itens });
-    expect(qr.length).toBeLessThan(900);
+    expect(qr.length).toBeLessThan(220);
   });
 
   it('pareamento e pacote de resultados', async () => {

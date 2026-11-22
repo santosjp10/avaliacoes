@@ -20,7 +20,11 @@ O HTTPS do GitHub Pages é necessário para o celular liberar a câmera.
 2. **Avaliação.** Em *Avaliações → Nova avaliação*, preencha os dados, adicione as questões, ajuste o valor de cada uma e clique em **Publicar e gerar versões**. A avaliação publicada fica congelada; para mudar algo, use *Duplicar como rascunho*.
 3. **Impressão.** *Prova + folha para N alunos* gera um único documento com as versões alternadas (A, B, C, A…). Também é possível imprimir o gabarito do professor.
 4. **Pareamento (uma vez).** No PC, abra *Ajustes → Mostrar QR de pareamento*. No celular, abra o app e toque em *Parear com o Estúdio*.
-5. **Correção.** No celular, toque em *Escanear folha*, aponte para o QR, digite o nome, toque nas bolhas e depois em *Corrigir e salvar*. *Próximo aluno* mantém a mesma versão.
+5. **Correção.** No celular, toque em *Escanear folha* e enquadre a **folha inteira**, de cima, com os 4 quadrados pretos dos cantos visíveis. O app lê o QR e as bolhas sozinho e mostra as respostas pré-marcadas.
+   - Marcações duvidosas aparecem destacadas em amarelo: dupla marcação, rasura, um "X" em vez de pintar ou marca fraca.
+   - Confira, digite o nome do aluno e toque em *Corrigir e salvar*.
+   - *Ver foto com a leitura* mostra o que foi reconhecido.
+   - Se a câmera não achar os cantos, use *Usar foto* (foto tirada pela câmera do celular, em resolução máxima) ou *Marcar respostas manualmente*.
 6. **Resultados.** No celular, toque em *Enviar resultados ao PC* e mande o arquivo para o computador como preferir. No PC, use *Resultados → Importar do celular*. Importar duas vezes não duplica as notas.
 7. **Backup.** Os dados ficam só no navegador. Em *Ajustes*, baixe o backup com frequência, de preferência protegido por senha.
 
@@ -55,10 +59,16 @@ Decisões importantes:
 - A versão não copia as questões. Ela guarda só a **ordem** das questões e das alternativas, e o gabarito é sempre derivado dessa ordem. Assim não há gabarito digitado nem desalinhado.
 - Só alternativas de múltipla escolha são embaralhadas. V/F e discursivas mantêm a resposta.
 - A análise das questões agrupa pela questão original, não pela posição (que muda de uma versão para outra).
+- A posição de cada bolha é definida em milímetros em `src/core/folha.ts`. A impressão e a leitura óptica (`src/core/omr.ts`) usam a mesma geometria.
+- Leitura óptica, em quatro passos:
+  - localiza os 4 marcadores com binarização adaptativa, que tolera sombra;
+  - usa o QR para saber a orientação da folha (pode estar girada ou de cabeça para baixo);
+  - calcula a homografia, que corrige a perspectiva;
+  - mede o preenchimento de cada bolha em relação ao papel ao redor.
+- O QR da folha carrega só o código da prova, a versão e o gabarito compacto, cifrado (cerca de 115 caracteres). Por isso ele continua legível com a folha inteira no enquadramento.
 
 ## Próximas etapas
 
-- Leitura automática das bolhas pela câmera (OMR). A folha já é impressa com marcadores nos cantos para isso.
 - Folhas personalizadas por aluno, com nome e matrícula no QR.
 - Rubricas para discursivas e anulação de questão com recálculo das notas.
 - Sincronização opcional em nuvem.

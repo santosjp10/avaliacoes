@@ -38,8 +38,8 @@ function Painel({ av, correcoes }: { av: Avaliacao; correcoes: Correcao[] }) {
       const k = await chaveDoEstudio();
       const lista = await abrirPacote(JSON.parse(await f.text()), k.chave, k.idChave);
       const r = await mesclarCorrecoes(lista);
-      const desta = lista.filter(c => c.avaliacaoId === av.id).length;
-      aviso(`Pacote importado: ${r.novas} nova(s), ${r.atualizadas} atualizada(s)${r.ignoradas ? `, ${r.ignoradas} já existiam` : ''}. ${desta} desta avaliação.`);
+      const desta = lista.filter(c => c.avaliacaoId === av.id || c.codigo === av.codigo).length;
+      aviso(`Pacote importado: ${r.novas} nova(s), ${r.atualizadas} atualizada(s)${r.ignoradas ? `, ${r.ignoradas} já existiam` : ''}. ${desta} desta avaliação.${r.semAvaliacao ? ` ${r.semAvaliacao} de provas que não existem neste computador.` : ''}`, r.semAvaliacao ? 'info' : 'ok');
     } catch (e) { aviso((e as Error).message, 'erro'); }
   }
 

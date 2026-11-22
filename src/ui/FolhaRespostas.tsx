@@ -10,10 +10,12 @@ interface Props {
   aoNotaDisc: (pos: number, n: number | null) => void;
   /** Depois de corrigir: pinta acertos e erros e mostra a resposta certa. */
   conferir?: boolean;
+  /** Posições a destacar para conferência (ex.: leitura automática duvidosa). */
+  destacar?: boolean[];
 }
 
 /** Grade de bolhas para lançar respostas. Usada no Corretor (celular) e no Estúdio. */
-export function FolhaRespostas({ itens, respostas, notasDisc, aoMarcar, aoNotaDisc, conferir }: Props) {
+export function FolhaRespostas({ itens, respostas, notasDisc, aoMarcar, aoNotaDisc, conferir, destacar }: Props) {
   return (
     <div className="grade-respostas">
       {itens.map((it, pos) => {
@@ -43,7 +45,7 @@ export function FolhaRespostas({ itens, respostas, notasDisc, aoMarcar, aoNotaDi
         const ok = conferir && marcada !== null && marcada === it.correta;
         const erro = conferir && !ok;
         return (
-          <div key={pos} className={`linha-resp ${ok ? 'certa' : ''} ${erro ? 'errada' : ''}`}>
+          <div key={pos} className={`linha-resp ${ok ? 'certa' : ''} ${erro ? 'errada' : ''} ${destacar?.[pos] ? 'duvida' : ''}`}>
             <span className="num">{pos + 1}</span>
             <div className="bolhas" role="radiogroup" aria-label={`Questão ${pos + 1}`}>
               {opcoesItem(it).map(op => {
@@ -58,6 +60,7 @@ export function FolhaRespostas({ itens, respostas, notasDisc, aoMarcar, aoNotaDi
                 );
               })}
             </div>
+            {marcada === '*' && <span className="selo-dupla">dupla marcação</span>}
           </div>
         );
       })}

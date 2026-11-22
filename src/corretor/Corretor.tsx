@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import type { Correcao, Resposta } from '../core/types';
 import { db, chaveDoCorretor, gravarConfig, lerConfig, nomeDispositivo } from '../data/db';
@@ -7,16 +7,20 @@ import { corrigir } from '../core/correcao';
 import { fmtData, fmtNum, novoId } from '../core/util';
 import { aviso } from '../ui/base';
 import { FolhaRespostas } from '../ui/FolhaRespostas';
-import { LeitorQr } from './LeitorQr';
+import { LeitorQr, type Quadro } from './LeitorQr';
+import { lerFolhaOMR } from '../core/omr';
+import { desenharLeitura } from './previa';
 import { baixar } from '../data/backup';
 
 type Tela =
   | { t: 'inicio' }
   | { t: 'parear' }
   | { t: 'ler' }
-  | { t: 'corrigir'; folha: DadosFolha; c: Correcao }
+  | { t: 'corrigir'; folha: DadosFolha; c: Correcao; leitura?: Leitura }
   | { t: 'resultado'; folha: DadosFolha; c: Correcao }
   | { t: 'lista' };
+
+interface Leitura { duvidas: boolean[]; previa: string; lidas: number }
 
 const chaveFolha = (avaliacaoId: string, versao: string) => `folha:${avaliacaoId}:${versao}`;
 
@@ -33,6 +37,9 @@ export function Corretor() {
   const [tela, setTela] = useState<Tela>({ t: 'inicio' });
   const chave = useLiveQuery(async () => (await chaveDoCorretor()) ?? 'nenhuma', []);
   const [dispositivo, setDispositivo] = useState('');
+  const tentativas = useRef(0);
+  const [ultimaFolha, setUltimaFolha] = useState<DadosFolha | null>(null);
+  const lerFolha = () => { tentativas.current = 0; setUltimaFolha(null); setTela({ t: 'ler' }); };
   useEffect(() => { nomeDispositivo().then(setDispositivo); }, []);
 
   if (chave === undefined) return null;
@@ -47,7 +54,7 @@ export function Corretor() {
     return true;
   }
 
-  async function aoLerFolha(txt: string) {
+  async function aoLerFolha(txt: string, quadro: Quadro) {
     if (!k) return false;
     if (txt.startsWith('AVP1|')) { aviso('Esse é o QR de pareamento. Aponte para o QR da folha de respostas.', 'info'); return false; }
     const r = await lerQrFolha(txt, k.chave, k.idChave);
@@ -58,9 +65,25 @@ export function Corretor() {
       aviso(msg, 'erro');
       return false;
     }
-    await gravarConfig(chaveFolha(r.dados.avaliacaoId, r.dados.versao), r.dados);
-    setTela({ t: 'corrigir', folha: r.dados, c: correcaoVazia(r.dados, dispositivo) });
-    return true;
+    const folha = r.dados;
+    await gravarConfig(chaveFolha(folha.avaliacaoId, folha.versao), folha);
+    const omr = lerFolhaOMR(quadro.img, folha.itens, quadro.qr);
+    if (omr.ok) {
+      const c = correcaoVazia(folha, dispositivo);
+      c.respostas = omr.respostas;
+      const lidas = omr.respostas.filter((x, i) => x !== null && folha.itens[i].tipo !== 'disc').length;
+      setTela({ t: 'corrigir', folha, c, leitura: { duvidas: omr.duvidas, previa: desenharLeitura(quadro.img, omr), lidas } });
+      return true;
+    }
+    // QR lido, mas os 4 quadrados dos cantos não foram encontrados
+    setUltimaFolha(folha);
+    if (quadro.fonte === 'foto') {
+      aviso('Não encontrei os 4 quadrados pretos dos cantos. Fotografe a folha inteira, de cima, ou marque as respostas manualmente.', 'erro');
+      return false;
+    }
+    tentativas.current++;
+    if (tentativas.current % 6 === 1) aviso('Afaste o celular: a folha inteira, com os 4 quadrados pretos, precisa aparecer na tela.', 'info');
+    return false;
   }
 
   return (
@@ -76,13 +99,16 @@ export function Corretor() {
         <a className="btn-icone claro" href="#/" aria-label="Abrir Estúdio" title="Abrir Estúdio">💻</a>
       </header>
       <main className="corretor-corpo">
-        {tela.t === 'inicio' && <Inicio pareado={!!k} local={!!k?.local} ir={setTela} />}
+        {tela.t === 'inicio' && <Inicio pareado={!!k} local={!!k?.local} ir={t => t.t === 'ler' ? lerFolha() : setTela(t)} />}
         {tela.t === 'parear' && <LeitorQr aoLer={aoLerPareamento} dica="No computador, abra o Estúdio → Ajustes → Mostrar QR de pareamento, e aponte a câmera para ele." />}
-        {tela.t === 'ler' && <LeitorQr aoLer={aoLerFolha} dica="Aponte para o QR Code no topo da folha de respostas do aluno." />}
-        {tela.t === 'corrigir' && <Corrigir folha={tela.folha} inicial={tela.c} aoSalvar={c => setTela({ t: 'resultado', folha: tela.folha, c })} />}
+        {tela.t === 'ler' && <LeitorQr aoLer={aoLerFolha}
+          dica="Enquadre a folha de respostas inteira, de cima, com os 4 quadrados pretos dos cantos visíveis. A leitura é automática."
+          extra={ultimaFolha && <div className="manual-leitor"><button className="btn" onClick={() => setTela({ t: 'corrigir', folha: ultimaFolha, c: correcaoVazia(ultimaFolha, dispositivo) })}>✏️ Marcar respostas manualmente</button></div>} />}
+        {tela.t === 'corrigir' && <Corrigir key={tela.c.id} folha={tela.folha} inicial={tela.c} leitura={tela.leitura} aoSalvar={c => setTela({ t: 'resultado', folha: tela.folha, c })} />}
         {tela.t === 'resultado' && <TelaResultado folha={tela.folha} c={tela.c}
-          proximo={() => setTela({ t: 'corrigir', folha: tela.folha, c: correcaoVazia(tela.folha, dispositivo) })}
-          outra={() => setTela({ t: 'ler' })} editar={() => setTela({ t: 'corrigir', folha: tela.folha, c: tela.c })} />}
+          proximo={lerFolha}
+          manual={() => setTela({ t: 'corrigir', folha: tela.folha, c: correcaoVazia(tela.folha, dispositivo) })}
+          editar={() => setTela({ t: 'corrigir', folha: tela.folha, c: tela.c })} />}
         {tela.t === 'lista' && k && <Lista local={k.local} abrir={async c => {
           const f = await lerConfig<DadosFolha>(chaveFolha(c.avaliacaoId, c.versao));
           if (f) setTela({ t: 'corrigir', folha: f, c }); else aviso('Gabarito desta folha não está neste aparelho; escaneie a folha novamente.', 'erro');
@@ -126,8 +152,10 @@ function Inicio({ pareado, local, ir }: { pareado: boolean; local: boolean; ir: 
   );
 }
 
-function Corrigir({ folha, inicial, aoSalvar }: { folha: DadosFolha; inicial: Correcao; aoSalvar: (c: Correcao) => void }) {
+function Corrigir({ folha, inicial, leitura, aoSalvar }: { folha: DadosFolha; inicial: Correcao; leitura?: Leitura; aoSalvar: (c: Correcao) => void }) {
   const [c, setC] = useState(inicial);
+  const [verFoto, setVerFoto] = useState(false);
+  const nDuvidas = leitura?.duvidas.filter(Boolean).length ?? 0;
   const r = corrigir(folha.itens, c.respostas, c.notasDisc);
   const objetivas = folha.itens.filter(i => i.tipo !== 'disc').length;
   const marcadas = c.respostas.filter((x, i) => x !== null && folha.itens[i].tipo !== 'disc').length;
@@ -156,9 +184,17 @@ function Corrigir({ folha, inicial, aoSalvar }: { folha: DadosFolha; inicial: Co
         <datalist id="sug-alunos">{sugestoes.map(n => <option key={n} value={n} />)}</datalist>
         <input className="campo" placeholder="Matrícula (opcional)" inputMode="numeric" value={c.matricula} onChange={e => setC({ ...c, matricula: e.target.value })} />
       </div>
+      {leitura && (
+        <div className={`leitura-auto ${nDuvidas ? 'com-duvida' : ''}`}>
+          <span>📷 Leitura automática: <b>{leitura.lidas}</b> de {objetivas} objetivas reconhecidas.{' '}
+            {nDuvidas ? <b>Confira as {nDuvidas} destacadas em amarelo.</b> : 'Confira rapidamente antes de salvar.'}</span>
+          <button className="link" onClick={() => setVerFoto(v => !v)}>{verFoto ? 'Ocultar foto' : 'Ver foto com a leitura'}</button>
+          {verFoto && <img src={leitura.previa} alt="Folha fotografada com as marcações reconhecidas" />}
+        </div>
+      )}
       <div className="progresso"><span style={{ width: `${objetivas ? (marcadas / objetivas) * 100 : 100}%` }} /></div>
       <p className="progresso-txt">{marcadas} de {objetivas} objetivas marcadas{r.discPendentes ? ` · ${r.discPendentes} discursiva(s) sem nota (pode lançar depois)` : ''}</p>
-      <FolhaRespostas itens={folha.itens} respostas={c.respostas} notasDisc={c.notasDisc}
+      <FolhaRespostas itens={folha.itens} respostas={c.respostas} notasDisc={c.notasDisc} destacar={leitura?.duvidas}
         aoMarcar={(pos, x: Resposta) => setC({ ...c, respostas: c.respostas.map((y, i) => i === pos ? x : y) })}
         aoNotaDisc={(pos, n) => setC({ ...c, notasDisc: c.notasDisc.map((y, i) => i === pos ? n : y) })} />
       <div className="barra-fixa">
@@ -169,7 +205,7 @@ function Corrigir({ folha, inicial, aoSalvar }: { folha: DadosFolha; inicial: Co
   );
 }
 
-function TelaResultado({ folha, c, proximo, outra, editar }: { folha: DadosFolha; c: Correcao; proximo: () => void; outra: () => void; editar: () => void }) {
+function TelaResultado({ folha, c, proximo, manual, editar }: { folha: DadosFolha; c: Correcao; proximo: () => void; manual: () => void; editar: () => void }) {
   const r = corrigir(folha.itens, c.respostas, c.notasDisc);
   const nivel = r.percentual >= 70 ? 'alto' : r.percentual >= 50 ? 'medio' : 'baixo';
   return (
@@ -188,8 +224,8 @@ function TelaResultado({ folha, c, proximo, outra, editar }: { folha: DadosFolha
           </span>
         ))}
       </div>
-      <button className="btn btn-primario btn-gigante" onClick={proximo}>Próximo aluno · mesma versão {folha.versao}</button>
-      <button className="btn btn-grande" onClick={outra}>📷 Escanear outra folha</button>
+      <button className="btn btn-primario btn-gigante" onClick={proximo}>📷 Próxima folha</button>
+      <button className="btn btn-grande" onClick={manual}>✏️ Próximo aluno manualmente · versão {folha.versao}</button>
       <button className="link discreto" onClick={editar}>Corrigir algo nesta folha</button>
     </div>
   );

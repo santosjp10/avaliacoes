@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
-import type { Avaliacao, ItemGabarito, Questao, Versao } from '../core/types';
+import type { Avaliacao, Questao, Versao } from '../core/types';
 import { db, chaveDoEstudio } from '../data/db';
-import { alternativasNaVersao, itensDaVersao, opcoesItem, valorTotal } from '../core/gabarito';
+import { alternativasNaVersao, itensDaVersao, valorTotal } from '../core/gabarito';
 import { qrFolha } from '../core/payload';
+import { CENTROS_MARCADORES, GRADE, MARCADOR, layoutFolha } from '../core/folha';
 import { LETRAS, fmtNum } from '../core/util';
 import { useRota } from '../ui/base';
 
@@ -26,7 +27,9 @@ export function Imprimir({ id }: { id: string }) {
       const out: Record<string, string> = {};
       for (const v of a.versoes!) {
         const txt = await qrFolha(k.chave, k.idChave, { avaliacaoId: a.id, titulo: a.titulo, codigo: a.codigo, versao: v.nome, itens: itensDaVersao(a, v.nome) });
-        out[v.nome] = await QRCode.toDataURL(txt, { errorCorrectionLevel: 'M', margin: 0, scale: 6 });
+        // SVG = vetorial: o QR sai nítido em qualquer impressora e é lido de mais longe pela câmera
+        const svg = await QRCode.toString(txt, { type: 'svg', errorCorrectionLevel: 'L', margin: 0 });
+        out[v.nome] = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
       }
       setQrs(out); setAv(a);
       document.title = `${a.codigo} — ${a.titulo}`;
@@ -140,35 +143,27 @@ function Prova({ av, v, qr, colunas }: { av: Avaliacao; v: Versao; qr?: string; 
   );
 }
 
-const POR_COLUNA = 15;
-
 function Folha({ av, v, qr }: { av: Avaliacao; v: Versao; qr?: string }) {
   const itens = itensDaVersao(av, v.nome);
-  const colunas: { it: ItemGabarito; pos: number }[][] = [];
-  itens.forEach((it, pos) => {
-    const c = Math.floor(pos / POR_COLUNA);
-    (colunas[c] ??= []).push({ it, pos });
-  });
+  const linhas = layoutFolha(itens);
+  const mm = (n: number) => `${n}mm`;
   return (
     <section className="pagina folha">
-      <span className="marcador tl" /><span className="marcador tr" /><span className="marcador bl" /><span className="marcador br" />
+      {CENTROS_MARCADORES.map(([x, y], i) => (
+        <span key={i} className="marcador" style={{ left: mm(x - MARCADOR.lado / 2), top: mm(y - MARCADOR.lado / 2), width: mm(MARCADOR.lado), height: mm(MARCADOR.lado) }} />
+      ))}
       <Cabecalho av={av} v={v} qr={qr} subtitulo="FOLHA DE RESPOSTAS" />
-      <p className="instrucoes">Preencha <b>completamente</b> uma bolha por questão, com caneta azul ou preta. Não rasure. Não dobre nem amasse esta folha.
-        <span className="exemplo">Correto: <i className="b cheia" /> Errado: <i className="b">✓</i> <i className="b">✗</i></span></p>
-      <div className="grade-folha">
-        {colunas.map((col, c) => (
-          <div key={c} className="col-folha">
-            {col.map(({ it, pos }) => (
-              <div key={pos} className={`lin-folha ${it.tipo === 'disc' ? 'disc' : ''}`}>
-                <span className="n">{pos + 1}</span>
-                {it.tipo === 'disc'
-                  ? <span className="disc-campo">Discursiva — nota: <i className="nota-box" /> / {fmtNum(it.peso, 2)}</span>
-                  : opcoesItem(it).map(op => <i key={op} className="b">{op}</i>)}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
+      <p className="instrucoes">Preencha <b>completamente</b> uma bolha por questão, com caneta azul ou preta. Não rasure, não dobre e não escreva perto dos quadrados pretos dos cantos.
+        <span className="exemplo">Correto: <i className="b-ex cheia" /> Errado: <i className="b-ex">✓</i> <i className="b-ex">✗</i></span></p>
+      {linhas.map(l => (
+        <div key={l.pos} className={`lin-abs ${(l.pos + 1) % 5 === 0 ? 'sep' : ''}`} style={{ left: mm(l.x), top: mm(l.y), width: mm(l.largura - 2), height: mm(GRADE.linha) }}>
+          <span className="n" style={{ width: mm(GRADE.numero - 1.5) }}>{l.pos + 1}</span>
+          {l.tipo === 'disc' && <span className="disc-campo">Disc. — nota <i className="nota-box" /> /{fmtNum(itens[l.pos].peso, 2)}</span>}
+        </div>
+      ))}
+      {linhas.flatMap(l => l.opcoes.map(o => (
+        <i key={`${l.pos}${o.op}`} className="b" style={{ left: mm(o.x - GRADE.bolha / 2), top: mm(o.y - GRADE.bolha / 2), width: mm(GRADE.bolha), height: mm(GRADE.bolha) }}>{o.op}</i>
+      )))}
       <div className="area-professor">
         <span>Uso do professor —</span>
         <span>Objetiva: <i className="nota-box" /></span>

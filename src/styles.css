@@ -255,6 +255,13 @@ small.ruim { color: var(--vermelho); font-weight: 700; }
 .linha-resp.certa { border-color: #9fd3b5; background: var(--verde-claro); }
 .linha-resp.errada { border-color: #eab3ab; background: var(--vermelho-claro); }
 .linha-resp.disc { grid-column: 1 / -1; }
+.linha-resp.duvida { border-color: #e0a100; background: var(--ambar-claro); box-shadow: inset 4px 0 0 #e0a100; }
+.selo-dupla { margin-left: auto; font-size: .7rem; font-weight: 800; color: var(--vermelho); text-transform: uppercase; }
+.leitura-auto { background: var(--verde-claro); border: 1.5px solid #9fd3b5; border-radius: 12px; padding: 10px 12px; font-size: .88rem; display: flex; flex-direction: column; gap: 8px; }
+.leitura-auto.com-duvida { background: var(--ambar-claro); border-color: #ecd08b; }
+.leitura-auto img { width: 100%; border-radius: 8px; border: 1px solid var(--borda); }
+.leitura-auto .link { font-size: .85rem; }
+.manual-leitor { display: flex; justify-content: center; }
 .linha-resp.disc.pendente { border-style: dashed; border-color: #e0bf6b; }
 .bolhas { display: flex; gap: 6px; flex-wrap: wrap; }
 .bolha { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #b9b0a0; background: #fff; display: grid; place-items: center; font-weight: 800; font-size: .9rem; color: var(--tinta3); cursor: pointer; flex-shrink: 0; transition: background .08s, transform .06s; -webkit-tap-highlight-color: transparent; }
@@ -369,7 +376,7 @@ small.ruim { color: var(--vermelho); font-weight: 700; }
 .pagina { width: 210mm; min-height: 297mm; margin: 18px auto; background: #fff; color: #000; padding: 13mm 14mm; position: relative; box-shadow: 0 2px 16px rgba(0,0,0,.15); font-size: 10.5pt; line-height: 1.4; font-family: Georgia, "Times New Roman", serif; }
 .pagina h1, .pagina h2, .cab-meta, .campo-linha, .rodape-imp, .lin-folha, .area-professor, .gab-grade, .versao-grande, .instrucoes { font-family: var(--fonte); }
 .cab-impressao { display: flex; gap: 5mm; align-items: flex-start; border: 1.5px solid #000; border-radius: 3mm; padding: 4mm; margin-bottom: 4mm; }
-.cab-impressao .qr { width: 30mm; height: 30mm; image-rendering: pixelated; flex-shrink: 0; }
+.cab-impressao .qr { width: 38mm; height: 38mm; image-rendering: pixelated; flex-shrink: 0; }
 .cab-texto { flex: 1; min-width: 0; }
 .cab-linha1 { display: flex; justify-content: space-between; gap: 4mm; align-items: flex-start; }
 .cab-linha1 h1 { font-size: 13pt; }
@@ -394,21 +401,18 @@ small.ruim { color: var(--vermelho); font-weight: 700; }
 .rodape-imp { position: absolute; bottom: 6mm; left: 14mm; right: 14mm; font-size: 7pt; color: #777; text-align: center; }
 
 .folha { padding: 16mm 17mm; }
-.marcador { position: absolute; width: 7mm; height: 7mm; background: #000; }
-.marcador.tl { top: 7mm; left: 7mm; } .marcador.tr { top: 7mm; right: 7mm; }
-.marcador.bl { bottom: 7mm; left: 7mm; } .marcador.br { bottom: 7mm; right: 7mm; }
+.marcador { position: absolute; background: #000; }
 .exemplo { display: inline-flex; gap: 2mm; align-items: center; margin-left: 3mm; }
-i.b { font-style: normal; font-family: var(--fonte); width: 5.6mm; height: 5.6mm; border: 1.2px solid #222; border-radius: 50%; display: inline-grid; place-items: center; font-size: 7pt; font-weight: 700; color: #b5b5b5; flex-shrink: 0; }
-i.b.cheia { background: #000; border-color: #000; }
-.exemplo i.b { color: #000; }
-.grade-folha { display: flex; gap: 7mm; justify-content: center; margin-top: 4mm; }
-.col-folha { display: flex; flex-direction: column; }
-.lin-folha { display: flex; align-items: center; gap: 2.2mm; height: 8.2mm; padding: 0 2mm; }
-.lin-folha:nth-child(5n) { border-bottom: 0.6px solid #bbb; }
-.lin-folha .n { width: 7mm; text-align: right; font-weight: 800; font-size: 9pt; }
-.disc-campo { font-size: 8pt; color: #333; display: flex; align-items: center; gap: 1.5mm; }
-.nota-box { display: inline-block; width: 13mm; height: 6mm; border: 1px solid #555; border-radius: 1mm; vertical-align: middle; }
-.area-professor { position: absolute; left: 17mm; right: 17mm; bottom: 16mm; display: flex; gap: 6mm; align-items: center; font-size: 8.5pt; border-top: 1px dashed #999; padding-top: 3mm; flex-wrap: wrap; }
+i.b-ex { font-style: normal; width: 3.6mm; height: 3.6mm; border: 1px solid #222; border-radius: 50%; display: inline-grid; place-items: center; font-size: 6pt; color: #000; }
+i.b-ex.cheia { background: #000; }
+i.b { position: absolute; font-style: normal; font-family: var(--fonte); border: 0.9px solid #333; border-radius: 50%; display: grid; place-items: center; font-size: 6.5pt; font-weight: 700; color: #c2c2c2; box-sizing: border-box; }
+.lin-abs { position: absolute; display: flex; align-items: center; box-sizing: border-box; font-family: var(--fonte); }
+.lin-abs.sep { border-bottom: 0.5px solid #c8c8c8; }
+.lin-abs .n { text-align: right; font-weight: 800; font-size: 9pt; padding-right: 1.5mm; flex-shrink: 0; }
+.disc-campo { font-size: 7.5pt; color: #333; display: flex; align-items: center; gap: 1.2mm; white-space: nowrap; }
+.nota-box { display: inline-block; width: 12mm; height: 5.5mm; border: 1px solid #555; border-radius: 1mm; vertical-align: middle; }
+.area-professor { position: absolute; left: 17mm; right: 17mm; top: 262mm; display: flex; gap: 6mm; align-items: center; font-size: 8.5pt; border-top: 1px dashed #999; padding-top: 3mm; flex-wrap: wrap; font-family: var(--fonte); }
+.folha .rodape-imp { top: 289mm; bottom: auto; }
 
 .gabarito-prof .cab-gab { border-bottom: 2px solid #000; padding-bottom: 3mm; margin-bottom: 5mm; }
 .gabarito-prof h1 { font-size: 15pt; }
@@ -430,6 +434,6 @@ i.b.cheia { background: #000; border-color: #000; }
   .pagina { width: auto; min-height: 0; margin: 0; padding: 0; box-shadow: none; break-after: page; page-break-after: always; }
   .pagina:last-child { break-after: auto; page-break-after: auto; }
   .pagina .rodape-imp { position: static; margin-top: 6mm; }
-  .pagina.folha { page: folha; width: 210mm; height: 296mm; padding: 16mm 17mm; overflow: hidden; }
+  .pagina.folha { page: folha; width: 210mm; height: 296.5mm; padding: 16mm 17mm; overflow: hidden; }
   .pagina.folha .rodape-imp { position: absolute; }
 }

@@ -7,6 +7,7 @@ export function validarParaPublicar(av: Avaliacao, questoes: Map<string, Questao
   if (!av.titulo.trim()) erros.push('Informe o título.');
   if (!av.codigo.trim()) erros.push('Informe o código da avaliação.');
   if (av.itens.length === 0) erros.push('Adicione ao menos uma questão.');
+  if (av.itens.length > 80) erros.push('A folha de respostas comporta no máximo 80 questões.');
   if (av.nVersoes < 1 || av.nVersoes > NOMES_VERSAO.length) erros.push(`Número de versões deve estar entre 1 e ${NOMES_VERSAO.length}.`);
   av.itens.forEach((it, i) => {
     const q = questoes.get(it.questaoId);

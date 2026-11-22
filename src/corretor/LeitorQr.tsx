@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import jsQR from 'jsqr';
 
-/** Lê um QR pela câmera traseira. Chama aoLer com o texto; se aoLer retornar false, continua lendo. */
-export function LeitorQr({ aoLer, dica }: { aoLer: (texto: string) => Promise<boolean> | boolean; dica: string }) {
+export interface Quadro { img: ImageData; qr: [number, number]; fonte: 'camera' | 'foto' }
+
+/**
+ * Lê um QR pela câmera traseira. Chama aoLer com o texto e o quadro completo (para a leitura óptica);
+ * se aoLer retornar false, continua lendo.
+ */
+export function LeitorQr({ aoLer, dica, extra }: { aoLer: (texto: string, quadro: Quadro) => Promise<boolean> | boolean; dica: string; extra?: React.ReactNode }) {
   const video = useRef<HTMLVideoElement>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [lanterna, setLanterna] = useState<{ ok: boolean; on: boolean }>({ ok: false, on: false });
@@ -15,8 +20,11 @@ export function LeitorQr({ aoLer, dica }: { aoLer: (texto: string) => Promise<bo
     let ativo = true;
     let stream: MediaStream | null = null;
     let timer = 0;
+    let quadros = 0;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
+    const cheio = document.createElement('canvas');
+    const ctxCheio = cheio.getContext('2d', { willReadFrequently: true })!;
 
     async function iniciar() {
       if (!navigator.mediaDevices?.getUserMedia) {
@@ -26,7 +34,7 @@ export function LeitorQr({ aoLer, dica }: { aoLer: (texto: string) => Promise<bo
         return;
       }
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
         if (!ativo) { stream.getTracks().forEach(t => t.stop()); return; }
         const v = video.current!;
         v.srcObject = stream;
@@ -50,10 +58,28 @@ export function LeitorQr({ aoLer, dica }: { aoLer: (texto: string) => Promise<bo
         canvas.height = Math.round(v.videoHeight * esc);
         ctx.drawImage(v, 0, 0, canvas.width, canvas.height);
         const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const r = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
+        let r = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
+        let escQr = esc;
+        // com a folha inteira no quadro o QR fica pequeno: a cada 3 quadros tenta na resolução cheia
+        if (!r && esc < 1 && ++quadros % 3 === 0) {
+          cheio.width = v.videoWidth; cheio.height = v.videoHeight;
+          ctxCheio.drawImage(v, 0, 0);
+          const f = ctxCheio.getImageData(0, 0, cheio.width, cheio.height);
+          r = jsQR(f.data, f.width, f.height, { inversionAttempts: 'dontInvert' });
+          escQr = 1;
+        }
         if (r?.data) {
           ocupado.current = true;
-          Promise.resolve(cb.current(r.data)).then(fim => {
+          // quadro em resolução cheia para a leitura das bolhas
+          cheio.width = v.videoWidth; cheio.height = v.videoHeight;
+          ctxCheio.drawImage(v, 0, 0);
+          const L = r.location;
+          const qr: [number, number] = [
+            (L.topLeftCorner.x + L.topRightCorner.x + L.bottomLeftCorner.x + L.bottomRightCorner.x) / 4 / escQr,
+            (L.topLeftCorner.y + L.topRightCorner.y + L.bottomLeftCorner.y + L.bottomRightCorner.y) / 4 / escQr,
+          ];
+          const quadro: Quadro = { img: ctxCheio.getImageData(0, 0, cheio.width, cheio.height), qr, fonte: 'camera' };
+          Promise.resolve(cb.current(r.data, quadro)).then(fim => {
             if (fim) navigator.vibrate?.(60);
             else setTimeout(() => { ocupado.current = false; }, 1200);
           });
@@ -79,14 +105,21 @@ export function LeitorQr({ aoLer, dica }: { aoLer: (texto: string) => Promise<bo
     img.src = URL.createObjectURL(f);
     await img.decode();
     const c = document.createElement('canvas');
-    const esc = Math.min(1, 1600 / Math.max(img.width, img.height));
+    const esc = Math.min(1, 2000 / Math.max(img.width, img.height));
     c.width = img.width * esc; c.height = img.height * esc;
     const ctx = c.getContext('2d')!;
     ctx.drawImage(img, 0, 0, c.width, c.height);
     const d = ctx.getImageData(0, 0, c.width, c.height);
     const r = jsQR(d.data, d.width, d.height, { inversionAttempts: 'attemptBoth' });
     URL.revokeObjectURL(img.src);
-    if (r?.data) await cb.current(r.data);
+    if (r?.data) {
+      const L = r.location;
+      const qr: [number, number] = [
+        (L.topLeftCorner.x + L.topRightCorner.x + L.bottomLeftCorner.x + L.bottomRightCorner.x) / 4,
+        (L.topLeftCorner.y + L.topRightCorner.y + L.bottomLeftCorner.y + L.bottomRightCorner.y) / 4,
+      ];
+      await cb.current(r.data, { img: d, qr, fonte: 'foto' });
+    }
     else setErro('Não encontrei um QR Code nessa foto. Tente com mais luz e o QR inteiro visível.');
   }
 
@@ -98,6 +131,7 @@ export function LeitorQr({ aoLer, dica }: { aoLer: (texto: string) => Promise<bo
         {erro && <div className="leitor-erro">{erro}</div>}
       </div>
       <p className="leitor-dica">{dica}</p>
+      {extra}
       <div className="leitor-acoes">
         {lanterna.ok && <button className="btn" onClick={alternarLanterna}>{lanterna.on ? '🔦 Desligar luz' : '🔦 Lanterna'}</button>}
         <label className="btn">

@@ -62,8 +62,16 @@ export async function nomeDispositivo(): Promise<string> {
 }
 
 /** Inclui ou atualiza correções vindas de outro aparelho. Importar duas vezes não duplica. */
-export async function mesclarCorrecoes(lista: Correcao[]): Promise<{ novas: number; atualizadas: number; ignoradas: number }> {
-  let novas = 0, atualizadas = 0, ignoradas = 0;
+export async function mesclarCorrecoes(entrada: Correcao[]): Promise<{ novas: number; atualizadas: number; ignoradas: number; semAvaliacao: number }> {
+  let novas = 0, atualizadas = 0, ignoradas = 0, semAvaliacao = 0;
+  // folhas novas identificam a avaliação pelo código; aqui ele vira o id da avaliação publicada
+  const publicadas = await db.avaliacoes.where('status').equals('publicada').toArray();
+  const lista = entrada.map(c => {
+    if (!c.avaliacaoId.startsWith('cod:')) return c;
+    const av = publicadas.find(a => a.codigo === c.codigo);
+    if (!av) { semAvaliacao++; return c; }
+    return { ...c, avaliacaoId: av.id };
+  });
   await db.transaction('rw', db.correcoes, async () => {
     for (const c of lista) {
       const atual = await db.correcoes.get(c.id);
@@ -72,5 +80,5 @@ export async function mesclarCorrecoes(lista: Correcao[]): Promise<{ novas: numb
       else ignoradas++;
     }
   });
-  return { novas, atualizadas, ignoradas };
+  return { novas, atualizadas, ignoradas, semAvaliacao };
 }
