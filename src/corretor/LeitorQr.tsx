@@ -28,7 +28,10 @@ export interface Quadro { img: ImageData; qr: [number, number]; fonte: 'camera' 
  * Lê um QR pela câmera traseira. Chama aoLer com o texto e o quadro completo (para a leitura óptica);
  * se aoLer retornar false, continua lendo.
  */
-export function LeitorQr({ aoLer, dica, extra }: { aoLer: (texto: string, quadro: Quadro) => Promise<boolean> | boolean; dica: string; extra?: React.ReactNode }) {
+/** Resultado de aoLer: true = terminou; false = tentar de novo daqui a pouco; 'mais' = tentar de novo já (leitura em andamento). */
+export type Continuar = boolean | 'mais';
+
+export function LeitorQr({ aoLer, dica, extra }: { aoLer: (texto: string, quadro: Quadro) => Promise<Continuar> | Continuar; dica: string; extra?: React.ReactNode }) {
   const video = useRef<HTMLVideoElement>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [lanterna, setLanterna] = useState<{ ok: boolean; on: boolean }>({ ok: false, on: false });
@@ -99,8 +102,8 @@ export function LeitorQr({ aoLer, dica, extra }: { aoLer: (texto: string, quadro
           ctxCheio.drawImage(v, 0, 0);
           const quadro: Quadro = { img: ctxCheio.getImageData(0, 0, cheio.width, cheio.height), qr: achado.centro, fonte: 'camera' };
           Promise.resolve(cb.current(achado.texto, quadro)).then(fim => {
-            if (fim) navigator.vibrate?.(60);
-            else setTimeout(() => { ocupado.current = false; }, 1200);
+            if (fim === true) navigator.vibrate?.(60);
+            else setTimeout(() => { ocupado.current = false; }, fim === 'mais' ? 120 : 1200);
           });
         }
       }

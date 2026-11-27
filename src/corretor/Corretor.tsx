@@ -8,6 +8,7 @@ import { fmtData, fmtNum, novoId } from '../core/util';
 import { aviso } from '../ui/base';
 import { FolhaRespostas } from '../ui/FolhaRespostas';
 import { LeitorQr, type Quadro } from './LeitorQr';
+import { combinarLeituras, type Leitura as LeituraQuadro } from '../core/votacao';
 import { VERSAO } from '../ui/Atualizacao';
 import { lerFolhaOMR } from '../core/omr';
 import { desenharLeitura } from './previa';
@@ -48,9 +49,13 @@ export function Corretor() {
   const [dispositivo, setDispositivo] = useState('');
   const tentativas = useRef(0);
   const ultimoQrSalvo = useRef('');
+  // câmera ao vivo: várias leituras da mesma folha antes de aceitar (votação)
+  const votos = useRef<{ qr: string; inicio: number; leituras: LeituraQuadro[] }>({ qr: '', inicio: 0, leituras: [] });
+  const [progresso, setProgresso] = useState<string | null>(null);
+  const QUADROS = 3;
   const salvarDireto = useLiveQuery(() => lerConfig<boolean>('salvarDireto'), []) ?? false;
   const [ultimaFolha, setUltimaFolha] = useState<DadosFolha | null>(null);
-  const lerFolha = () => { tentativas.current = 0; setUltimaFolha(null); setTela({ t: 'ler' }); };
+  const lerFolha = () => { tentativas.current = 0; setUltimaFolha(null); setProgresso(null); votos.current = { qr: '', inicio: 0, leituras: [] }; setTela({ t: 'ler' }); };
   useEffect(() => { nomeDispositivo().then(setDispositivo); }, []);
 
   if (chave === undefined) return null;
@@ -87,11 +92,26 @@ export function Corretor() {
     await gravarConfig(chaveFolha(folha.avaliacaoId, folha.versao), folhaSemAluno);
     const omr = lerFolhaOMR(quadro.img, folha.itens, quadro.qr, folha.layout ?? 1);
     if (omr.ok) {
+      let final: LeituraQuadro = { respostas: omr.respostas, duvidas: omr.duvidas };
+      if (quadro.fonte === 'camera') {
+        // acumula leituras da MESMA folha; recomeça se mudou de folha ou demorou demais
+        const v = votos.current;
+        if (v.qr !== txt || Date.now() - v.inicio > 5000) { v.qr = txt; v.inicio = Date.now(); v.leituras = []; }
+        v.leituras.push(final);
+        if (v.leituras.length < QUADROS) {
+          setProgresso(`Lendo a folha… ${v.leituras.length} de ${QUADROS} — mantenha o celular parado`);
+          return 'mais';
+        }
+        final = combinarLeituras(v.leituras);
+        votos.current = { qr: '', inicio: 0, leituras: [] };
+        setProgresso(null);
+      }
       const c = correcaoVazia(folha, dispositivo);
-      c.respostas = omr.respostas;
+      c.respostas = final.respostas;
+      omr.respostas = final.respostas; omr.duvidas = final.duvidas;
       if (folha.aluno) { c.aluno = folha.aluno.nome; c.matricula = folha.aluno.matricula; }
-      const lidas = omr.respostas.filter((x, i) => x !== null && folha.itens[i].tipo !== 'disc').length;
-      const semDuvida = !omr.duvidas.some(Boolean);
+      const lidas = final.respostas.filter((x, i) => x !== null && folha.itens[i].tipo !== 'disc').length;
+      const semDuvida = !final.duvidas.some(Boolean);
       // folha personalizada, leitura limpa e aluno ainda não corrigido: salva direto (se o professor ativou)
       if (salvarDireto && folha.aluno && semDuvida && !(await correcaoExistente(folha.avaliacaoId, c))) {
         await db.correcoes.put(c);
@@ -100,7 +120,7 @@ export function Corretor() {
         setTela({ t: 'resultado', folha, c, auto: true });
         return true;
       }
-      setTela({ t: 'corrigir', folha, c, leitura: { duvidas: omr.duvidas, previa: desenharLeitura(quadro.img, omr), lidas } });
+      setTela({ t: 'corrigir', folha, c, leitura: { duvidas: final.duvidas, previa: desenharLeitura(quadro.img, omr), lidas } });
       return true;
     }
     // QR lido, mas os 4 quadrados dos cantos não foram encontrados
@@ -132,7 +152,7 @@ export function Corretor() {
         {tela.t === 'parear' && <LeitorQr aoLer={aoLerPareamento} dica="No computador, abra o Estúdio → Ajustes → Mostrar QR de pareamento, e aponte a câmera para ele." />}
         {tela.t === 'ler' && <LeitorQr aoLer={aoLerFolha}
           dica="Enquadre a área de leitura — o QR e as bolhas, com os 4 quadrados pretos visíveis. Pode aproximar o celular. A leitura é automática."
-          extra={ultimaFolha && <div className="manual-leitor"><button className="btn" onClick={() => setTela({ t: 'corrigir', folha: ultimaFolha, c: correcaoVazia(ultimaFolha, dispositivo) })}>✏️ Marcar respostas manualmente</button></div>} />}
+          extra={<>{progresso && <p className="progresso-leitura">{progresso}</p>}{ultimaFolha && <div className="manual-leitor"><button className="btn" onClick={() => setTela({ t: 'corrigir', folha: ultimaFolha, c: correcaoVazia(ultimaFolha, dispositivo) })}>✏️ Marcar respostas manualmente</button></div>}</>} />}
         {tela.t === 'corrigir' && <Corrigir key={tela.c.id} folha={tela.folha} inicial={tela.c} leitura={tela.leitura} aoSalvar={c => setTela({ t: 'resultado', folha: tela.folha, c })} />}
         {tela.t === 'resultado' && <TelaResultado folha={tela.folha} c={tela.c} auto={tela.auto}
           proximo={lerFolha}

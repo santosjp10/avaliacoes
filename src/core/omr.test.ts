@@ -126,3 +126,17 @@ describe('leitura óptica', { timeout: 60_000 }, () => {
     expect(decidir([{ op: 'A', nivel: 0.05 }, { op: 'B', nivel: 0.08 }])).toEqual({ resposta: null, duvida: false });
   });
 });
+
+describe('votação entre quadros', async () => {
+  const { combinarLeituras } = await import('./votacao');
+  it('maioria vence e divergência vira dúvida', () => {
+    const r = combinarLeituras([
+      { respostas: ['A', 'B', null, 'C'], duvidas: [false, false, false, false] },
+      { respostas: ['A', 'B', null, 'D'], duvidas: [false, false, false, false] },
+      { respostas: ['A', 'C', null, 'C'], duvidas: [false, false, false, true] },
+    ]);
+    expect(r.respostas).toEqual(['A', 'B', null, 'C']);
+    expect(r.duvidas).toEqual([false, true, false, true]);
+    expect(r.concordancia).toBe(0.5);
+  });
+});

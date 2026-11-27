@@ -77,7 +77,13 @@ Decisões importantes:
 - A análise das questões agrupa pela questão original, não pela posição (que muda de uma versão para outra).
 - A folha tem uma **área de leitura compacta** (layout 2, QR `AV3`): o QR fica ao lado das bolhas e os 4 marcadores ficam colados nesse conjunto. As colunas são equilibradas, e o tamanho da área depende do número de questões (cerca de 10 × 10 cm para 10 questões e 14 × 14 cm para 30). Folhas antigas (QR `AV1`/`AV2`, marcadores nos cantos da página) continuam sendo lidas com a geometria antiga.
 - A posição de cada bolha é definida em milímetros em `src/core/folha.ts`. A impressão e a leitura óptica (`src/core/omr.ts`) usam a mesma geometria.
-- Leitura óptica, em quatro passos:
+- Leitura óptica, robusta a fotos de celular reais:
+  - marcadores reconhecidos só se forem quadrados cheios do tamanho esperado (bolhas pintadas e desenhos do QR são descartados);
+  - modelo de câmera com distorção radial da lente, ajustado em todas as bolhas da folha, mais um ajuste residual por linha (papel curvado);
+  - limiar de "pintada" calculado na própria folha;
+  - na câmera ao vivo, votação entre 3 quadros: divergências viram questões destacadas para conferência;
+  - linhas com encaixe fraco ou que destoam das vizinhas também são destacadas.
+- Passos básicos da leitura óptica:
   - localiza os 4 marcadores com binarização adaptativa, que tolera sombra;
   - usa o QR para saber a orientação da folha (pode estar girada ou de cabeça para baixo);
   - calcula a homografia, que corrige a perspectiva;

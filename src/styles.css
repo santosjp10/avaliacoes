@@ -297,6 +297,7 @@ small.ruim { color: var(--vermelho); font-weight: 700; }
 .leitura-auto.com-duvida { background: var(--ambar-claro); border-color: #ecd08b; }
 .leitura-auto img { width: 100%; border-radius: 8px; border: 1px solid var(--borda); }
 .leitura-auto .link { font-size: .85rem; }
+.progresso-leitura { text-align: center; font-weight: 700; color: var(--azul); background: var(--azul-claro); border-radius: 10px; padding: 8px 12px; margin: 0; }
 .manual-leitor { display: flex; justify-content: center; }
 .linha-resp.disc.pendente { border-style: dashed; border-color: #e0bf6b; }
 .bolhas { display: flex; gap: 6px; flex-wrap: wrap; }

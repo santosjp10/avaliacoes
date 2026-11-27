@@ -9,7 +9,7 @@
 // Tudo em TypeScript puro, sem dependências: roda no celular, em milissegundos.
 
 import type { ItemGabarito, Resposta } from './types';
-import { GRADE, geometriaFolha, type VersaoLayout } from './folha';
+import { GRADE, MARCADOR, geometriaFolha, type VersaoLayout } from './folha';
 
 export interface ImagemRGBA { data: Uint8ClampedArray | Uint8Array; width: number; height: number }
 type Ponto = [number, number];
@@ -76,11 +76,28 @@ function binarizar(g: Uint8Array, w: number, h: number): Uint8Array {
   return m;
 }
 
-interface Componente { area: number; x0: number; x1: number; y0: number; y1: number; cx: number; cy: number; borda: boolean }
+interface Componente {
+  area: number; x0: number; x1: number; y0: number; y1: number; cx: number; cy: number; borda: boolean;
+  /** área / área do fecho convexo: ~1 para formas cheias; baixo para anéis (ex.: padrões do QR). */
+  solidez: number;
+  /** área / (π·rmax²): quadrado ≈ 0,64; círculo ≈ 1 (bolha pintada). */
+  circularidade: number;
+}
+
+function fechoConvexo(pts: Ponto[]): Ponto[] {
+  const p = [...pts].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  if (p.length < 3) return p;
+  const cruz = (o: Ponto, a: Ponto, b: Ponto) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const inf: Ponto[] = [], sup: Ponto[] = [];
+  for (const q of p) { while (inf.length >= 2 && cruz(inf[inf.length - 2], inf[inf.length - 1], q) <= 0) inf.pop(); inf.push(q); }
+  for (let i = p.length - 1; i >= 0; i--) { const q = p[i]; while (sup.length >= 2 && cruz(sup[sup.length - 2], sup[sup.length - 1], q) <= 0) sup.pop(); sup.push(q); }
+  return inf.slice(0, -1).concat(sup.slice(0, -1));
+}
 
 function componentes(m: Uint8Array, w: number, h: number, areaMin: number, areaMax: number): Componente[] {
   const visto = new Uint8Array(w * h);
   const pilha = new Int32Array(w * h);
+  const pix = new Int32Array(w * h);
   const out: Componente[] = [];
   for (let i = 0; i < m.length; i++) {
     if (!m[i] || visto[i]) continue;
@@ -89,6 +106,7 @@ function componentes(m: Uint8Array, w: number, h: number, areaMin: number, areaM
     while (topo) {
       const p = pilha[--topo];
       const x = p % w, y = (p - x) / w;
+      pix[area] = p;
       area++; sx += x; sy += y;
       if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
       if (x > 0 && m[p - 1] && !visto[p - 1]) { visto[p - 1] = 1; pilha[topo++] = p - 1; }
@@ -97,7 +115,17 @@ function componentes(m: Uint8Array, w: number, h: number, areaMin: number, areaM
       if (y < h - 1 && m[p + w] && !visto[p + w]) { visto[p + w] = 1; pilha[topo++] = p + w; }
     }
     if (area < areaMin || area > areaMax) continue;
-    out.push({ area, x0, x1, y0, y1, cx: sx / area, cy: sy / area, borda: x0 === 0 || y0 === 0 || x1 === w - 1 || y1 === h - 1 });
+    // extremos de cada linha → fecho convexo e raio máximo
+    const nl = y1 - y0 + 1;
+    const mn = new Int32Array(nl).fill(w), mx = new Int32Array(nl).fill(-1);
+    for (let k = 0; k < area; k++) { const q = pix[k], x = q % w, yy = (q - x) / w - y0; if (x < mn[yy]) mn[yy] = x; if (x > mx[yy]) mx[yy] = x; }
+    const ext: Ponto[] = [];
+    for (let k = 0; k < nl; k++) if (mx[k] >= 0) { ext.push([mn[k], k + y0], [mx[k] + 1, k + y0], [mn[k], k + y0 + 1], [mx[k] + 1, k + y0 + 1]); }
+    const cx = sx / area + 0.5, cy = sy / area + 0.5;
+    const hull = fechoConvexo(ext);
+    const rmax = Math.max(...ext.map(([x, y]) => Math.hypot(x - cx, y - cy)));
+    out.push({ area, x0, x1, y0, y1, cx: cx - 0.5, cy: cy - 0.5, borda: x0 === 0 || y0 === 0 || x1 === w - 1 || y1 === h - 1,
+      solidez: area / Math.max(1, areaPoligono(hull)), circularidade: area / (Math.PI * rmax * rmax) });
   }
   return out;
 }
@@ -131,7 +159,7 @@ function ordenarHorario(p: Ponto[]): Ponto[] {
  * Encontra os 4 marcadores. Devolve os centros em pixels da imagem original, ordenados SE, SD, ID, IE da folha.
  * `razaoEsperada` = largura/altura do retângulo formado pelos marcadores (conhecida pela geometria da folha).
  */
-export function encontrarMarcadores(img: ImagemRGBA, qrCentro?: Ponto, razaoEsperada = 189 / 276): Ponto[] | null {
+export function encontrarMarcadores(img: ImagemRGBA, qrCentro?: Ponto, razaoEsperada = 189 / 276, ladoRelativo = 7 / 930): Ponto[] | null {
   const cinza = paraCinza(img);
   const red = reduzir(cinza, img.width, img.height, 1000);
   const mask = binarizar(red.g, red.w, red.h);
@@ -143,7 +171,8 @@ export function encontrarMarcadores(img: ImagemRGBA, qrCentro?: Ponto, razaoEspe
       const bw = c.x1 - c.x0 + 1, bh = c.y1 - c.y0 + 1;
       const asp = bw / bh;
       const preench = c.area / (bw * bh);
-      return asp > 0.45 && asp < 2.2 && preench > 0.5;
+      // marcador = quadrado CHEIO: descarta anéis (padrões do QR) e círculos (bolhas pintadas)
+      return asp > 0.45 && asp < 2.2 && preench > 0.45 && c.solidez > 0.85 && c.circularidade < 0.8;
     })
     .sort((a, b) => b.area - a.area)
     .slice(0, 18);
@@ -159,6 +188,10 @@ export function encontrarMarcadores(img: ImagemRGBA, qrCentro?: Ponto, razaoEspe
     if (!convexo(pts)) continue;
     const area = areaPoligono(pts);
     if (area < red.w * red.h * 0.04) continue;
+    // tamanho de cada marcador compatível com a distância entre eles
+    const perim = pts.reduce((acc, p, i) => acc + Math.hypot(pts[(i + 1) % 4][0] - p[0], pts[(i + 1) % 4][1] - p[1]), 0);
+    const ladoEsp = ladoRelativo * perim;
+    if (g.some(x => x.area < ladoEsp * ladoEsp * 0.35 || x.area > ladoEsp * ladoEsp * 2.6)) continue;
     // lados opostos com comprimentos compatíveis (perspectiva moderada)
     const L = pts.map((p, i) => Math.hypot(pts[(i + 1) % 4][0] - p[0], pts[(i + 1) % 4][1] - p[1]));
     if (Math.max(L[0], L[2]) / Math.min(L[0], L[2]) > 1.8 || Math.max(L[1], L[3]) / Math.min(L[1], L[3]) > 1.8) continue;
@@ -229,25 +262,93 @@ const MIOLO: Ponto[] = [];
 for (let dy = -1.9; dy <= 1.9001; dy += 0.38) for (let dx = -1.9; dx <= 1.9001; dx += 0.38) if (dx * dx + dy * dy <= 1.9 * 1.9) MIOLO.push([dx, dy]);
 const ANEL: Ponto[] = Array.from({ length: 12 }, (_, i) => [Math.cos((i * Math.PI) / 6) * 3.45, Math.sin((i * Math.PI) / 6) * 3.45]);
 
-/** Nível de preenchimento (0–1) de uma bolha centrada em (xmm, ymm). */
-function nivelBolha(g: Uint8Array, w: number, h: number, H: number[], xmm: number, ymm: number): number {
-  const papel = Math.max(60, mediana(ANEL.map(([dx, dy]) => { const [px, py] = aplicar(H, xmm + dx, ymm + dy); return amostrar(g, w, h, px, py); })));
-  let soma = 0;
-  for (const [dx, dy] of MIOLO) { const [px, py] = aplicar(H, xmm + dx, ymm + dy); soma += amostrar(g, w, h, px, py); }
-  const media = soma / MIOLO.length;
-  return Math.max(0, Math.min(1, 1 - media / papel));
-}
+export interface Limiares { marcada: number; duvida: number }
 
-export function decidir(niveis: { op: string; nivel: number }[]): { resposta: Resposta; duvida: boolean } {
+export function decidir(niveis: { op: string; nivel: number }[], lim: Limiares = { marcada: LIMIAR_MARCADA, duvida: LIMIAR_DUVIDA }): { resposta: Resposta; duvida: boolean } {
   if (niveis.length === 0) return { resposta: null, duvida: false };
   const s = [...niveis].sort((a, b) => b.nivel - a.nivel);
   const [p, q] = [s[0], s[1] ?? { op: '', nivel: 0 }];
-  if (p.nivel >= LIMIAR_MARCADA) {
-    if (q.nivel >= LIMIAR_MARCADA && q.nivel > p.nivel * 0.6) return { resposta: '*', duvida: true }; // dupla marcação
-    return { resposta: p.op, duvida: q.nivel >= LIMIAR_DUVIDA };
+  if (p.nivel >= lim.marcada) {
+    if (q.nivel >= lim.marcada && q.nivel > p.nivel * 0.6) return { resposta: '*', duvida: true }; // dupla marcação
+    return { resposta: p.op, duvida: q.nivel >= lim.duvida || p.nivel - q.nivel < 0.15 };
   }
-  if (p.nivel >= LIMIAR_DUVIDA) return { resposta: p.op, duvida: true }; // marcação fraca
+  if (p.nivel >= lim.duvida) return { resposta: p.op, duvida: true }; // marcação fraca
   return { resposta: null, duvida: false };
+}
+
+/**
+ * Limiar de "pintada" calculado na própria folha (2 grupos: vazias × pintadas), dentro de limites seguros.
+ * Adapta-se à luz, à caneta e à impressora.
+ */
+export function limiaresDaFolha(niveis: number[]): Limiares {
+  if (niveis.length < 4) return { marcada: LIMIAR_MARCADA, duvida: LIMIAR_DUVIDA };
+  let t = LIMIAR_MARCADA;
+  for (let it = 0; it < 12; it++) {
+    const baixo = niveis.filter(n => n < t), alto = niveis.filter(n => n >= t);
+    if (!baixo.length || !alto.length) break;
+    const m1 = baixo.reduce((a, b) => a + b, 0) / baixo.length, m2 = alto.reduce((a, b) => a + b, 0) / alto.length;
+    t = (m1 + m2) / 2;
+  }
+  const marcada = Math.min(0.45, Math.max(0.22, t));
+  return { marcada, duvida: Math.max(0.12, marcada * 0.55) };
+}
+
+// ───────── Modelo de câmera: homografia + distorção radial da lente (barril/almofada) ─────────
+// A lente do celular curva a imagem, sobretudo de perto. Modelo de 1 parâmetro (k), centro no meio da imagem:
+//   ponto ideal u = c + (o − c)·(1 + k·|o − c|²/R²), onde o é o ponto observado na foto.
+interface Modelo { H: number[]; k: number; cx: number; cy: number; R2: number }
+
+function desdistorcer(m: Pick<Modelo, 'k' | 'cx' | 'cy' | 'R2'>, [x, y]: Ponto): Ponto {
+  const dx = x - m.cx, dy = y - m.cy, f = 1 + m.k * (dx * dx + dy * dy) / m.R2;
+  return [m.cx + dx * f, m.cy + dy * f];
+}
+function distorcer(m: Pick<Modelo, 'k' | 'cx' | 'cy' | 'R2'>, [ux, uy]: Ponto): Ponto {
+  let ox = ux, oy = uy; // ponto fixo: o = c + (u − c)/(1 + k r_o²)
+  for (let i = 0; i < 5; i++) { const dx = ox - m.cx, dy = oy - m.cy, f = 1 + m.k * (dx * dx + dy * dy) / m.R2; ox = m.cx + (ux - m.cx) / f; oy = m.cy + (uy - m.cy) / f; }
+  return [ox, oy];
+}
+function projetar(m: Modelo, x: number, y: number): Ponto { return m.k ? distorcer(m, aplicar(m.H, x, y)) : aplicar(m.H, x, y); }
+
+function criarModelo(k: number, mm: Ponto[], obs: Ponto[], W: number, Hh: number): Modelo {
+  const base = { k, cx: W / 2, cy: Hh / 2, R2: (W * W + Hh * Hh) / 4 };
+  return { ...base, H: homografia(mm, obs.map(o => desdistorcer(base, o))) };
+}
+
+// ───────── Ajuste fino local ─────────
+interface Local { x: number; y: number; ux: Ponto; uy: Ponto }
+function local(m: Modelo, x: number, y: number): Local {
+  const [px, py] = projetar(m, x, y), [ax, ay] = projetar(m, x + 1, y), [bx, by] = projetar(m, x, y + 1);
+  return { x: px, y: py, ux: [ax - px, ay - py], uy: [bx - px, by - py] };
+}
+const em = (L: Local, dx: number, dy: number): Ponto => [L.x + L.ux[0] * dx + L.uy[0] * dy, L.y + L.ux[1] * dx + L.uy[1] * dy];
+const ANG = Array.from({ length: 16 }, (_, i) => [Math.cos((i * Math.PI) / 8), Math.sin((i * Math.PI) / 8)]);
+const R_BOLHA = GRADE.bolha / 2;
+
+/** Quanto o contorno impresso da bolha coincide com (ox, oy): anel escuro e papel claro logo fora. */
+function encaixe(g: Uint8Array, w: number, h: number, L: Local, ox: number, oy: number): number {
+  let anel = 0, fora = 0;
+  for (const [c, s] of ANG) {
+    for (const r of [R_BOLHA - 0.25, R_BOLHA, R_BOLHA + 0.25]) { const [x, y] = em(L, ox + c * r, oy + s * r); anel += amostrar(g, w, h, x, y); }
+    const [x, y] = em(L, ox + c * (R_BOLHA + 0.95), oy + s * (R_BOLHA + 0.95)); fora += amostrar(g, w, h, x, y);
+  }
+  return fora / ANG.length - anel / (ANG.length * 3); // positivo = contorno escuro sobre papel claro
+}
+
+function melhorDeslocamento(g: Uint8Array, w: number, h: number, Ls: Local[], cx: number, cy: number, raio: number, passo: number): { dx: number; dy: number; nota: number } {
+  let m = { dx: cx, dy: cy, nota: -Infinity };
+  for (let dy = cy - raio; dy <= cy + raio + 1e-9; dy += passo) for (let dx = cx - raio; dx <= cx + raio + 1e-9; dx += passo) {
+    let nota = 0;
+    for (const L of Ls) nota += encaixe(g, w, h, L, dx, dy);
+    if (nota > m.nota) m = { dx, dy, nota };
+  }
+  return m;
+}
+
+function nivelLocal(g: Uint8Array, w: number, h: number, L: Local, ox: number, oy: number): number {
+  const papel = Math.max(60, mediana(ANEL.map(([dx, dy]) => { const [x, y] = em(L, ox + dx, oy + dy); return amostrar(g, w, h, x, y); })));
+  let soma = 0;
+  for (const [dx, dy] of MIOLO) { const [x, y] = em(L, ox + dx, oy + dy); soma += amostrar(g, w, h, x, y); }
+  return Math.max(0, Math.min(1, 1 - soma / MIOLO.length / papel));
 }
 
 /** Lê as respostas de uma folha. `qrCentro` em pixels da imagem (melhora a orientação). */
@@ -255,32 +356,72 @@ export function lerFolhaOMR(img: ImagemRGBA, itens: ItemGabarito[], qrCentro?: P
   const geo = geometriaFolha(itens, versao);
   const [m0, m1, m2, m3] = geo.marcadores;
   const razao = (Math.hypot(m1[0] - m0[0], m1[1] - m0[1]) + Math.hypot(m2[0] - m3[0], m2[1] - m3[1])) / (Math.hypot(m3[0] - m0[0], m3[1] - m0[1]) + Math.hypot(m2[0] - m1[0], m2[1] - m1[1]));
-  const marcadores = encontrarMarcadores(img, qrCentro, razao);
+  const perimetro = geo.marcadores.reduce((acc, p, i) => { const q = geo.marcadores[(i + 1) % 4]; return acc + Math.hypot(q[0] - p[0], q[1] - p[1]); }, 0);
+  const marcadores = encontrarMarcadores(img, qrCentro, razao, MARCADOR.lado / perimetro);
   if (!marcadores) return { ok: false, motivo: 'marcadores' };
-  const H = homografia(geo.marcadores, marcadores);
-  const cx = (geo.zona.x0 + geo.zona.x1) / 2, cy = (geo.zona.y0 + geo.zona.y1) / 2;
-  const [ox, oy] = aplicar(H, cx, cy), [ex, ey] = aplicar(H, cx + 1, cy);
-  const escala = Math.hypot(ex - ox, ey - oy); // pixels por milímetro no centro da folha
+  const g = paraCinza(img);
+  const W = img.width, Hh = img.height;
+  const todas = geo.linhas.flatMap(l => l.opcoes);
+  // 1) escolhe a curvatura da lente (k) que melhor encaixa TODAS as bolhas nos contornos impressos
+  const notaModelo = (k: number) => {
+    const m = criarModelo(k, geo.marcadores, marcadores, W, Hh);
+    let n = 0;
+    for (const o of todas) n += encaixe(g, W, Hh, local(m, o.x, o.y), 0, 0);
+    return n;
+  };
+  let melhorK = 0, melhorNota = notaModelo(0);
+  for (let k = -0.3; k <= 0.3001; k += 0.03) { const n = notaModelo(k); if (n > melhorNota) { melhorNota = n; melhorK = k; } }
+  for (let k = melhorK - 0.03; k <= melhorK + 0.0301; k += 0.0075) { const n = notaModelo(k); if (n > melhorNota) { melhorNota = n; melhorK = k; } }
+  const modelo = criarModelo(melhorK, geo.marcadores, marcadores, W, Hh);
+  const centro = projetar(modelo, (geo.zona.x0 + geo.zona.x1) / 2, (geo.zona.y0 + geo.zona.y1) / 2);
+  const lado = projetar(modelo, (geo.zona.x0 + geo.zona.x1) / 2 + 1, (geo.zona.y0 + geo.zona.y1) / 2);
+  const escala = Math.hypot(lado[0] - centro[0], lado[1] - centro[1]); // pixels por milímetro
   // sanidade: o QR precisa estar onde a geometria prevê; senão os 4 pontos não são os marcadores
   if (qrCentro) {
-    const [qx, qy] = aplicar(H, geo.qr.x + geo.qr.lado / 2, geo.qr.y + geo.qr.lado / 2);
+    const [qx, qy] = projetar(modelo, geo.qr.x + geo.qr.lado / 2, geo.qr.y + geo.qr.lado / 2);
     if (Math.hypot(qx - qrCentro[0], qy - qrCentro[1]) > 15 * escala) return { ok: false, motivo: 'marcadores' };
   }
-  const g = paraCinza(img);
+  // 2) por linha: ajuste residual (±2,5 mm — menos que meia distância entre bolhas: não pula de bolha).
+  //    Compensa papel curvado e o que o modelo da lente não explicou.
+  const porLinha = geo.linhas.map(l => {
+    const Ls = l.opcoes.map(o => local(modelo, o.x, o.y));
+    if (!Ls.length) return { Ls, dx: 0, dy: 0, nota: 0 };
+    const grosso = melhorDeslocamento(g, W, Hh, Ls, 0, 0, 2.5, 0.3);
+    const fino = melhorDeslocamento(g, W, Hh, Ls, grosso.dx, grosso.dy, 0.3, 0.1);
+    return { Ls, dx: fino.dx, dy: fino.dy, nota: fino.nota / Ls.length };
+  });
+  // suaviza entre linhas vizinhas da mesma coluna; linha que destoa (ou com encaixe fraco) pede conferência
+  const qualidadeRef = mediana(porLinha.filter(r => r.Ls.length).map(r => r.nota)) ?? 0;
+  const suave = porLinha.map((r, i) => {
+    const viz = porLinha.filter((q, j) => q.Ls.length && Math.abs(j - i) <= 2 && Math.abs(geo.linhas[j].x - geo.linhas[i].x) < 1);
+    const dx = mediana(viz.map(v => v.dx)) ?? r.dx, dy = mediana(viz.map(v => v.dy)) ?? r.dy;
+    return { dx, dy, destoa: Math.hypot(r.dx - dx, r.dy - dy) > 1.0 || (r.Ls.length > 0 && r.nota < qualidadeRef * 0.55) };
+  });
+  // qualidade: o contorno das bolhas foi encontrado? (foto borrada ou desalinhada → nota baixa)
+  const notas = porLinha.filter(r => r.Ls.length).map(r => r.nota);
+  const qualidade = notas.length ? mediana(notas) : 0;
+  if (qualidade < 6) return { ok: false, motivo: 'marcadores' };
+  // 3) por bolha: ajuste pequeno (±0,6 mm) e medida do preenchimento
+  const brutos = geo.linhas.map((l, i) => l.opcoes.map((o, k) => {
+    const L = porLinha[i].Ls[k];
+    const b = melhorDeslocamento(g, W, Hh, [L], suave[i].dx, suave[i].dy, 0.6, 0.2);
+    const ox = b.dx, oy = b.dy;
+    const nivel = nivelLocal(g, W, Hh, L, ox, oy);
+    const [x, y] = em(L, ox, oy);
+    return { op: o.op, nivel, x, y };
+  }));
+  const lim = limiaresDaFolha(brutos.flat().map(b => b.nivel));
   const amostras: AmostraBolha[] = [];
   const respostas: Resposta[] = [];
   const duvidas: boolean[] = [];
-  for (const l of geo.linhas) {
-    const niveis = l.opcoes.map(o => {
-      const nivel = nivelBolha(g, img.width, img.height, H, o.x, o.y);
-      const [x, y] = aplicar(H, o.x, o.y);
-      amostras.push({ pos: l.pos, op: o.op, x, y, r: (GRADE.bolha / 2) * escala, nivel });
-      return { op: o.op, nivel };
-    });
-    const d = decidir(niveis);
+  geo.linhas.forEach((l, i) => {
+    for (const b of brutos[i]) amostras.push({ pos: l.pos, op: b.op, x: b.x, y: b.y, r: (GRADE.bolha / 2) * escala, nivel: b.nivel });
+    const d = decidir(brutos[i], lim);
     respostas.push(l.tipo === 'disc' ? null : d.resposta);
-    duvidas.push(l.tipo === 'disc' ? false : d.duvida);
-  }
+    // linha incerta: pede conferência mesmo se parecer em branco (pode ser bolha pintada fora do lugar previsto)
+    const maxNivel = Math.max(0, ...brutos[i].map(b => b.nivel));
+    duvidas.push(l.tipo === 'disc' ? false : d.duvida || (suave[i].destoa && (d.resposta !== null || maxNivel > lim.duvida * 0.5)));
+  });
   return { ok: true, respostas, duvidas, amostras, marcadores };
 }
 
