@@ -92,10 +92,11 @@ describe('criptografia e QR', () => {
     const av = avaliacao();
     const itens = itensDaVersao(av, 'B');
     const qr = await qrFolha(chave, id, { avaliacaoId: av.id, titulo: av.titulo, codigo: av.codigo, versao: 'B', itens });
-    expect(qr.startsWith('AV2|')).toBe(true); // gabarito vai cifrado
+    expect(qr.startsWith('AV3|')).toBe(true); // gabarito vai cifrado; AV3 = área de leitura compacta
     const lido = await lerQrFolha(qr, chave, id);
     expect(lido.ok && lido.dados.itens).toEqual(itens);
     expect(lido.ok && lido.dados.avaliacaoId).toBe('cod:AGR-01');
+    expect(lido.ok && lido.dados.layout).toBe(2);
     console.log('tamanho do QR (4 questões):', qr.length);
     const outra = gerarChave();
     expect((await lerQrFolha(qr, outra, await idDaChave(outra))).ok).toBe(false);
@@ -227,5 +228,16 @@ describe('folha personalizada', () => {
       { nome: 'Ana Souza', matricula: '2026001' }, { nome: 'Bruno Lima', matricula: '2026002' },
       { nome: 'Carla Dias', matricula: '2026003' }, { nome: 'Daniel Rocha', matricula: '' }, { nome: 'Eva Martins', matricula: '2026005' },
     ]);
+  });
+});
+
+describe('compatibilidade com folhas já impressas', () => {
+  it('QR AV2 (marcadores nos cantos da página) é lido com o layout antigo', async () => {
+    const { cifrar } = await import('./cripto');
+    const chave = gerarChave(); const id = await idDaChave(chave);
+    const txt = ['AV2', id, 'SR-2026-01', 'A', await cifrar(chave, JSON.stringify({ g: 'Cvd', p: 1 }))].join('|');
+    const r = await lerQrFolha(txt, chave, id);
+    expect(r.ok && r.dados.layout).toBe(1);
+    expect(r.ok && r.dados.itens.map(i => i.tipo)).toEqual(['me', 'vf', 'disc']);
   });
 });

@@ -458,7 +458,10 @@ i.b { position: absolute; font-style: normal; font-family: var(--fonte); border:
 .lin-abs .n { text-align: right; font-weight: 800; font-size: 9pt; padding-right: 1.5mm; flex-shrink: 0; }
 .disc-campo { font-size: 7.5pt; color: #333; display: flex; align-items: center; gap: 1.2mm; white-space: nowrap; }
 .nota-box { display: inline-block; width: 12mm; height: 5.5mm; border: 1px solid #555; border-radius: 1mm; vertical-align: middle; }
-.area-professor { position: absolute; left: 17mm; right: 17mm; top: 262mm; display: flex; gap: 6mm; align-items: center; font-size: 8.5pt; border-top: 1px dashed #999; padding-top: 3mm; flex-wrap: wrap; font-family: var(--fonte); }
+.area-professor { position: absolute; left: 17mm; right: 17mm; display: flex; gap: 6mm; align-items: center; font-size: 8.5pt; border-top: 1px dashed #999; padding-top: 3mm; flex-wrap: wrap; font-family: var(--fonte); }
+.zona-leitura { position: absolute; border: 0.6px dashed #c4c4c4; border-radius: 3mm; box-sizing: border-box; }
+.zona-leitura span { position: absolute; top: -3.2mm; left: 4mm; background: #fff; padding: 0 1.5mm; font-family: var(--fonte); font-size: 6.5pt; color: #9a9a9a; letter-spacing: .04em; text-transform: uppercase; }
+.qr-zona { position: absolute; image-rendering: pixelated; }
 .folha .rodape-imp { top: 289mm; bottom: auto; }
 
 .gabarito-prof .cab-gab { border-bottom: 2px solid #000; padding-bottom: 3mm; margin-bottom: 5mm; }
@@ -483,5 +486,8 @@ i.b { position: absolute; font-style: normal; font-family: var(--fonte); border:
   .pagina:last-child { break-after: auto; page-break-after: auto; }
   .pagina .rodape-imp { position: static; margin-top: 6mm; }
   .pagina.folha { page: folha; width: 210mm; height: 296.5mm; padding: 16mm 17mm; overflow: hidden; }
-  .pagina.folha .rodape-imp { position: absolute; }
+  .pagina.zona-leitura { position: absolute; border: 0.6px dashed #c4c4c4; border-radius: 3mm; box-sizing: border-box; }
+.zona-leitura span { position: absolute; top: -3.2mm; left: 4mm; background: #fff; padding: 0 1.5mm; font-family: var(--fonte); font-size: 6.5pt; color: #9a9a9a; letter-spacing: .04em; text-transform: uppercase; }
+.qr-zona { position: absolute; image-rendering: pixelated; }
+.folha .rodape-imp { position: absolute; }
 }

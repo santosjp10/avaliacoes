@@ -25,7 +25,7 @@ O HTTPS do GitHub Pages é necessário para o celular liberar a câmera.
 
    Também é possível imprimir o gabarito do professor.
 4. **Pareamento (uma vez).** No PC, abra *Ajustes → Mostrar QR de pareamento*. No celular, abra o app e toque em *Parear com o Estúdio*.
-5. **Correção.** No celular, toque em *Escanear folha* e enquadre a **folha inteira**, de cima, com os 4 quadrados pretos dos cantos visíveis. O app lê o QR e as bolhas sozinho e mostra as respostas pré-marcadas.
+5. **Correção.** No celular, toque em *Escanear folha* e enquadre a **área de leitura** (o QR e as bolhas, cercados pelos 4 quadrados pretos), de cima. Não é preciso mostrar a folha inteira: pode aproximar o celular. O app lê o QR e as bolhas sozinho e mostra as respostas pré-marcadas.
    - Marcações duvidosas aparecem destacadas em amarelo: dupla marcação, rasura, um "X" em vez de pintar ou marca fraca.
    - Confira, digite o nome do aluno e toque em *Corrigir e salvar*.
    - *Ver foto com a leitura* mostra o que foi reconhecido.
@@ -75,6 +75,7 @@ Decisões importantes:
 - A versão não copia as questões. Ela guarda só a **ordem** das questões e das alternativas, e o gabarito é sempre derivado dessa ordem. Assim não há gabarito digitado nem desalinhado.
 - Só alternativas de múltipla escolha são embaralhadas. V/F e discursivas mantêm a resposta.
 - A análise das questões agrupa pela questão original, não pela posição (que muda de uma versão para outra).
+- A folha tem uma **área de leitura compacta** (layout 2, QR `AV3`): o QR fica ao lado das bolhas e os 4 marcadores ficam colados nesse conjunto. As colunas são equilibradas, e o tamanho da área depende do número de questões (cerca de 10 × 10 cm para 10 questões e 14 × 14 cm para 30). Folhas antigas (QR `AV1`/`AV2`, marcadores nos cantos da página) continuam sendo lidas com a geometria antiga.
 - A posição de cada bolha é definida em milímetros em `src/core/folha.ts`. A impressão e a leitura óptica (`src/core/omr.ts`) usam a mesma geometria.
 - Leitura óptica, em quatro passos:
   - localiza os 4 marcadores com binarização adaptativa, que tolera sombra;

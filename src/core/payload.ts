@@ -32,6 +32,8 @@ export interface DadosFolha {
   itens: ItemGabarito[];
   /** Folha personalizada: aluno impresso na folha. */
   aluno?: { nome: string; matricula: string };
+  /** Layout da folha: 1 = marcadores nos cantos da página (AV1/AV2); 2 = área de leitura compacta (AV3). */
+  layout?: 1 | 2;
 }
 
 // Gabarito compacto, 1 caractere por questão (mantém o QR pequeno e fácil de ler pela câmera):
@@ -66,7 +68,7 @@ export async function qrFolha(chave: string, idChave: string, d: DadosFolha): Pr
   const dados: Record<string, unknown> = { g: d.itens.map(compactar).join(''), p: uniforme ? pesos[0] : pesos };
   if (d.aluno) dados.a = [d.aluno.nome.slice(0, 48), d.aluno.matricula.slice(0, 20)];
   const corpo = JSON.stringify(dados);
-  return ['AV2', idChave, d.codigo.replace(/\|/g, '-'), d.versao, await cifrar(chave, corpo)].join('|');
+  return ['AV3', idChave, d.codigo.replace(/\|/g, '-'), d.versao, await cifrar(chave, corpo)].join('|');
 }
 
 export type LeituraFolha =
@@ -75,23 +77,23 @@ export type LeituraFolha =
 
 export function idChaveDaFolha(txt: string): string | null {
   const p = txt.split('|');
-  return p[0] === 'AV1' || p[0] === 'AV2' ? p[1] : null;
+  return /^AV[123]$/.test(p[0]) ? p[1] : null;
 }
 
 export async function lerQrFolha(txt: string, chave: string, idChave: string): Promise<LeituraFolha> {
   const p = txt.split('|');
-  if ((p[0] !== 'AV1' && p[0] !== 'AV2') || p.length !== 5) return { ok: false, motivo: 'formato' };
+  if (!/^AV[123]$/.test(p[0]) || p.length !== 5) return { ok: false, motivo: 'formato' };
   if (p[1] !== idChave) return { ok: false, motivo: 'chave', idChave: p[1] };
   try {
     const c = JSON.parse(await decifrar(chave, p[4]));
     const peso = (i: number) => Array.isArray(c.p) ? Number(c.p[i]) : Number(c.p);
     if (p[0] === 'AV1') {
       const itens = String(c.g).split(',').map((s, i) => expandirV1(s, peso(i)));
-      return { ok: true, dados: { avaliacaoId: c.i, titulo: c.t, codigo: p[2], versao: p[3], itens } };
+      return { ok: true, dados: { avaliacaoId: c.i, titulo: c.t, codigo: p[2], versao: p[3], itens, layout: 1 } };
     }
     const itens = [...String(c.g)].map((ch, i) => expandir(ch, peso(i)));
     const aluno = Array.isArray(c.a) ? { nome: String(c.a[0] ?? ''), matricula: String(c.a[1] ?? '') } : undefined;
-    return { ok: true, dados: { avaliacaoId: prefixoCodigo(p[2]), titulo: p[2], codigo: p[2], versao: p[3], itens, aluno } };
+    return { ok: true, dados: { avaliacaoId: prefixoCodigo(p[2]), titulo: p[2], codigo: p[2], versao: p[3], itens, aluno, layout: p[0] === 'AV3' ? 2 : 1 } };
   } catch {
     return { ok: false, motivo: 'corrompido' };
   }

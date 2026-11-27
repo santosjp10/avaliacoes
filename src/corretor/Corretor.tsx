@@ -85,7 +85,7 @@ export function Corretor() {
     const folha = r.dados;
     const { aluno: _a, ...folhaSemAluno } = folha;
     await gravarConfig(chaveFolha(folha.avaliacaoId, folha.versao), folhaSemAluno);
-    const omr = lerFolhaOMR(quadro.img, folha.itens, quadro.qr);
+    const omr = lerFolhaOMR(quadro.img, folha.itens, quadro.qr, folha.layout ?? 1);
     if (omr.ok) {
       const c = correcaoVazia(folha, dispositivo);
       c.respostas = omr.respostas;
@@ -106,11 +106,11 @@ export function Corretor() {
     // QR lido, mas os 4 quadrados dos cantos não foram encontrados
     setUltimaFolha(folha);
     if (quadro.fonte === 'foto') {
-      aviso('Não encontrei os 4 quadrados pretos dos cantos. Fotografe a folha inteira, de cima, ou marque as respostas manualmente.', 'erro');
+      aviso('Não encontrei os 4 quadrados pretos em volta das bolhas. Fotografe de cima, com os 4 visíveis, ou marque as respostas manualmente.', 'erro');
       return false;
     }
     tentativas.current++;
-    if (tentativas.current % 6 === 1) aviso('Afaste o celular: a folha inteira, com os 4 quadrados pretos, precisa aparecer na tela.', 'info');
+    if (tentativas.current % 6 === 1) aviso('Os 4 quadrados pretos em volta das bolhas precisam aparecer na tela. Ajuste a distância.', 'info');
     return false;
   }
 
@@ -131,7 +131,7 @@ export function Corretor() {
         {tela.t === 'inicio' && <small className="versao-app escura">versão {VERSAO}</small>}
         {tela.t === 'parear' && <LeitorQr aoLer={aoLerPareamento} dica="No computador, abra o Estúdio → Ajustes → Mostrar QR de pareamento, e aponte a câmera para ele." />}
         {tela.t === 'ler' && <LeitorQr aoLer={aoLerFolha}
-          dica="Enquadre a folha de respostas inteira, de cima, com os 4 quadrados pretos dos cantos visíveis. A leitura é automática."
+          dica="Enquadre a área de leitura — o QR e as bolhas, com os 4 quadrados pretos visíveis. Pode aproximar o celular. A leitura é automática."
           extra={ultimaFolha && <div className="manual-leitor"><button className="btn" onClick={() => setTela({ t: 'corrigir', folha: ultimaFolha, c: correcaoVazia(ultimaFolha, dispositivo) })}>✏️ Marcar respostas manualmente</button></div>} />}
         {tela.t === 'corrigir' && <Corrigir key={tela.c.id} folha={tela.folha} inicial={tela.c} leitura={tela.leitura} aoSalvar={c => setTela({ t: 'resultado', folha: tela.folha, c })} />}
         {tela.t === 'resultado' && <TelaResultado folha={tela.folha} c={tela.c} auto={tela.auto}

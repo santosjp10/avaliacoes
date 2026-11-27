@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { homografia, aplicar, lerFolhaOMR, decidir } from './omr';
-import { CENTROS_MARCADORES, CENTRO_QR, GRADE, MARCADOR, layoutFolha } from './folha';
+import { GRADE, MARCADOR, geometriaFolha, type VersaoLayout } from './folha';
 import type { ItemGabarito } from './types';
 import { rngSemente } from './util';
 
@@ -9,10 +9,12 @@ const itens: ItemGabarito[] = Array.from({ length: 34 }, (_, i) =>
   i % 9 === 4 ? { tipo: 'vf', nAlt: 2, correta: 'V', peso: 1 } : i === 20 ? { tipo: 'disc', nAlt: 0, correta: null, peso: 2 } : { tipo: 'me', nAlt: 5, correta: 'A', peso: 1 });
 
 /** Desenha a folha (em mm) e a fotografa com a homografia dada: rotação, perspectiva, sombra e ruído. */
-function fotografar(marcas: Record<number, string[]>, cantosPx: P[], W: number, H: number, semente = 1) {
-  const Hinv = homografia(cantosPx, CENTROS_MARCADORES); // pixel → mm
+function fotografar(marcas: Record<number, string[]>, cantosPx: P[], W: number, H: number, semente = 1, versao: VersaoLayout = 1) {
+  const geo = geometriaFolha(itens, versao);
+  const Hinv = homografia(cantosPx, geo.marcadores); // pixel → mm
   const rnd = rngSemente(semente);
-  const linhas = layoutFolha(itens);
+  const linhas = geo.linhas;
+  const CENTRO_QR = [geo.qr.x + geo.qr.lado / 2, geo.qr.y + geo.qr.lado / 2];
   const bolhas = linhas.flatMap(l => l.opcoes.map(o => ({ ...o, cheia: (marcas[l.pos] ?? []).includes(o.op) })));
   const data = new Uint8ClampedArray(W * H * 4);
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
@@ -20,8 +22,8 @@ function fotografar(marcas: Record<number, string[]>, cantosPx: P[], W: number, 
     let v = 70; // mesa escura fora da folha
     if (mx >= 0 && mx <= 210 && my >= 0 && my <= 297) {
       v = 235;
-      for (const [cx, cy] of CENTROS_MARCADORES) if (Math.abs(mx - cx) <= MARCADOR.lado / 2 && Math.abs(my - cy) <= MARCADOR.lado / 2) v = 15;
-      if (Math.abs(mx - CENTRO_QR[0]) < 15 && Math.abs(my - CENTRO_QR[1]) < 15) v = ((Math.floor(mx) + Math.floor(my * 1.3)) % 2) ? 20 : 235;
+      for (const [cx, cy] of geo.marcadores) if (Math.abs(mx - cx) <= MARCADOR.lado / 2 && Math.abs(my - cy) <= MARCADOR.lado / 2) v = 15;
+      if (Math.abs(mx - CENTRO_QR[0]) < geo.qr.lado / 2 && Math.abs(my - CENTRO_QR[1]) < geo.qr.lado / 2) v = ((Math.floor(mx) + Math.floor(my * 1.3)) % 2) ? 20 : 235;
       for (const b of bolhas) {
         const d = Math.hypot(mx - b.x, my - b.y);
         if (b.cheia && d < GRADE.bolha / 2 - 0.2) v = 40 + 30 * rnd();
@@ -34,7 +36,7 @@ function fotografar(marcas: Record<number, string[]>, cantosPx: P[], W: number, 
     const i = (y * W + x) * 4;
     data[i] = data[i + 1] = data[i + 2] = v; data[i + 3] = 255;
   }
-  const qr = aplicar(homografia(CENTROS_MARCADORES, cantosPx), CENTRO_QR[0], CENTRO_QR[1]);
+  const qr = aplicar(homografia(geo.marcadores, cantosPx), CENTRO_QR[0], CENTRO_QR[1]);
   return { img: { data, width: W, height: H }, qr };
 }
 
@@ -56,9 +58,9 @@ describe('leitura óptica', { timeout: 60_000 }, () => {
   it('folha reta', () => {
     const W = 720, H = 1000;
     const k = 3.2, ox = 25, oy = 20;
-    const cantos = CENTROS_MARCADORES.map(([x, y]) => [ox + x * k, oy + y * k] as P);
+    const cantos = geometriaFolha(itens, 1).marcadores.map(([x, y]) => [ox + x * k, oy + y * k] as P);
     const f = fotografar(marcas, cantos, W, H);
-    conferir(lerFolhaOMR(f.img, itens, f.qr));
+    conferir(lerFolhaOMR(f.img, itens, f.qr, 1));
   });
 
   it('folha inclinada e em perspectiva, foto deitada (90°)', () => {
@@ -67,7 +69,7 @@ describe('leitura óptica', { timeout: 60_000 }, () => {
     const cantos: P[] = [[1170, 95], [1150, 880], [210, 905], [160, 60]];
     const f = fotografar(marcas, cantos, W, H, 7);
     const t0 = performance.now();
-    const r = lerFolhaOMR(f.img, itens, f.qr);
+    const r = lerFolhaOMR(f.img, itens, f.qr, 1);
     console.log(`OMR 1280x960: ${Math.round(performance.now() - t0)} ms`);
     conferir(r);
   });
@@ -76,7 +78,39 @@ describe('leitura óptica', { timeout: 60_000 }, () => {
     const W = 800, H = 1100;
     const cantos: P[] = [[740, 1040], [80, 1020], [60, 70], [720, 40]];
     const f = fotografar(marcas, cantos, W, H, 3);
-    conferir(lerFolhaOMR(f.img, itens, f.qr));
+    conferir(lerFolhaOMR(f.img, itens, f.qr, 1));
+  });
+
+  it('folha nova (área compacta): foto bem de perto, área ocupando quase toda a imagem', () => {
+    const W = 1080, H = 1440;
+    // 34 questões → 2 colunas; a área de leitura (com marcadores) quase encosta nas bordas da foto
+    const cantos: P[] = [[60, 70], [1010, 95], [1000, 1360], [75, 1340]];
+    const f = fotografar(marcas, cantos, W, H, 5, 2);
+    conferir(lerFolhaOMR(f.img, itens, f.qr, 2));
+  });
+
+  it('folha nova: de longe, inclinada', () => {
+    const W = 1280, H = 1700;
+    const cantos: P[] = [[330, 520], [960, 470], [1010, 1190], [360, 1250]];
+    const f = fotografar(marcas, cantos, W, H, 9, 2);
+    conferir(lerFolhaOMR(f.img, itens, f.qr, 2));
+  });
+
+  it('folha nova: de cabeça para baixo', () => {
+    const W = 1000, H = 1300;
+    const cantos: P[] = [[920, 1220], [90, 1200], [70, 90], [930, 70]];
+    const f = fotografar(marcas, cantos, W, H, 4, 2);
+    conferir(lerFolhaOMR(f.img, itens, f.qr, 2));
+  });
+
+  it('geometria nova: área compacta e marcadores dentro da página', () => {
+    for (const n of [5, 10, 20, 34, 60, 61, 80]) {
+      const g = geometriaFolha(Array.from({ length: n }, () => ({ tipo: 'me' as const, nAlt: 5 })), 2);
+      for (const [x, y] of g.marcadores) { expect(x - 3.5).toBeGreaterThanOrEqual(5); expect(x + 3.5).toBeLessThanOrEqual(205); expect(y + 3.5).toBeLessThan(g.fim); }
+      expect(g.fim).toBeLessThan(285);
+      const larg = g.marcadores[1][0] - g.marcadores[0][0], alt = g.marcadores[3][1] - g.marcadores[0][1];
+      if (n === 10) { expect(larg).toBeLessThan(100); expect(alt).toBeLessThan(100); }
+    }
   });
 
   it('sem marcadores visíveis: recusa em vez de chutar', () => {

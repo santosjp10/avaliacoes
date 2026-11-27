@@ -6,7 +6,7 @@ import { alternativasNaVersao, itensDaVersao, valorTotal } from '../core/gabarit
 import { ordenarAlunos } from '../core/alunos';
 import { atribuicao } from '../core/compartilhado';
 import { qrFolha } from '../core/payload';
-import { CENTROS_MARCADORES, GRADE, MARCADOR, layoutFolha } from '../core/folha';
+import { GRADE, MARCADOR, geometriaFolha } from '../core/folha';
 import { LETRAS, fmtNum } from '../core/util';
 import { useRota } from '../ui/base';
 
@@ -163,21 +163,27 @@ function Prova({ av, v, qr, colunas, aluno }: { av: Avaliacao; v: Versao; qr?: s
 
 function Folha({ av, v, qr, aluno }: { av: Avaliacao; v: Versao; qr?: string; aluno?: Aluno }) {
   const itens = itensDaVersao(av, v.nome, { semAnulacao: true });
-  const linhas = layoutFolha(itens);
+  const geo = geometriaFolha(itens, 2);
+  const linhas = geo.linhas;
   const mm = (n: number) => `${n}mm`;
+  const a = 10; // moldura tracejada: um pouco além dos marcadores
   return (
     <section className="pagina folha">
-      {CENTROS_MARCADORES.map(([x, y], i) => (
+      <div className="zona-leitura" style={{ left: mm(geo.zona.x0 - a), top: mm(geo.zona.y0 - a), width: mm(geo.zona.x1 - geo.zona.x0 + 2 * a), height: mm(geo.zona.y1 - geo.zona.y0 + 2 * a) }}>
+        <span>área de leitura · fotografe com os 4 quadrados visíveis</span>
+      </div>
+      {qr && <img className="qr-zona" src={qr} alt="" style={{ left: mm(geo.qr.x), top: mm(geo.qr.y), width: mm(geo.qr.lado), height: mm(geo.qr.lado) }} />}
+      {geo.marcadores.map(([x, y], i) => (
         // desenhado em SVG (e não como cor de fundo): sai impresso mesmo com "Gráficos de fundo" desligado
         <svg key={i} className="marcador" viewBox="0 0 10 10" aria-hidden style={{ left: mm(x - MARCADOR.lado / 2), top: mm(y - MARCADOR.lado / 2), width: mm(MARCADOR.lado), height: mm(MARCADOR.lado) }}>
           <rect width="10" height="10" fill="#000" />
         </svg>
       ))}
-      <Cabecalho av={av} v={v} qr={qr} subtitulo={aluno ? 'FOLHA DE RESPOSTAS · personalizada — use somente a sua' : 'FOLHA DE RESPOSTAS'} aluno={aluno} />
-      <p className="instrucoes">Preencha <b>completamente</b> uma bolha por questão, com caneta azul ou preta. Não rasure, não dobre e não escreva perto dos quadrados pretos dos cantos.
+      <Cabecalho av={av} v={v} subtitulo={aluno ? 'FOLHA DE RESPOSTAS · personalizada — use somente a sua' : 'FOLHA DE RESPOSTAS'} aluno={aluno} />
+      <p className="instrucoes">Preencha <b>completamente</b> uma bolha por questão, com caneta azul ou preta. Não rasure, não dobre e não escreva dentro da área de leitura, fora das bolhas.
         <span className="exemplo">Correto: <svg className="b-ex-svg" viewBox="0 0 10 10" aria-hidden><circle cx="5" cy="5" r="4.6" fill="#000" /></svg> Errado: <i className="b-ex">✓</i> <i className="b-ex">✗</i></span></p>
       {linhas.map(l => (
-        <div key={l.pos} className={`lin-abs ${(l.pos + 1) % 5 === 0 ? 'sep' : ''}`} style={{ left: mm(l.x), top: mm(l.y), width: mm(l.largura - 2), height: mm(GRADE.linha) }}>
+        <div key={l.pos} className={`lin-abs ${(l.pos + 1) % 5 === 0 ? 'sep' : ''}`} style={{ left: mm(l.x), top: mm(l.y), width: mm(l.largura - 2), height: mm(geo.linha) }}>
           <span className="n" style={{ width: mm(GRADE.numero - 1.5) }}>{l.pos + 1}</span>
           {l.tipo === 'disc' && <span className="disc-campo">Disc. — nota <i className="nota-box" /> /{fmtNum(itens[l.pos].peso, 2)}</span>}
         </div>
@@ -185,7 +191,7 @@ function Folha({ av, v, qr, aluno }: { av: Avaliacao; v: Versao; qr?: string; al
       {linhas.flatMap(l => l.opcoes.map(o => (
         <i key={`${l.pos}${o.op}`} className="b" style={{ left: mm(o.x - GRADE.bolha / 2), top: mm(o.y - GRADE.bolha / 2), width: mm(GRADE.bolha), height: mm(GRADE.bolha) }}>{o.op}</i>
       )))}
-      <div className="area-professor">
+      <div className="area-professor" style={{ top: mm(geo.fim) }}>
         <span>Uso do professor —</span>
         <span>Objetiva: <i className="nota-box" /></span>
         <span>Discursiva: <i className="nota-box" /></span>

@@ -9,7 +9,7 @@
 // Tudo em TypeScript puro, sem dependências: roda no celular, em milissegundos.
 
 import type { ItemGabarito, Resposta } from './types';
-import { CENTROS_MARCADORES, CENTRO_QR, GRADE, layoutFolha } from './folha';
+import { GRADE, geometriaFolha, type VersaoLayout } from './folha';
 
 export interface ImagemRGBA { data: Uint8ClampedArray | Uint8Array; width: number; height: number }
 type Ponto = [number, number];
@@ -62,7 +62,7 @@ function binarizar(g: Uint8Array, w: number, h: number): Uint8Array {
     let s = 0;
     for (let x = 0; x < w; x++) { s += g[y * w + x]; int[(y + 1) * (w + 1) + x + 1] = int[y * (w + 1) + x + 1] + s; }
   }
-  const r = Math.max(8, Math.round(Math.min(w, h) / 14));
+  const r = Math.max(8, Math.round(Math.min(w, h) / 10));
   const m = new Uint8Array(w * h);
   for (let y = 0; y < h; y++) {
     const ya = Math.max(0, y - r), yb = Math.min(h, y + r + 1);
@@ -127,13 +127,16 @@ function ordenarHorario(p: Ponto[]): Ponto[] {
   return [...p].sort((a, b) => Math.atan2(a[1] - cy, a[0] - cx) - Math.atan2(b[1] - cy, b[0] - cx));
 }
 
-/** Encontra os 4 marcadores. Devolve os centros em pixels da imagem original, ordenados SE, SD, ID, IE da folha. */
-export function encontrarMarcadores(img: ImagemRGBA, qrCentro?: Ponto): Ponto[] | null {
+/**
+ * Encontra os 4 marcadores. Devolve os centros em pixels da imagem original, ordenados SE, SD, ID, IE da folha.
+ * `razaoEsperada` = largura/altura do retângulo formado pelos marcadores (conhecida pela geometria da folha).
+ */
+export function encontrarMarcadores(img: ImagemRGBA, qrCentro?: Ponto, razaoEsperada = 189 / 276): Ponto[] | null {
   const cinza = paraCinza(img);
   const red = reduzir(cinza, img.width, img.height, 1000);
   const mask = binarizar(red.g, red.w, red.h);
   const md = Math.max(red.w, red.h);
-  const ladoMin = md * 0.009, ladoMax = md * 0.08;
+  const ladoMin = md * 0.009, ladoMax = md * 0.13;
   const cands = componentes(mask, red.w, red.h, ladoMin * ladoMin * 0.5, ladoMax * ladoMax)
     .filter(c => {
       if (c.borda) return false;
@@ -155,13 +158,14 @@ export function encontrarMarcadores(img: ImagemRGBA, qrCentro?: Ponto): Ponto[] 
     const pts = ordenarHorario(g.map(x => [x.cx, x.cy] as Ponto));
     if (!convexo(pts)) continue;
     const area = areaPoligono(pts);
-    if (area < red.w * red.h * 0.08) continue;
+    if (area < red.w * red.h * 0.04) continue;
     // lados opostos com comprimentos compatíveis (perspectiva moderada)
     const L = pts.map((p, i) => Math.hypot(pts[(i + 1) % 4][0] - p[0], pts[(i + 1) % 4][1] - p[1]));
     if (Math.max(L[0], L[2]) / Math.min(L[0], L[2]) > 1.8 || Math.max(L[1], L[3]) / Math.min(L[1], L[3]) > 1.8) continue;
     const razao = (L[0] + L[2]) / (L[1] + L[3]);
     const r = razao > 1 ? 1 / razao : razao;
-    if (r < 0.45 || r > 0.95) continue; // proporção de A4 entre marcadores ≈ 0,68
+    const re = razaoEsperada > 1 ? 1 / razaoEsperada : razaoEsperada;
+    if (Math.abs(r - re) > Math.max(0.12, re * 0.3)) continue; // proporção compatível com a área de leitura
     if (!melhor || area > melhor.area) melhor = { pts, area };
   }
   if (!melhor) return null;
@@ -247,22 +251,26 @@ export function decidir(niveis: { op: string; nivel: number }[]): { resposta: Re
 }
 
 /** Lê as respostas de uma folha. `qrCentro` em pixels da imagem (melhora a orientação). */
-export function lerFolhaOMR(img: ImagemRGBA, itens: ItemGabarito[], qrCentro?: Ponto): ResultadoOMR {
-  const marcadores = encontrarMarcadores(img, qrCentro);
+export function lerFolhaOMR(img: ImagemRGBA, itens: ItemGabarito[], qrCentro?: Ponto, versao: VersaoLayout = 2): ResultadoOMR {
+  const geo = geometriaFolha(itens, versao);
+  const [m0, m1, m2, m3] = geo.marcadores;
+  const razao = (Math.hypot(m1[0] - m0[0], m1[1] - m0[1]) + Math.hypot(m2[0] - m3[0], m2[1] - m3[1])) / (Math.hypot(m3[0] - m0[0], m3[1] - m0[1]) + Math.hypot(m2[0] - m1[0], m2[1] - m1[1]));
+  const marcadores = encontrarMarcadores(img, qrCentro, razao);
   if (!marcadores) return { ok: false, motivo: 'marcadores' };
-  const H = homografia(CENTROS_MARCADORES, marcadores);
-  const [ox, oy] = aplicar(H, 105, 148), [ex, ey] = aplicar(H, 106, 148);
+  const H = homografia(geo.marcadores, marcadores);
+  const cx = (geo.zona.x0 + geo.zona.x1) / 2, cy = (geo.zona.y0 + geo.zona.y1) / 2;
+  const [ox, oy] = aplicar(H, cx, cy), [ex, ey] = aplicar(H, cx + 1, cy);
   const escala = Math.hypot(ex - ox, ey - oy); // pixels por milímetro no centro da folha
   // sanidade: o QR precisa estar onde a geometria prevê; senão os 4 pontos não são os marcadores
   if (qrCentro) {
-    const [qx, qy] = aplicar(H, CENTRO_QR[0], CENTRO_QR[1]);
-    if (Math.hypot(qx - qrCentro[0], qy - qrCentro[1]) > 22 * escala) return { ok: false, motivo: 'marcadores' };
+    const [qx, qy] = aplicar(H, geo.qr.x + geo.qr.lado / 2, geo.qr.y + geo.qr.lado / 2);
+    if (Math.hypot(qx - qrCentro[0], qy - qrCentro[1]) > 15 * escala) return { ok: false, motivo: 'marcadores' };
   }
   const g = paraCinza(img);
   const amostras: AmostraBolha[] = [];
   const respostas: Resposta[] = [];
   const duvidas: boolean[] = [];
-  for (const l of layoutFolha(itens)) {
+  for (const l of geo.linhas) {
     const niveis = l.opcoes.map(o => {
       const nivel = nivelBolha(g, img.width, img.height, H, o.x, o.y);
       const [x, y] = aplicar(H, o.x, o.y);

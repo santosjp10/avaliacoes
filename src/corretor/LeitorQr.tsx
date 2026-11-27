@@ -1,6 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import jsQR from 'jsqr';
 
+/** Tenta ler o QR em escalas diferentes: QRs inclinados ou borrados costumam sair em alguma delas. */
+function lerQrMultiescala(fonte: CanvasImageSource, w: number, h: number, escalas: number[], inversao: 'dontInvert' | 'attemptBoth') {
+  const c = document.createElement('canvas');
+  const ctx = c.getContext('2d', { willReadFrequently: true })!;
+  for (const e of escalas) {
+    c.width = Math.round(w * e); c.height = Math.round(h * e);
+    ctx.drawImage(fonte, 0, 0, c.width, c.height);
+    const d = ctx.getImageData(0, 0, c.width, c.height);
+    const r = jsQR(d.data, d.width, d.height, { inversionAttempts: inversao });
+    if (r?.data) {
+      const L = r.location;
+      const centro: [number, number] = [
+        (L.topLeftCorner.x + L.topRightCorner.x + L.bottomLeftCorner.x + L.bottomRightCorner.x) / 4 / e,
+        (L.topLeftCorner.y + L.topRightCorner.y + L.bottomLeftCorner.y + L.bottomRightCorner.y) / 4 / e,
+      ];
+      return { texto: r.data, centro };
+    }
+  }
+  return null;
+}
+
 export interface Quadro { img: ImageData; qr: [number, number]; fonte: 'camera' | 'foto' }
 
 /**
@@ -58,28 +79,26 @@ export function LeitorQr({ aoLer, dica, extra }: { aoLer: (texto: string, quadro
         canvas.height = Math.round(v.videoHeight * esc);
         ctx.drawImage(v, 0, 0, canvas.width, canvas.height);
         const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        let r = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
-        let escQr = esc;
-        // com a folha inteira no quadro o QR fica pequeno: a cada 3 quadros tenta na resolução cheia
-        if (!r && esc < 1 && ++quadros % 3 === 0) {
-          cheio.width = v.videoWidth; cheio.height = v.videoHeight;
-          ctxCheio.drawImage(v, 0, 0);
-          const f = ctxCheio.getImageData(0, 0, cheio.width, cheio.height);
-          r = jsQR(f.data, f.width, f.height, { inversionAttempts: 'dontInvert' });
-          escQr = 1;
+        const r0 = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
+        let achado: { texto: string; centro: [number, number] } | null = r0?.data ? {
+          texto: r0.data,
+          centro: [
+            (r0.location.topLeftCorner.x + r0.location.topRightCorner.x + r0.location.bottomLeftCorner.x + r0.location.bottomRightCorner.x) / 4 / esc,
+            (r0.location.topLeftCorner.y + r0.location.topRightCorner.y + r0.location.bottomLeftCorner.y + r0.location.bottomRightCorner.y) / 4 / esc,
+          ],
+        } : null;
+        // QR pequeno, inclinado ou borrado: a cada 3 quadros tenta em outras escalas da imagem cheia
+        if (!achado && ++quadros % 3 === 0) {
+          const escalas = quadros % 6 === 0 ? [1] : [0.7, 0.55];
+          achado = lerQrMultiescala(v, v.videoWidth, v.videoHeight, escalas, 'dontInvert');
         }
-        if (r?.data) {
+        if (achado) {
           ocupado.current = true;
           // quadro em resolução cheia para a leitura das bolhas
           cheio.width = v.videoWidth; cheio.height = v.videoHeight;
           ctxCheio.drawImage(v, 0, 0);
-          const L = r.location;
-          const qr: [number, number] = [
-            (L.topLeftCorner.x + L.topRightCorner.x + L.bottomLeftCorner.x + L.bottomRightCorner.x) / 4 / escQr,
-            (L.topLeftCorner.y + L.topRightCorner.y + L.bottomLeftCorner.y + L.bottomRightCorner.y) / 4 / escQr,
-          ];
-          const quadro: Quadro = { img: ctxCheio.getImageData(0, 0, cheio.width, cheio.height), qr, fonte: 'camera' };
-          Promise.resolve(cb.current(r.data, quadro)).then(fim => {
+          const quadro: Quadro = { img: ctxCheio.getImageData(0, 0, cheio.width, cheio.height), qr: achado.centro, fonte: 'camera' };
+          Promise.resolve(cb.current(achado.texto, quadro)).then(fim => {
             if (fim) navigator.vibrate?.(60);
             else setTimeout(() => { ocupado.current = false; }, 1200);
           });
@@ -110,16 +129,9 @@ export function LeitorQr({ aoLer, dica, extra }: { aoLer: (texto: string, quadro
     const ctx = c.getContext('2d')!;
     ctx.drawImage(img, 0, 0, c.width, c.height);
     const d = ctx.getImageData(0, 0, c.width, c.height);
-    const r = jsQR(d.data, d.width, d.height, { inversionAttempts: 'attemptBoth' });
+    const r = lerQrMultiescala(c, c.width, c.height, [1, 0.75, 0.6, 0.5], 'attemptBoth');
     URL.revokeObjectURL(img.src);
-    if (r?.data) {
-      const L = r.location;
-      const qr: [number, number] = [
-        (L.topLeftCorner.x + L.topRightCorner.x + L.bottomLeftCorner.x + L.bottomRightCorner.x) / 4,
-        (L.topLeftCorner.y + L.topRightCorner.y + L.bottomLeftCorner.y + L.bottomRightCorner.y) / 4,
-      ];
-      await cb.current(r.data, { img: d, qr, fonte: 'foto' });
-    }
+    if (r) await cb.current(r.texto, { img: d, qr: r.centro, fonte: 'foto' });
     else setErro('Não encontrei um QR Code nessa foto. Tente com mais luz e o QR inteiro visível.');
   }
 
