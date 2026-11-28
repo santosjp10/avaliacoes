@@ -1,0 +1,46 @@
+{
+  "id": "sr037",
+  "tipo": "me",
+  "enunciado": "A imagem a seguir apresenta uma cena multiespectral, em tons de cinza, correspondente a uma banda do infravermelho próximo (NIR). Nessa banda, espera-se que:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Interpretação de imagens",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "No NIR a vegetação sadia tem alta reflectância e aparece clara; a água absorve quase toda a radiação e aparece escura, como o reservatório da imagem.",
+  "fonte": "adaptada de IF-ES, 2023; banca e ano conforme a figura-resumo enviada pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "A água apresente altos níveis de brilho."
+    },
+    {
+      "id": "b",
+      "texto": "A vegetação apresente baixos níveis de brilho."
+    },
+    {
+      "id": "c",
+      "texto": "A vegetação sadia apresente altos níveis de brilho."
+    },
+    {
+      "id": "d",
+      "texto": "O solo exposto apresente os menores níveis de brilho."
+    },
+    {
+      "id": "e",
+      "texto": "As áreas urbanas apresentem os maiores níveis de brilho."
+    }
+  ],
+  "correta": "c",
+  "imagens": [
+    {
+      "src": "img/sr037.png",
+      "pos": "abaixo"
+    }
+  ],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

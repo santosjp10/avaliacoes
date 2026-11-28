@@ -1,0 +1,46 @@
+{
+  "id": "sr032",
+  "tipo": "me",
+  "enunciado": "A imagem a seguir é uma composição colorida falsa-cor (R = infravermelho próximo, G = vermelho, B = verde) de uma área agrícola. Nessa composição, as áreas em tons de vermelho intenso correspondem, em geral, a:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Composições coloridas",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Com o infravermelho próximo no canal vermelho, a vegetação sadia, que reflete muito nessa faixa, aparece em vermelho intenso. A água aparece escura e o solo exposto em tons de verde-azulado ou cinza.",
+  "fonte": "adaptada de DNIT/ESAF, 2013; banca e ano conforme a figura-resumo enviada pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Corpos d'água."
+    },
+    {
+      "id": "b",
+      "texto": "Áreas urbanas."
+    },
+    {
+      "id": "c",
+      "texto": "Vegetação vigorosa."
+    },
+    {
+      "id": "d",
+      "texto": "Solo exposto."
+    },
+    {
+      "id": "e",
+      "texto": "Nuvens."
+    }
+  ],
+  "correta": "c",
+  "imagens": [
+    {
+      "src": "img/sr032.png",
+      "pos": "abaixo"
+    }
+  ],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

@@ -1,0 +1,46 @@
+{
+  "id": "sr038",
+  "tipo": "me",
+  "enunciado": "A figura mostra a incorporação de três bandas espectrais (B4, B3 e B2 do Landsat) na composição colorida RGB. A composição RGB (4-3-2) é utilizada com o objetivo principal de:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Composições coloridas",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Nos Landsat 5 e 7, as bandas 4 (NIR), 3 (vermelho) e 2 (verde) em RGB formam a falsa-cor infravermelha clássica, que realça a vegetação (em vermelho). Atenção: na figura a composição aparece em tons de verde, o que não corresponde à falsa-cor real; vale comentar com a turma. Nos Landsat 8 e 9, a numeração muda (NIR = B5).",
+  "fonte": "adaptada de ANM/CEBRASPE, 2025; banca e ano conforme a figura-resumo enviada pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Representar a cena em cores naturais."
+    },
+    {
+      "id": "b",
+      "texto": "Realçar a vegetação."
+    },
+    {
+      "id": "c",
+      "texto": "Eliminar a influência da atmosfera."
+    },
+    {
+      "id": "d",
+      "texto": "Aumentar a resolução espacial."
+    },
+    {
+      "id": "e",
+      "texto": "Gerar um modelo digital de terreno."
+    }
+  ],
+  "correta": "b",
+  "imagens": [
+    {
+      "src": "img/sr038.png",
+      "pos": "abaixo"
+    }
+  ],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

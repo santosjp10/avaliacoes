@@ -1,0 +1,46 @@
+{
+  "id": "sr031",
+  "tipo": "me",
+  "enunciado": "A figura a seguir mostra a assinatura espectral de três alvos: vegetação, solo exposto e água. Com base na figura, é correto afirmar que:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Comportamento espectral",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "A estrutura interna das folhas (mesofilo) espalha fortemente a radiação do infravermelho próximo (0,7–1,3 µm), o que gera o patamar elevado da curva da vegetação. A água absorve quase toda a radiação nessa faixa.",
+  "fonte": "adaptada de CENSIPAM, 2023; banca e ano conforme a figura-resumo enviada pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "A água apresenta maior reflectância no infravermelho próximo."
+    },
+    {
+      "id": "b",
+      "texto": "A vegetação possui baixa reflectância em todo o espectro."
+    },
+    {
+      "id": "c",
+      "texto": "O solo exposto apresenta reflectância sempre inferior à da água."
+    },
+    {
+      "id": "d",
+      "texto": "A vegetação apresenta elevada reflectância no infravermelho próximo."
+    },
+    {
+      "id": "e",
+      "texto": "A água tem comportamento espectral semelhante ao da vegetação."
+    }
+  ],
+  "correta": "d",
+  "imagens": [
+    {
+      "src": "img/sr031.png",
+      "pos": "abaixo"
+    }
+  ],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

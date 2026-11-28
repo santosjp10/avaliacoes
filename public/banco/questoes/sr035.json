@@ -1,0 +1,46 @@
+{
+  "id": "sr035",
+  "tipo": "me",
+  "enunciado": "A figura apresenta duas imagens da mesma área, obtidas em datas diferentes (A – 2010 e B – 2020), em composição RGB. A comparação entre as imagens permite concluir que, no período, ocorreu:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Detecção de mudanças",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Em 2020 surgem manchas claras de geometria regular e novas estradas sobre a floresta, padrão típico de corte raso e abertura de áreas, ou seja, expansão do desmatamento.",
+  "fonte": "adaptada de EMBRAPA/CEBRASPE, 2025; banca e ano conforme a figura-resumo enviada pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Regeneração da cobertura vegetal."
+    },
+    {
+      "id": "b",
+      "texto": "Redução de áreas agrícolas."
+    },
+    {
+      "id": "c",
+      "texto": "Expansão do desmatamento."
+    },
+    {
+      "id": "d",
+      "texto": "Aumento da área de corpos d'água."
+    },
+    {
+      "id": "e",
+      "texto": "Estabilidade no uso e cobertura da terra."
+    }
+  ],
+  "correta": "c",
+  "imagens": [
+    {
+      "src": "img/sr035.png",
+      "pos": "abaixo"
+    }
+  ],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

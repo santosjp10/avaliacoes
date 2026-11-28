@@ -1,0 +1,46 @@
+{
+  "id": "sr039",
+  "tipo": "me",
+  "enunciado": "A figura apresenta um recorte de imagem de radar com duas áreas destacadas (A e B). Comparando as áreas A e B, é correto afirmar que a área A, por apresentar tons mais claros, provavelmente:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Tons claros no SAR indicam maior retroespalhamento, associado a maior rugosidade, umidade ou reflexão de canto. Água, superfícies lisas e sombras aparecem escuras.",
+  "fonte": "adaptada de SEFIN Fortaleza/CEBRASPE, 2023; banca e ano conforme a figura-resumo enviada pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Possui maior retroespalhamento da energia."
+    },
+    {
+      "id": "b",
+      "texto": "É um corpo d'água."
+    },
+    {
+      "id": "c",
+      "texto": "Apresenta menor rugosidade superficial."
+    },
+    {
+      "id": "d",
+      "texto": "Corresponde a sombra de relevo."
+    },
+    {
+      "id": "e",
+      "texto": "É uma área de vegetação menos densa que a área B."
+    }
+  ],
+  "correta": "a",
+  "imagens": [
+    {
+      "src": "img/sr039.png",
+      "pos": "abaixo"
+    }
+  ],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

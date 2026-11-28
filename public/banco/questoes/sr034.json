@@ -1,0 +1,46 @@
+{
+  "id": "sr034",
+  "tipo": "me",
+  "enunciado": "A figura mostra um mapa de NDVI de uma área agrícola, com a respectiva escala de valores. Com base no NDVI e na imagem, a área em tons de vermelho indica, provavelmente:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Índices de vegetação",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Os tons alaranjados e vermelhos correspondem a NDVI baixo (próximo de zero), típico de solo exposto ou palhada após a colheita. Vegetação densa tem NDVI acima de 0,6 (verde), e a água tem NDVI negativo. Pela forma em talhões regulares, a hipótese de área urbana é menos provável.",
+  "fonte": "adaptada de INPE/FGV, 2024; banca e ano conforme a figura-resumo enviada pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Vegetação densa e saudável."
+    },
+    {
+      "id": "b",
+      "texto": "Solo exposto ou área recém-colhida."
+    },
+    {
+      "id": "c",
+      "texto": "Corpo d'água com alta turbidez."
+    },
+    {
+      "id": "d",
+      "texto": "Vegetação em estágio avançado de desenvolvimento."
+    },
+    {
+      "id": "e",
+      "texto": "Área urbana."
+    }
+  ],
+  "correta": "b",
+  "imagens": [
+    {
+      "src": "img/sr034.png",
+      "pos": "abaixo"
+    }
+  ],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

@@ -1,0 +1,46 @@
+{
+  "id": "sr036",
+  "tipo": "me",
+  "enunciado": "A figura mostra parte do espectro eletromagnético, com destaque para diferentes faixas. Considerando as características dessas faixas, assinale a alternativa correta.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Espectro eletromagnético",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "No infravermelho de ondas curtas (SWIR) há bandas de absorção da água, por isso a reflectância cai com o aumento da umidade da folha e do solo. O termal registra sobretudo radiação emitida, e o NIR é muito sensível à estrutura da vegetação.",
+  "fonte": "adaptada de TCE-TO/FGV, 2022; banca e ano conforme a figura-resumo enviada pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "A faixa termal registra, predominantemente, radiação refletida."
+    },
+    {
+      "id": "b",
+      "texto": "O infravermelho próximo é pouco sensível à vegetação."
+    },
+    {
+      "id": "c",
+      "texto": "O visível é a melhor faixa para diferenciar umidade do solo."
+    },
+    {
+      "id": "d",
+      "texto": "O infravermelho médio é sensível ao teor de água na vegetação e no solo."
+    },
+    {
+      "id": "e",
+      "texto": "As faixas do visível e do termal possuem o mesmo comportamento espectral."
+    }
+  ],
+  "correta": "d",
+  "imagens": [
+    {
+      "src": "img/sr036.png",
+      "pos": "abaixo"
+    }
+  ],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

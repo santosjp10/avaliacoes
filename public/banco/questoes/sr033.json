@@ -1,0 +1,46 @@
+{
+  "id": "sr033",
+  "tipo": "me",
+  "enunciado": "A figura apresenta um recorte de imagem de radar (SAR) de uma região com relevo variado. Nas imagens de radar, as áreas mais claras tendem a representar, em geral:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "O brilho no SAR é proporcional ao retroespalhamento: encostas voltadas para a antena, superfícies rugosas e alvos com reflexão de canto aparecem claros. Água calma e sombras de relevo aparecem escuras, e o radar atravessa as nuvens.",
+  "fonte": "adaptada de CODEVASF/CEBRASPE, 2021; banca e ano conforme a figura-resumo enviada pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Superfícies com baixa rugosidade e baixa refletividade."
+    },
+    {
+      "id": "b",
+      "texto": "Alvos com maior retroespalhamento da energia."
+    },
+    {
+      "id": "c",
+      "texto": "Corpos d'água profundos."
+    },
+    {
+      "id": "d",
+      "texto": "Áreas de sombra de relevo."
+    },
+    {
+      "id": "e",
+      "texto": "Nuvens de elevada espessura."
+    }
+  ],
+  "correta": "b",
+  "imagens": [
+    {
+      "src": "img/sr033.png",
+      "pos": "abaixo"
+    }
+  ],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

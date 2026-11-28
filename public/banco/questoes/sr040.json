@@ -1,0 +1,46 @@
+{
+  "id": "sr040",
+  "tipo": "me",
+  "enunciado": "O mapa abaixo mostra o uso e cobertura da terra de uma área, obtido por classificação de imagem de satélite. Com base no mapa, é correto afirmar que a classe com maior extensão na área é:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Uso e cobertura da terra",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Medindo os pixels do mapa: floresta cerca de 43%, vegetação secundária 31%, agricultura 21%, corpo d'água 3% e área urbana 2%. A diferença entre floresta e vegetação secundária é pequena à vista; se quiser evitar recurso, peça a estimativa com apoio de uma grade ou troque por \"classe de menor extensão\" (área urbana).",
+  "fonte": "adaptada de UFCG, 2025; banca e ano conforme a figura-resumo enviada pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Agricultura."
+    },
+    {
+      "id": "b",
+      "texto": "Área urbana."
+    },
+    {
+      "id": "c",
+      "texto": "Corpo d'água."
+    },
+    {
+      "id": "d",
+      "texto": "Vegetação secundária."
+    },
+    {
+      "id": "e",
+      "texto": "Floresta."
+    }
+  ],
+  "correta": "e",
+  "imagens": [
+    {
+      "src": "img/sr040.png",
+      "pos": "abaixo"
+    }
+  ],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}
