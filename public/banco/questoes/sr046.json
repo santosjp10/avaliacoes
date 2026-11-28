@@ -1,0 +1,41 @@
+{
+  "id": "sr046",
+  "tipo": "me",
+  "enunciado": "Sobre as propriedades espectrais da vegetação, é correto afirmar que, na faixa do infravermelho próximo:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Comportamento espectral",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "No NIR a vegetação sadia reflete fortemente, por espalhamento no mesofilo foliar.",
+  "fonte": "adaptada de CENSIPAM, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "A vegetação saudável apresenta elevada absorção e baixa reflectância."
+    },
+    {
+      "id": "b",
+      "texto": "A vegetação saudável apresenta elevada reflectância."
+    },
+    {
+      "id": "c",
+      "texto": "A vegetação apresenta comportamento idêntico ao da água."
+    },
+    {
+      "id": "d",
+      "texto": "A reflectância da vegetação é nula."
+    },
+    {
+      "id": "e",
+      "texto": "A energia incidente é completamente transmitida."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

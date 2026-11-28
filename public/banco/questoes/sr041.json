@@ -1,0 +1,41 @@
+{
+  "id": "sr041",
+  "tipo": "me",
+  "enunciado": "O sensoriamento remoto permite obter informações sobre objetos e fenômenos da superfície terrestre sem contato direto com eles. Seu princípio fundamental está relacionado:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Princípios físicos",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O SR baseia-se na detecção da energia eletromagnética refletida, emitida ou retroespalhada pelos alvos, sem contato físico.",
+  "fonte": "adaptada de CENSIPAM, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "À aquisição de informações por meio da detecção e análise da energia eletromagnética refletida, emitida ou retroespalhada pelos alvos."
+    },
+    {
+      "id": "b",
+      "texto": "À coleta exclusiva de dados por levantamentos topográficos terrestres."
+    },
+    {
+      "id": "c",
+      "texto": "À determinação de coordenadas por meio de receptores GNSS."
+    },
+    {
+      "id": "d",
+      "texto": "À obtenção de informações exclusivamente por fotografias aéreas convencionais."
+    },
+    {
+      "id": "e",
+      "texto": "À utilização exclusiva de sensores instalados em satélites meteorológicos."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

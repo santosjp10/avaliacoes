@@ -1,0 +1,41 @@
+{
+  "id": "sr043",
+  "tipo": "me",
+  "enunciado": "Em sensoriamento remoto óptico, a principal fonte natural de energia utilizada pelos sensores passivos para obtenção de imagens da superfície terrestre é:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Princípios físicos",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Sensores ópticos passivos registram a radiação solar refletida pela superfície.",
+  "fonte": "adaptada de DNIT/ESAF, 2013; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "O campo magnético terrestre."
+    },
+    {
+      "id": "b",
+      "texto": "A radiação solar."
+    },
+    {
+      "id": "c",
+      "texto": "A radiação emitida pelos satélites."
+    },
+    {
+      "id": "d",
+      "texto": "A energia gravitacional."
+    },
+    {
+      "id": "e",
+      "texto": "A energia produzida pela ionosfera."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

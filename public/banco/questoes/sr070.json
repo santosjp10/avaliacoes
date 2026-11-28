@@ -1,0 +1,41 @@
+{
+  "id": "sr070",
+  "tipo": "me",
+  "enunciado": "O ruído speckle é frequentemente observado em imagens de radar. Esse ruído está relacionado principalmente:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Processamento digital",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "O speckle resulta da interferência construtiva e destrutiva dos retornos de um sinal coerente dentro de cada célula de resolução.",
+  "fonte": "adaptada de CODEVASF/CEBRASPE, 2021; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "À presença de pixels exclusivamente urbanos."
+    },
+    {
+      "id": "b",
+      "texto": "À ausência de reflectância solar."
+    },
+    {
+      "id": "c",
+      "texto": "À baixa resolução temporal."
+    },
+    {
+      "id": "d",
+      "texto": "À inexistência de informação de amplitude."
+    },
+    {
+      "id": "e",
+      "texto": "À natureza coerente do sinal de radar e às interferências entre retornos de espalhamento."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

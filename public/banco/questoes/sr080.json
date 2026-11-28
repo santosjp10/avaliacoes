@@ -1,0 +1,41 @@
+{
+  "id": "sr080",
+  "tipo": "me",
+  "enunciado": "Uma equipe técnica pretende monitorar uma região extensa de floresta amazônica, identificando alterações na cobertura vegetal, clareiras, abertura de estradas e áreas de exploração. A estratégia mais adequada é:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Aplicações e monitoramento",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Monitorar grandes áreas florestais exige imagens multitemporais e análise de mudanças, como fazem o PRODES e o DETER.",
+  "fonte": "adaptada de CENSIPAM, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Utilizar somente levantamento topográfico convencional."
+    },
+    {
+      "id": "b",
+      "texto": "Utilizar uma única fotografia aérea sem georreferenciamento."
+    },
+    {
+      "id": "c",
+      "texto": "Utilizar imagens de sensoriamento remoto em diferentes datas, associadas a técnicas de processamento e análise multitemporal."
+    },
+    {
+      "id": "d",
+      "texto": "Utilizar exclusivamente dados de GPS de navegação."
+    },
+    {
+      "id": "e",
+      "texto": "Utilizar apenas mapas antigos, sem atualização."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

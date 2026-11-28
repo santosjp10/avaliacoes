@@ -1,0 +1,41 @@
+{
+  "id": "sr071",
+  "tipo": "me",
+  "enunciado": "O sensoriamento remoto por radar apresenta uma importante vantagem em relação ao imageamento óptico porque:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "As micro-ondas atravessam nuvens, então o radar imageia mesmo sob nebulosidade.",
+  "fonte": "adaptada de CODEVASF/CEBRASPE, 2021; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Não utiliza qualquer tipo de energia eletromagnética."
+    },
+    {
+      "id": "b",
+      "texto": "Opera exclusivamente durante o período diurno."
+    },
+    {
+      "id": "c",
+      "texto": "Pode adquirir dados mesmo sob condições de cobertura de nuvens."
+    },
+    {
+      "id": "d",
+      "texto": "Não sofre interação com os alvos."
+    },
+    {
+      "id": "e",
+      "texto": "Produz imagens sem distorções geométricas."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

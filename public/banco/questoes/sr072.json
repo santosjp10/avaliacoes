@@ -1,0 +1,41 @@
+{
+  "id": "sr072",
+  "tipo": "me",
+  "enunciado": "A aquisição de imagens por radar pode ocorrer durante o dia ou à noite porque:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O radar é ativo: ilumina o terreno com a própria energia, por isso opera de dia ou à noite.",
+  "fonte": "adaptada de CEBRASPE/SEFIN Fortaleza, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Utiliza luz solar refletida."
+    },
+    {
+      "id": "b",
+      "texto": "Utiliza exclusivamente a radiação ultravioleta."
+    },
+    {
+      "id": "c",
+      "texto": "Depende da iluminação artificial do terreno."
+    },
+    {
+      "id": "d",
+      "texto": "Emite sua própria energia eletromagnética."
+    },
+    {
+      "id": "e",
+      "texto": "Registra apenas a radiação termal."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

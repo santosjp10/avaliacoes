@@ -1,0 +1,41 @@
+{
+  "id": "sr042",
+  "tipo": "me",
+  "enunciado": "A radiação eletromagnética, ao atingir um objeto na superfície terrestre, pode sofrer diferentes interações. Entre essas interações estão:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Princípios físicos",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "A energia incidente é particionada em refletida, absorvida e transmitida (balanço radiativo).",
+  "fonte": "adaptada de IF-ES, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Apenas absorção e emissão."
+    },
+    {
+      "id": "b",
+      "texto": "Exclusivamente reflexão especular."
+    },
+    {
+      "id": "c",
+      "texto": "Apenas dispersão atmosférica."
+    },
+    {
+      "id": "d",
+      "texto": "Reflexão e polarização, sem absorção."
+    },
+    {
+      "id": "e",
+      "texto": "Reflexão, absorção e transmissão."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

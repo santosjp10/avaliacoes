@@ -1,0 +1,41 @@
+{
+  "id": "sr060",
+  "tipo": "me",
+  "enunciado": "Uma característica importante dos satélites geoestacionários é:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Satélites e sensores",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Em órbita geoestacionária (~36.000 km, plano equatorial) o satélite acompanha a rotação da Terra e parece parado sobre um ponto. Ele se move em órbita, por isso a E é falsa.",
+  "fonte": "adaptada de CENSIPAM, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Sua baixa altitude e rápida passagem sobre os polos."
+    },
+    {
+      "id": "b",
+      "texto": "Sua operação exclusiva na faixa do infravermelho próximo."
+    },
+    {
+      "id": "c",
+      "texto": "Sua utilização apenas para cartografia de alta resolução."
+    },
+    {
+      "id": "d",
+      "texto": "Sua permanência aparente sobre uma mesma posição da superfície terrestre."
+    },
+    {
+      "id": "e",
+      "texto": "Sua ausência de movimento orbital."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

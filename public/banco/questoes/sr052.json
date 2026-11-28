@@ -1,0 +1,41 @@
+{
+  "id": "sr052",
+  "tipo": "me",
+  "enunciado": "A capacidade de um sensor distinguir objetos de diferentes tamanhos está diretamente relacionada à resolução:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Resoluções",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "A resolução espacial define o menor objeto que pode ser distinguido na imagem.",
+  "fonte": "adaptada de IF-RS, 2018; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Espacial."
+    },
+    {
+      "id": "b",
+      "texto": "Temporal."
+    },
+    {
+      "id": "c",
+      "texto": "Espectral."
+    },
+    {
+      "id": "d",
+      "texto": "Radiométrica."
+    },
+    {
+      "id": "e",
+      "texto": "Orbital."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

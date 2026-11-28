@@ -1,0 +1,41 @@
+{
+  "id": "sr077",
+  "tipo": "me",
+  "enunciado": "A segmentação de imagens de sensoriamento remoto é uma etapa utilizada em alguns métodos de classificação. Sua finalidade é:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Aplicações e monitoramento",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "A segmentação agrupa pixels em regiões homogêneas (objetos), base da classificação orientada a objetos (GEOBIA).",
+  "fonte": "adaptada de EMBRAPA/CEBRASPE, 2025; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Dividir a imagem em regiões ou objetos com características relativamente homogêneas."
+    },
+    {
+      "id": "b",
+      "texto": "Eliminar a necessidade de dados de satélite."
+    },
+    {
+      "id": "c",
+      "texto": "Converter todas as imagens para formato vetorial de pontos."
+    },
+    {
+      "id": "d",
+      "texto": "Corrigir exclusivamente os erros de GPS."
+    },
+    {
+      "id": "e",
+      "texto": "Substituir integralmente a interpretação visual."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

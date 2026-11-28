@@ -1,0 +1,41 @@
+{
+  "id": "sr053",
+  "tipo": "me",
+  "enunciado": "A resolução radiométrica de um sensor está relacionada:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Resoluções",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Resolução radiométrica = capacidade de discriminar intensidades de energia, expressa em bits.",
+  "fonte": "adaptada de FGV/Prefeitura de Abreu e Lima, 2024; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "À dimensão espacial dos pixels."
+    },
+    {
+      "id": "b",
+      "texto": "À frequência de revisita do satélite."
+    },
+    {
+      "id": "c",
+      "texto": "À quantidade de bandas térmicas."
+    },
+    {
+      "id": "d",
+      "texto": "À capacidade de distinguir diferentes intensidades de energia recebida."
+    },
+    {
+      "id": "e",
+      "texto": "À área total imageada."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

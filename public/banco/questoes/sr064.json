@@ -1,0 +1,41 @@
+{
+  "id": "sr064",
+  "tipo": "me",
+  "enunciado": "Entre as aplicações do NDVI, pode-se citar:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Índices de vegetação",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O NDVI é usado para monitorar vigor, biomassa e mudanças da vegetação em áreas agrícolas e florestais.",
+  "fonte": "adaptada de INPE/FGV, 2024; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "O monitoramento da condição da vegetação e a análise de mudanças em áreas agrícolas e florestais."
+    },
+    {
+      "id": "b",
+      "texto": "A identificação direta da composição química de minerais."
+    },
+    {
+      "id": "c",
+      "texto": "A determinação automática da textura do solo em campo."
+    },
+    {
+      "id": "d",
+      "texto": "A medição direta da profundidade de rios."
+    },
+    {
+      "id": "e",
+      "texto": "A determinação da altitude de terrenos."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

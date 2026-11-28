@@ -1,0 +1,41 @@
+{
+  "id": "sr076",
+  "tipo": "me",
+  "enunciado": "Na elaboração de um mapa de uso e cobertura da terra, utilizando imagens de sensoriamento remoto, a escolha do sensor deve considerar principalmente:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Aplicações e monitoramento",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "A escolha do sensor depende da escala do mapeamento, das resoluções (espacial, espectral, temporal) e dos alvos de interesse.",
+  "fonte": "adaptada de DNIT/ESAF, 2013; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "A escala do mapeamento, a resolução espacial, espectral, temporal e as características dos alvos."
+    },
+    {
+      "id": "b",
+      "texto": "Apenas o custo de aquisição da imagem."
+    },
+    {
+      "id": "c",
+      "texto": "Somente a quantidade de bandas espectrais."
+    },
+    {
+      "id": "d",
+      "texto": "Exclusivamente a altitude do satélite."
+    },
+    {
+      "id": "e",
+      "texto": "Apenas o tamanho da área de estudo."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

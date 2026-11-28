@@ -1,0 +1,41 @@
+{
+  "id": "sr050",
+  "tipo": "me",
+  "enunciado": "A assinatura espectral de um alvo corresponde:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Comportamento espectral",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Assinatura espectral é a variação da resposta (reflectância/emissividade) do alvo ao longo dos comprimentos de onda.",
+  "fonte": "adaptada de DNIT/ESAF, 2013; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "À sua localização geográfica."
+    },
+    {
+      "id": "b",
+      "texto": "Ao comportamento da reflectância, emissividade ou resposta espectral em diferentes comprimentos de onda."
+    },
+    {
+      "id": "c",
+      "texto": "À quantidade de pixels que o representa."
+    },
+    {
+      "id": "d",
+      "texto": "À sua altitude em relação ao nível do mar."
+    },
+    {
+      "id": "e",
+      "texto": "À resolução temporal do satélite."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

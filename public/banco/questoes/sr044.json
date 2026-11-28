@@ -1,0 +1,41 @@
+{
+  "id": "sr044",
+  "tipo": "me",
+  "enunciado": "Sobre sensores ativos e passivos, assinale a alternativa correta.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Princípios físicos",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Sensores ativos (radar, LiDAR) geram a própria energia; os passivos dependem de fonte externa (Sol ou emissão do alvo).",
+  "fonte": "adaptada de CENSIPAM, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Sensores passivos emitem pulsos de micro-ondas para iluminar os alvos."
+    },
+    {
+      "id": "b",
+      "texto": "Sensores ativos dependem exclusivamente da radiação solar."
+    },
+    {
+      "id": "c",
+      "texto": "Sensores ativos emitem sua própria energia e registram a resposta dos alvos."
+    },
+    {
+      "id": "d",
+      "texto": "Sensores passivos somente podem operar durante a noite."
+    },
+    {
+      "id": "e",
+      "texto": "Todos os sensores orbitais são ativos."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

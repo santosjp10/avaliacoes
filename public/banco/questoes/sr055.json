@@ -1,0 +1,41 @@
+{
+  "id": "sr055",
+  "tipo": "me",
+  "enunciado": "A resolução temporal de um sensor orbital corresponde:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Resoluções",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Resolução temporal = intervalo de revisita sobre a mesma área (ex.: 16 dias no Landsat).",
+  "fonte": "adaptada de FGV/TCE-TO, 2022; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "À dimensão do pixel."
+    },
+    {
+      "id": "b",
+      "texto": "Ao intervalo de tempo necessário para revisitar ou adquirir novamente imagens de uma mesma área."
+    },
+    {
+      "id": "c",
+      "texto": "Ao número de bandas disponíveis."
+    },
+    {
+      "id": "d",
+      "texto": "À capacidade de distinguir diferentes níveis de brilho."
+    },
+    {
+      "id": "e",
+      "texto": "À quantidade de imagens armazenadas."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

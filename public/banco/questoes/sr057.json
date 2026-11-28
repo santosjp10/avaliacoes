@@ -1,0 +1,41 @@
+{
+  "id": "sr057",
+  "tipo": "me",
+  "enunciado": "O sensor OLI, presente na série Landsat, está associado principalmente:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Satélites e sensores",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O OLI (Operational Land Imager) é o sensor óptico multiespectral dos Landsat 8 e 9; o termal é o TIRS.",
+  "fonte": "adaptada de UFCG, 2025; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Ao imageamento exclusivo por radar."
+    },
+    {
+      "id": "b",
+      "texto": "À medição de precipitação por micro-ondas."
+    },
+    {
+      "id": "c",
+      "texto": "À aquisição de dados ópticos multiespectrais."
+    },
+    {
+      "id": "d",
+      "texto": "À coleta de dados exclusivamente térmicos."
+    },
+    {
+      "id": "e",
+      "texto": "À aquisição de imagens exclusivamente pancromáticas."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

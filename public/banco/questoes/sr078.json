@@ -1,0 +1,41 @@
+{
+  "id": "sr078",
+  "tipo": "me",
+  "enunciado": "O monitoramento de mudanças no uso e cobertura da terra utilizando séries temporais de imagens Landsat permite:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Aplicações e monitoramento",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Séries temporais Landsat (desde 1972) permitem detectar mudanças de cobertura: desmatamento, expansão urbana e agrícola.",
+  "fonte": "adaptada de CEBRASPE/ANM, 2025; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Apenas determinar a altitude dos terrenos."
+    },
+    {
+      "id": "b",
+      "texto": "Identificar exclusivamente áreas de mineração subterrânea."
+    },
+    {
+      "id": "c",
+      "texto": "Determinar diretamente a composição química do solo."
+    },
+    {
+      "id": "d",
+      "texto": "Monitorar mudanças na vegetação, expansão urbana, desmatamento e outras alterações na superfície terrestre."
+    },
+    {
+      "id": "e",
+      "texto": "Eliminar a necessidade de análise temporal."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

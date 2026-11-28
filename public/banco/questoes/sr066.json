@@ -1,0 +1,41 @@
+{
+  "id": "sr066",
+  "tipo": "me",
+  "enunciado": "A ampliação de contraste em uma imagem de sensoriamento remoto tem como principal finalidade:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Processamento digital",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "A ampliação de contraste redistribui os níveis de cinza para melhorar a visualização, sem alterar a geometria.",
+  "fonte": "adaptada de IF-ES, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Alterar o sistema de coordenadas da imagem."
+    },
+    {
+      "id": "b",
+      "texto": "Eliminar automaticamente todas as nuvens."
+    },
+    {
+      "id": "c",
+      "texto": "Modificar a resolução espacial original."
+    },
+    {
+      "id": "d",
+      "texto": "Transformar uma imagem raster em vetor."
+    },
+    {
+      "id": "e",
+      "texto": "Melhorar a visualização das diferenças de tonalidade e intensidade dos pixels."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

@@ -1,0 +1,41 @@
+{
+  "id": "sr063",
+  "tipo": "me",
+  "enunciado": "Em uma área com vegetação densa e saudável, espera-se que o NDVI apresente:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Índices de vegetação",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Vegetação densa e sadia tem NDVI alto, em geral entre 0,7 e 0,9.",
+  "fonte": "adaptada de IBFC/SEAD-GO, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Valores predominantemente negativos."
+    },
+    {
+      "id": "b",
+      "texto": "Valores próximos de zero."
+    },
+    {
+      "id": "c",
+      "texto": "Valores sempre iguais a 0,5."
+    },
+    {
+      "id": "d",
+      "texto": "Valores superiores a 2."
+    },
+    {
+      "id": "e",
+      "texto": "Valores elevados e positivos, frequentemente próximos de 1."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

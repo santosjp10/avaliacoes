@@ -1,0 +1,41 @@
+{
+  "id": "sr073",
+  "tipo": "me",
+  "enunciado": "Em sistemas de radar, a polarização HH indica:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Notação: 1ª letra = polarização transmitida e 2ª = recebida. HH = horizontal/horizontal.",
+  "fonte": "adaptada de DNIT/ESAF, 2013; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Transmissão vertical e recepção vertical."
+    },
+    {
+      "id": "b",
+      "texto": "Transmissão horizontal e recepção vertical."
+    },
+    {
+      "id": "c",
+      "texto": "Transmissão vertical e recepção horizontal."
+    },
+    {
+      "id": "d",
+      "texto": "Ausência de polarização."
+    },
+    {
+      "id": "e",
+      "texto": "Transmissão horizontal e recepção horizontal."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

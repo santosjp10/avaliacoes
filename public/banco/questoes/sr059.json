@@ -1,0 +1,41 @@
+{
+  "id": "sr059",
+  "tipo": "me",
+  "enunciado": "O projeto CBERS é resultado de uma cooperação entre:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Satélites e sensores",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "CBERS = China–Brazil Earth Resources Satellite, cooperação entre Brasil (INPE) e China.",
+  "fonte": "adaptada de DNIT/ESAF, 2013; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Brasil e Estados Unidos."
+    },
+    {
+      "id": "b",
+      "texto": "Brasil e Japão."
+    },
+    {
+      "id": "c",
+      "texto": "Brasil e Canadá."
+    },
+    {
+      "id": "d",
+      "texto": "Brasil e China."
+    },
+    {
+      "id": "e",
+      "texto": "Brasil e Alemanha."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

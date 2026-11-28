@@ -1,0 +1,41 @@
+{
+  "id": "sr067",
+  "tipo": "me",
+  "enunciado": "A técnica de análise por componentes principais (PCA) aplicada a imagens multiespectrais tem como objetivo principal:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Processamento digital",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "A PCA gera componentes não correlacionadas e concentra a variância nas primeiras, o que reduz a redundância entre bandas.",
+  "fonte": "adaptada de IF-ES, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Criar coordenadas geográficas."
+    },
+    {
+      "id": "b",
+      "texto": "Reduzir a redundância e reorganizar a informação espectral em componentes."
+    },
+    {
+      "id": "c",
+      "texto": "Eliminar a necessidade de classificação."
+    },
+    {
+      "id": "d",
+      "texto": "Aumentar artificialmente a resolução espacial."
+    },
+    {
+      "id": "e",
+      "texto": "Substituir o sensor utilizado na aquisição."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

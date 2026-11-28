@@ -1,0 +1,41 @@
+{
+  "id": "sr068",
+  "tipo": "me",
+  "enunciado": "As transformações espectrais aplicadas a imagens de sensoriamento remoto podem ser utilizadas para:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Processamento digital",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Transformações espectrais (razões, índices, PCA, IHS, Tasseled Cap) realçam ou reorganizam a informação espectral.",
+  "fonte": "adaptada de CEBRASPE/SEFIN Fortaleza, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Realçar ou modificar a representação de informações espectrais da cena."
+    },
+    {
+      "id": "b",
+      "texto": "Modificar o sistema de projeção cartográfica."
+    },
+    {
+      "id": "c",
+      "texto": "Alterar o formato de armazenamento de raster para vetor."
+    },
+    {
+      "id": "d",
+      "texto": "Eliminar a necessidade de correção radiométrica."
+    },
+    {
+      "id": "e",
+      "texto": "Criar novos dados de campo."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

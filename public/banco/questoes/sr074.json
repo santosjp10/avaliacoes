@@ -1,0 +1,41 @@
+{
+  "id": "sr074",
+  "tipo": "me",
+  "enunciado": "A faixa espectral de micro-ondas utilizada pelos sensores radar apresenta como característica importante:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Micro-ondas independem da iluminação solar e penetram nuvens.",
+  "fonte": "adaptada de CEBRASPE/SEFIN Fortaleza, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Forte dependência da iluminação solar."
+    },
+    {
+      "id": "b",
+      "texto": "Impossibilidade de aquisição em condições de nebulosidade."
+    },
+    {
+      "id": "c",
+      "texto": "Possibilidade de aquisição de dados independentemente da iluminação solar e maior capacidade de atravessar nuvens."
+    },
+    {
+      "id": "d",
+      "texto": "Utilização exclusiva para fotografias aéreas."
+    },
+    {
+      "id": "e",
+      "texto": "Impossibilidade de estudar vegetação."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

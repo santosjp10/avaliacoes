@@ -1,0 +1,41 @@
+{
+  "id": "sr047",
+  "tipo": "me",
+  "enunciado": "A vegetação verde apresenta elevada absorção da radiação eletromagnética principalmente na região:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Comportamento espectral",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "A clorofila absorve sobretudo no azul (~0,45 µm) e no vermelho (~0,67 µm); por isso a folha parece verde.",
+  "fonte": "adaptada de CENSIPAM, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Do infravermelho próximo."
+    },
+    {
+      "id": "b",
+      "texto": "Das micro-ondas."
+    },
+    {
+      "id": "c",
+      "texto": "Do infravermelho termal."
+    },
+    {
+      "id": "d",
+      "texto": "Do azul e do vermelho do espectro visível."
+    },
+    {
+      "id": "e",
+      "texto": "Das ondas de rádio."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

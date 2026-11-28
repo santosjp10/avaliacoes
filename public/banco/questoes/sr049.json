@@ -1,0 +1,41 @@
+{
+  "id": "sr049",
+  "tipo": "me",
+  "enunciado": "A água apresenta, em geral, baixa reflectância na região do infravermelho próximo. Esse comportamento permite:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Comportamento espectral",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Como a água absorve quase toda a radiação do NIR, aparece escura nessa banda, o que permite delimitar corpos d'água.",
+  "fonte": "adaptada de CENSIPAM, 2023; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Confundir sistematicamente água com vegetação densa."
+    },
+    {
+      "id": "b",
+      "texto": "Identificar áreas de corpos d'água em imagens multiespectrais."
+    },
+    {
+      "id": "c",
+      "texto": "Eliminar a necessidade de bandas espectrais."
+    },
+    {
+      "id": "d",
+      "texto": "Identificar exclusivamente áreas urbanas."
+    },
+    {
+      "id": "e",
+      "texto": "Determinar diretamente a profundidade de todos os corpos d'água."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

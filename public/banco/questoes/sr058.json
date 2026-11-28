@@ -1,0 +1,41 @@
+{
+  "id": "sr058",
+  "tipo": "me",
+  "enunciado": "Assinale a alternativa que apresenta um conjunto de sistemas satelitários com ampla utilização em aplicações de sensoriamento remoto e disponibilização de dados para diferentes usos civis.",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Satélites e sensores",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "CBERS-4A, Sentinel-2 e Landsat 8 são sistemas de observação da Terra com dados abertos; GPS/GLONASS/Galileo são GNSS.",
+  "fonte": "adaptada de UNIOESTE/Prefeitura de Guaratuba, 2022; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Apenas satélites meteorológicos geoestacionários."
+    },
+    {
+      "id": "b",
+      "texto": "GPS, GLONASS e Galileo."
+    },
+    {
+      "id": "c",
+      "texto": "CBERS-4A, Sentinel-2 e Landsat 8."
+    },
+    {
+      "id": "d",
+      "texto": "Apenas satélites de telecomunicações."
+    },
+    {
+      "id": "e",
+      "texto": "Voyager, Cassini e Hubble."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

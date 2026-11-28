@@ -1,0 +1,41 @@
+{
+  "id": "sr079",
+  "tipo": "me",
+  "enunciado": "O monitoramento de focos de queimadas por sensores orbitais pode utilizar informações da região do infravermelho termal, pois essa região permite registrar:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Aplicações e monitoramento",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O infravermelho termal registra a energia emitida pelos alvos conforme sua temperatura, o que permite detectar focos de calor.",
+  "fonte": "adaptada de IBFC/SEED-RR, 2021; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Exclusivamente a energia solar refletida pelas folhas."
+    },
+    {
+      "id": "b",
+      "texto": "A energia emitida pelos alvos em função de suas condições térmicas."
+    },
+    {
+      "id": "c",
+      "texto": "Apenas a cor dos alvos."
+    },
+    {
+      "id": "d",
+      "texto": "Somente a radiação refletida na região azul."
+    },
+    {
+      "id": "e",
+      "texto": "Exclusivamente a energia transmitida pelo solo."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

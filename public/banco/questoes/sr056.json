@@ -1,0 +1,41 @@
+{
+  "id": "sr056",
+  "tipo": "me",
+  "enunciado": "A série Landsat é reconhecida principalmente por:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Satélites e sensores",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O programa Landsat opera desde 1972 e oferece a mais longa série contínua de imagens da superfície terrestre.",
+  "fonte": "adaptada de DNIT/ESAF, 2013; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Produzir exclusivamente imagens meteorológicas."
+    },
+    {
+      "id": "b",
+      "texto": "Operar exclusivamente com sensores de radar."
+    },
+    {
+      "id": "c",
+      "texto": "Produzir imagens apenas para aplicações militares."
+    },
+    {
+      "id": "d",
+      "texto": "Não permitir análise multitemporal."
+    },
+    {
+      "id": "e",
+      "texto": "Possibilitar uma longa série histórica de observações da superfície terrestre."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

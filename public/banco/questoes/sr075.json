@@ -1,0 +1,41 @@
+{
+  "id": "sr075",
+  "tipo": "me",
+  "enunciado": "Para utilizar conjuntamente imagens ópticas e imagens de radar em uma análise espacial, é fundamental que:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Radar",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "A integração óptico–radar exige corregistro: correções geométricas e correspondência espacial entre os pixels.",
+  "fonte": "adaptada de FGV/INPE, 2024; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "As imagens estejam compatibilizadas espacialmente, com correções geométricas e adequada correspondência de localização."
+    },
+    {
+      "id": "b",
+      "texto": "As imagens sejam necessariamente adquiridas no mesmo horário."
+    },
+    {
+      "id": "c",
+      "texto": "As imagens sejam transformadas exclusivamente em dados vetoriais."
+    },
+    {
+      "id": "d",
+      "texto": "A imagem de radar seja convertida em fotografia RGB."
+    },
+    {
+      "id": "e",
+      "texto": "As imagens apresentem necessariamente a mesma resolução radiométrica."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

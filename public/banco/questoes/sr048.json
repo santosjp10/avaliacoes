@@ -1,0 +1,41 @@
+{
+  "id": "sr048",
+  "tipo": "me",
+  "enunciado": "Na interpretação de imagens multiespectrais, a vegetação em crescimento vegetativo pode apresentar elevada reflectância no infravermelho próximo. Esse comportamento está relacionado principalmente:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Comportamento espectral",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "A alta reflectância no NIR decorre da estrutura interna da folha (espaços intercelulares do mesofilo esponjoso).",
+  "fonte": "adaptada de DNIT/ESAF, 2013; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "À presença de pigmentos que absorvem toda a radiação incidente."
+    },
+    {
+      "id": "b",
+      "texto": "À elevada concentração de água que impede a interação da energia."
+    },
+    {
+      "id": "c",
+      "texto": "À estrutura interna das folhas e à interação da radiação com o tecido vegetal."
+    },
+    {
+      "id": "d",
+      "texto": "À inexistência de interação entre a radiação e a vegetação."
+    },
+    {
+      "id": "e",
+      "texto": "À absorção integral das micro-ondas."
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

@@ -1,0 +1,41 @@
+{
+  "id": "sr061",
+  "tipo": "me",
+  "enunciado": "O NDVI (Normalized Difference Vegetation Index) é um índice utilizado no monitoramento da vegetação. Sua formulação utiliza:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Índices de vegetação",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O NDVI usa as bandas do vermelho (absorção pela clorofila) e do infravermelho próximo (espalhamento foliar).",
+  "fonte": "adaptada de CODEVASF/CEBRASPE, 2021; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Bandas azul e verde."
+    },
+    {
+      "id": "b",
+      "texto": "Bandas verde e termal."
+    },
+    {
+      "id": "c",
+      "texto": "Bandas do infravermelho médio e termal."
+    },
+    {
+      "id": "d",
+      "texto": "Bandas do vermelho e infravermelho próximo."
+    },
+    {
+      "id": "e",
+      "texto": "Bandas pancromática e azul."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

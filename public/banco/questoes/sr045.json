@@ -1,0 +1,41 @@
+{
+  "id": "sr045",
+  "tipo": "me",
+  "enunciado": "Os radares de abertura sintética (SAR) são classificados como sensores ativos porque:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Princípios físicos",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O SAR emite pulsos de micro-ondas e mede o sinal retroespalhado, por isso independe do Sol.",
+  "fonte": "adaptada de CODEVASF/CEBRASPE, 2021; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Registram exclusivamente a radiação infravermelha emitida pelos alvos."
+    },
+    {
+      "id": "b",
+      "texto": "Emitem pulsos de energia na faixa das micro-ondas e registram o retorno do sinal."
+    },
+    {
+      "id": "c",
+      "texto": "Utilizam energia solar refletida."
+    },
+    {
+      "id": "d",
+      "texto": "Funcionam somente na faixa do espectro visível."
+    },
+    {
+      "id": "e",
+      "texto": "Dependem da presença de iluminação solar para adquirir imagens."
+    }
+  ],
+  "correta": "b",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

@@ -1,0 +1,41 @@
+{
+  "id": "sr065",
+  "tipo": "me",
+  "enunciado": "O EVI (Enhanced Vegetation Index) apresenta como uma de suas vantagens em relação ao NDVI:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Índices de vegetação",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "O EVI inclui a banda azul e um fator de ajuste do solo, o que reduz efeitos atmosféricos e do fundo do solo e retarda a saturação em vegetação densa.",
+  "fonte": "adaptada de CODEVASF/CEBRASPE, 2021; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Ser utilizado somente para áreas urbanas."
+    },
+    {
+      "id": "b",
+      "texto": "Não utilizar dados espectrais."
+    },
+    {
+      "id": "c",
+      "texto": "Ser calculado exclusivamente com bandas termais."
+    },
+    {
+      "id": "d",
+      "texto": "Apresentar menor sensibilidade a determinados efeitos atmosféricos e do fundo do solo."
+    },
+    {
+      "id": "e",
+      "texto": "Não permitir monitoramento de vegetação densa."
+    }
+  ],
+  "correta": "d",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

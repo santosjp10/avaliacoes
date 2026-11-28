@@ -1,0 +1,41 @@
+{
+  "id": "sr051",
+  "tipo": "me",
+  "enunciado": "A resolução espacial de um sensor orbital está relacionada:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Resoluções",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "Resolução espacial = dimensão do terreno representada por um pixel (ex.: 30 m no Landsat, 10 m no Sentinel-2).",
+  "fonte": "adaptada de TCE-TO/FGV, 2022; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "À quantidade de bandas espectrais disponíveis."
+    },
+    {
+      "id": "b",
+      "texto": "Ao intervalo entre duas aquisições consecutivas."
+    },
+    {
+      "id": "c",
+      "texto": "À capacidade de registrar diferentes níveis de energia."
+    },
+    {
+      "id": "d",
+      "texto": "À quantidade de satélites utilizados na aquisição."
+    },
+    {
+      "id": "e",
+      "texto": "Ao tamanho da área da superfície terrestre representada por cada pixel."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

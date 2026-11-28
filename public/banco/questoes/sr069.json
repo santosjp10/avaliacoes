@@ -1,0 +1,41 @@
+{
+  "id": "sr069",
+  "tipo": "me",
+  "enunciado": "A aplicação de filtros espaciais passa-baixa em imagens digitais tende a:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Processamento digital",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "O filtro passa-baixa (média, mediana) suaviza a imagem e reduz ruídos; o passa-alta realça bordas.",
+  "fonte": "adaptada de CODEVASF/CEBRASPE, 2021; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "Suavizar variações locais e reduzir determinados ruídos."
+    },
+    {
+      "id": "b",
+      "texto": "Realçar bordas e pequenas variações abruptas."
+    },
+    {
+      "id": "c",
+      "texto": "Aumentar a resolução espectral."
+    },
+    {
+      "id": "d",
+      "texto": "Criar novas bandas espectrais."
+    },
+    {
+      "id": "e",
+      "texto": "Corrigir automaticamente o georreferenciamento."
+    }
+  ],
+  "correta": "a",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

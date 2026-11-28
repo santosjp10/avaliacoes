@@ -1,0 +1,41 @@
+{
+  "id": "sr062",
+  "tipo": "me",
+  "enunciado": "O NDVI é calculado pela seguinte expressão:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Índices de vegetação",
+  "nivel": "Fácil",
+  "linhas": 0,
+  "criterio": "NDVI = (NIR − Red) / (NIR + Red), com valores de −1 a +1.",
+  "fonte": "adaptada de CODEVASF/CEBRASPE, 2021; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "(NIR + Red) / (NIR − Red)"
+    },
+    {
+      "id": "b",
+      "texto": "(Red − NIR) / (Red + NIR)"
+    },
+    {
+      "id": "c",
+      "texto": "(NIR − Red) / (NIR + Red)"
+    },
+    {
+      "id": "d",
+      "texto": "(Green − Red) / (Green + Red)"
+    },
+    {
+      "id": "e",
+      "texto": "NIR / Red"
+    }
+  ],
+  "correta": "c",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}

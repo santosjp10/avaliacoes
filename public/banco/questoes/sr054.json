@@ -1,0 +1,41 @@
+{
+  "id": "sr054",
+  "tipo": "me",
+  "enunciado": "Um sensor que possui resolução radiométrica de 8 bits pode representar, teoricamente:",
+  "disciplina": "Sensoriamento Remoto",
+  "assunto": "Resoluções",
+  "nivel": "Médio",
+  "linhas": 0,
+  "criterio": "Com 8 bits: 2⁸ = 256 níveis de cinza (0 a 255).",
+  "fonte": "adaptada de FGV/Prefeitura de Abreu e Lima, 2024; banca e ano conforme o documento enviado pelo professor, não conferidos na prova original",
+  "alternativas": [
+    {
+      "id": "a",
+      "texto": "8 níveis de intensidade."
+    },
+    {
+      "id": "b",
+      "texto": "16 níveis de intensidade."
+    },
+    {
+      "id": "c",
+      "texto": "64 níveis de intensidade."
+    },
+    {
+      "id": "d",
+      "texto": "128 níveis de intensidade."
+    },
+    {
+      "id": "e",
+      "texto": "256 níveis de intensidade."
+    }
+  ],
+  "correta": "e",
+  "imagens": [],
+  "autor": "Jacinto Pereira Santos",
+  "instituicao": "",
+  "licenca": "CC BY 4.0",
+  "contribuidor": "santosjp10",
+  "issue": "",
+  "publicadaEm": "2026-11-28"
+}
