@@ -57,6 +57,8 @@ describe('banco aberto', () => {
     const orig = JSON.parse(readFileSync(new URL('../../public/banco/indice.json', import.meta.url), 'utf8'));
     for (const q of orig.questoes) writeFileSync(join(dir, 'questoes', q.id + '.json'), JSON.stringify(q));
     const ind = gerarIndice(dir);
-    expect(ind.total).toBe(30);
+    expect(ind.total).toBe(orig.questoes.length);
+    expect(ind.total).toBeGreaterThanOrEqual(30);
+    for (const q of ind.questoes) if (q.tipo === 'me') expect(q.alternativas.some((a: { id: string }) => a.id === q.correta)).toBe(true);
   });
 });
